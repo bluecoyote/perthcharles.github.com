@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>My blog</title>
+        <description>My blog - Perth Charles</description>
+        <link>http://perthcharles.github.com</link>
+        <link>http://perthcharles.github.com</link>
+        <lastBuildDate>2013-03-01T21:30:21+08:00</lastBuildDate>
+        <pubDate>2013-03-01T21:30:21+08:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>test</title>
+                <description>&lt;blockquote&gt;&lt;p&gt;dfdfdgegcgfd&lt;br/&gt;
+dfdfgae&lt;br/&gt;
+dfdgdgfdfdfdfdf&lt;br/&gt;
+dfdfd&lt;br/&gt;
+fdfdf&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://google.com/&quot;&gt;1&lt;/a&gt;        &quot;Google&quot;&lt;br/&gt;
+&lt;a href=&quot;http://example.com/&quot;&gt;http://example.com/&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/03/01/test</link>
+                <guid>http://perthcharles.github.com/2013/03/01/test</guid>
+                <pubDate>2013-03-01T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>linux常用工具列表</title>
+                <description>&lt;h3&gt;常用工具列表&lt;/h3&gt;
+
+&lt;p&gt;git&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#git add *
+#git commmit -a -m &quot;commit-name&quot;
+#git push origin master
+#git clone XXX
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;retext&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#retext filename  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;xsel&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat filename |xsel -b -i  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;goagent&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#python proxy.py  
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/linux-learning/2013/03/01/linux-tools</link>
+                <guid>http://perthcharles.github.com/linux-learning/2013/03/01/linux-tools</guid>
+                <pubDate>2013-03-01T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>linux系统信息</title>
+                <description>&lt;h1&gt;系统信息相关&lt;/h1&gt;
+
+&lt;h4&gt;查看系统发行版本号&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat /etc/issue
+#lsb_release -a
+#cat /etc/redhat-release(针对redhat,Fedora)  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;查看内核版本等信息&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#uname -a //a 表示 all  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更多信息：&lt;a href=&quot;http://xiaozhen1900.blog.163.com/blog/static/17417325720115713351300/&quot;&gt;查看LINUX发行版的名称及其版本号的命令&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;linux下文件编码格式转换方法&lt;/h4&gt;
+
+&lt;p&gt;推荐工具：enca&lt;br/&gt;
+安装方法ubuntu：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#sudo apt-get install enca  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#enca -L zh_CN file  //检查file的编码
+#enca -L zh_CN -x UTF-8 file //將file转换为UTF-8编码格式  
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/linux-learning/2013/03/01/linux-system-info</link>
+                <guid>http://perthcharles.github.com/linux-learning/2013/03/01/linux-system-info</guid>
+                <pubDate>2013-03-01T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>初识Jekyll</title>
+                <description>&lt;h2&gt;关于 Jekyll&lt;/h2&gt;
+
+&lt;p&gt;首先，Jekyll不是一个博客软件，更加准确的说法应该是一个解析器。当你按照Jekyll事先定义好的规则写好了一篇博客后，它会自动的將对应文件解析成最终的博客样式。&lt;/p&gt;
+
+&lt;h2&gt;关于Page&lt;/h2&gt;
+
+&lt;p&gt;Pages支持较多文件类型，我主要用MARKDOWN和HTML这两种文件类型。任何根目录下和不是以下划线开始的子文件夹下的Page文件都能够被Jekyll自动解析。&lt;/p&gt;
+
+&lt;h2&gt;关于Post&lt;/h2&gt;
+
+&lt;p&gt;新建一个post可以用下面的命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#rake post title=&quot;name of post&quot;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样产生的文件会在文件夹：_posts下，且后缀名为：&lt;strong&gt;md&lt;/strong&gt;&lt;br/&gt;
+注意：后缀名不能为MARKUP，否则jekyll不能正确解析post文件&lt;/p&gt;
+
+&lt;h2&gt;Categories和Tags&lt;/h2&gt;
+
+&lt;p&gt;这两个功能只能针对post生效，对page没有作用。具体的用法是在post文件的最开始定义好这些内容。如这篇post对应的定义内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+layout: post
+title: 初识Jekyll
+category : tools
+tags : jekyll
+---  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这种定义形式叫做：YAML Front Matter，更多细节解释请查看&lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter&quot;&gt;YAML Front Matter&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;关于themes&lt;/h2&gt;
+
+&lt;p&gt;现在用的主题名为：the program,安装方法为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#rake theme:install git=&quot;https://github.com/jekyllbootstrap/theme-the-program.git&quot;  
+#rake theme:switch name=&quot;the-program&quot;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;我的posts列表样例&lt;/h2&gt;
+
+&lt;ul class=&quot;posts&quot;&gt;
+  
+    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/01/test&quot;&gt;test&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/01/linux-tools&quot;&gt;linux常用工具列表&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/01/linux-system-info&quot;&gt;linux系统信息&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;25 Feb 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/tools/2013/02/25/First-view-of-Jekyll&quot;&gt;初识Jekyll&lt;/a&gt;&lt;/li&gt;
+  
+&lt;/ul&gt;
+
+
+&lt;h2&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://jiyeqian.github.com/2012/07/host-your-pages-at-github-using-jekyll/&quot;&gt;基于jekyll的github建站指南&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://twitter.github.com/bootstrap/&quot;&gt;Bootstrap官网&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://liquidmarkup.org/&quot;&gt;Liquid官网&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://www.mceiba.com/develop/liquid-learn.html&quot;&gt;使用Liquid模板语言&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://jekyllbootstrap.com/&quot;&gt;Zero to Hosted Jekyll Blog in 3 Minetes&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://www.soimort.org/posts/101/&quot;&gt;像黑客一样写博客--Jekyll入门&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/tools/2013/02/25/First-view-of-Jekyll</link>
+                <guid>http://perthcharles.github.com/tools/2013/02/25/First-view-of-Jekyll</guid>
+                <pubDate>2013-02-25T00:00:00+08:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>

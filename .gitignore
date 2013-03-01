@@ -1,9 +1,5 @@
-_site/*
-_theme_packages/*
-index.md-bak
 Thumbs.db
 .DS_Store
-_posts/2013-03-01-test.md
 !.gitkeep
 
 .rbenv-version
