@@ -5,26 +5,10 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-03-01T21:30:21+08:00</lastBuildDate>
-        <pubDate>2013-03-01T21:30:21+08:00</pubDate>
+        <lastBuildDate>2013-03-01T21:37:25+08:00</lastBuildDate>
+        <pubDate>2013-03-01T21:37:25+08:00</pubDate>
         <ttl>1800</ttl>
 
-
-        <item>
-                <title>test</title>
-                <description>&lt;blockquote&gt;&lt;p&gt;dfdfdgegcgfd&lt;br/&gt;
-dfdfgae&lt;br/&gt;
-dfdgdgfdfdfdfdf&lt;br/&gt;
-dfdfd&lt;br/&gt;
-fdfdf&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://google.com/&quot;&gt;1&lt;/a&gt;        &quot;Google&quot;&lt;br/&gt;
-&lt;a href=&quot;http://example.com/&quot;&gt;http://example.com/&lt;/a&gt;&lt;/p&gt;
-</description>
-                <link>http://perthcharles.github.com/2013/03/01/test</link>
-                <guid>http://perthcharles.github.com/2013/03/01/test</guid>
-                <pubDate>2013-03-01T00:00:00+08:00</pubDate>
-        </item>
 
         <item>
                 <title>linux常用工具列表</title>
@@ -140,8 +124,6 @@ tags : jekyll
 &lt;h2&gt;我的posts列表样例&lt;/h2&gt;
 
 &lt;ul class=&quot;posts&quot;&gt;
-  
-    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/01/test&quot;&gt;test&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/01/linux-tools&quot;&gt;linux常用工具列表&lt;/a&gt;&lt;/li&gt;
   

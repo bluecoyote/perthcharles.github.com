@@ -2,14 +2,12 @@
 http://perthcharles.github.com/archive.html
 http://perthcharles.github.com/sitemap.txt
 http://perthcharles.github.com/atom.xml
-http://perthcharles.github.com/index.html
 http://perthcharles.github.com/tags.html
 http://perthcharles.github.com/pages.html
 http://perthcharles.github.com/index.html
 http://perthcharles.github.com/categories.html
 http://perthcharles.github.com/rss.xml
 
-http://perthcharles.github.com/2013/03/01/test
 http://perthcharles.github.com/linux-learning/2013/03/01/linux-tools
 http://perthcharles.github.com/linux-learning/2013/03/01/linux-system-info
 http://perthcharles.github.com/tools/2013/02/25/First-view-of-Jekyll
