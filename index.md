@@ -1,46 +1,23 @@
 ---
 layout: page
-title: Hello World!
+title: 博客简介
 tagline: Supporting tagline
 ---
 {% include JB/setup %}
+##写该博客的初衷
+读研之后，接触的东西日渐丰富。为了不被“淹死”，所以觉得非常有必要把自己每天学到的东西记录下来。试用了一些软件后发现很难满足自己各种无聊的要求，在特定的博客网站写又无法获得root权限，思来想去决定在github上面挂载自己的博客。边学边写，乐在其中。  
 
-Read [Jekyll Quick Start](http://jekyllbootstrap.com/usage/jekyll-quick-start.html)
+####脚踏实地，记录学习的点点滴滴  
+####生命不止，奋斗不息  
 
-Complete usage and documentation available at: [Jekyll Bootstrap](http://jekyllbootstrap.com)
+## 主要内容  
+  1.linux系统使用技巧  
+  2.算法探讨  
+  3.C/C++  
+  4.计算机体系结构  
+  5.操作系统细节  
+  6.记录生命
 
-## Update Author Attributes
 
-In `_config.yml` remember to specify your own data:
-    
-    title : My Blog =)
-    
-    author :
-      name : Name Lastname
-      email : blah@email.test
-      github : username
-      twitter : username
-
-The theme should reference these variables whenever needed.
-    
-## Sample Posts
-
-This blog contains sample posts which help stage pages and blog data.
-When you don't need the samples anymore just delete the `_posts/core-samples` folder.
-
-    $ rm -rf _posts/core-samples
-
-Here's a sample "posts list".
-
-<ul class="posts">
-  {% for post in site.posts %}
-    <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
-  {% endfor %}
-</ul>
-
-## To-Do
-
-This theme is still unfinished. If you'd like to be added as a contributor, [please fork](http://github.com/plusjade/jekyll-bootstrap)!
-We need to clean up the themes, make theme usage guides with theme-specific markup examples.
 
 
