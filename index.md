@@ -18,6 +18,12 @@ tagline: Supporting tagline
   5.操作系统细节  
   6.记录生命
 
+##Post List  
+<ul class="posts">
+  {% for post in site.posts %}
+    <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
 
 
 

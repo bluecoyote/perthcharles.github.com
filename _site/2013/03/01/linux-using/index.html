@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>linux常用工具列表</title>
+	<title>linux命令学习(一)</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux常用工具列表" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux命令学习(一)" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,36 +44,59 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">linux常用工具列表</h1>
+						<h1 class="h2 entry-title">linux命令学习(一)</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h3>常用工具列表</h3>
+					<h2>查找软件安装位置方法</h2>
 
-<p>git</p>
-
-<pre><code>#git add *
-#git commmit -a -m "commit-name"
-#git push origin master
-#git clone XXX
+<pre><code>#whereis name-of-software  
 </code></pre>
 
-<p>retext</p>
+<h2>查看通过yum已安装的程序</h2>
 
-<pre><code>#retext filename  
+<pre><code>#rpm -qa |grep 程序名  
 </code></pre>
 
-<p>xsel</p>
+<h2>du读取文件大小</h2>
 
-<pre><code>#cat filename |xsel -b -i  
+<pre><code>#man du  
+#du -h  //自动的用更易读的方法输出结果  
 </code></pre>
 
-<p>goagent</p>
+<h2>xargs（好用）</h2>
 
-<pre><code>#python proxy.py  
+<p>xargs能够將上一个命令的执行结果当作参数传递给下一个命令。忘记细节了，请记得：</p>
+
+<pre><code>#man xargs  
+</code></pre>
+
+<p>举例：將find找到的文件，传递给du命令</p>
+
+<pre><code>#find /etc -name *id.conf |xargs du -h  
+</code></pre>
+
+<h2>删除文件夹内全部文件</h2>
+
+<pre><code>#rm -f *  //-f意味着不一一提示是否删除  
+</code></pre>
+
+<p><strong>注</strong>：当文件夹没文件过多或文件名长度过长，会导致<em>argument list too long</em>的错误，我理解的原因就是正则式“*”展开导致命令行长度过长。这是UNIX以来就有的限制。查看限制可使用命令：</p>
+
+<pre><code>#getconf ARG_MAX  //我的电脑是2097152  
+</code></pre>
+
+<p>删除所有文件：执行ls得到文件夹所有文件的路径，xargs將ls的输出，每10个一组（以空格为分割符）作为rm -rf 的参数</p>
+
+<pre><code>#ls |xargs -n 10 rm -rf  
+</code></pre>
+
+<p>删除符合特定命名的文件,其实多少个一组是可选的:</p>
+
+<pre><code>#find -name XXX |xargs [-n 10] rm -rf  
 </code></pre>
 
 					<div class="meta">
@@ -92,10 +115,6 @@
 
 
   
-     
-    	<li><a href="/categories.html#linux-learning-ref">
-    		linux-learning <span>3</span>
-    	</a></li>
     
   
 
@@ -109,7 +128,7 @@
 
   
      
-    	<li><a href="/tags.html#tools-ref">tools <span>1</span></a></li>
+    	<li><a href="/tags.html#shell-ref">shell <span>2</span></a></li>
     
   
 
@@ -155,13 +174,13 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/linux-learning/2013/03/01/linux-system-info" title="View linux系统信息">&laquo; linux系统信息</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/linux-learning/2013/03/01/linux-tools" title="View linux常用工具列表">&laquo; linux常用工具列表</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/2013/03/01/linux-using" title="View linux命令学习(一)">linux命令学习(一) &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/linux-learning/2013/03/03/virtualbox-centos-using-log" title="View 虚拟机CentOS使用记录-安装篇">虚拟机CentOS使用记录-安装篇 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -208,7 +227,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/linux-learning/2013/03/01/linux-tools" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/03/01/linux-using" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

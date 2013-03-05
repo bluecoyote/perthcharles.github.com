@@ -8,6 +8,9 @@ http://perthcharles.github.com/index.html
 http://perthcharles.github.com/categories.html
 http://perthcharles.github.com/rss.xml
 
+http://perthcharles.github.com/2013/03/05/linux-using
+http://perthcharles.github.com/linux-learning/2013/03/03/virtualbox-centos-using-log
+http://perthcharles.github.com/2013/03/01/linux-using
 http://perthcharles.github.com/linux-learning/2013/03/01/linux-tools
 http://perthcharles.github.com/linux-learning/2013/03/01/linux-system-info
 http://perthcharles.github.com/tools/2013/02/25/First-view-of-Jekyll

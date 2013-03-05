@@ -4,13 +4,139 @@
  <title>My blog</title>
  <link href="http://perthcharles.github.com/" rel="self"/>
  <link href="http://perthcharles.github.com"/>
- <updated>2013-03-01T21:37:25+08:00</updated>
+ <updated>2013-03-05T16:01:01+08:00</updated>
  <id>http://perthcharles.github.com</id>
  <author>
    <name>Perth Charles</name>
    <email>zhongbincharles@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>linux命令学习（二）</title>
+   <link href="http://perthcharles.github.com/2013/03/05/linux-using"/>
+   <updated>2013-03-05T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/2013/03/05/linux-using</id>
+   <content type="html">&lt;h3&gt;本地帮助文件&lt;/h3&gt;
+
+&lt;p&gt;一般系统安装（yum、spt-get、手动）软件后，都会有一些帮助你使用或理解的文件，除了REAMME之外，还可以查看一个路径获得有更多信息。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cd /usr/share/doc/  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;whatis = man -f&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#whatis date  
+date (1)             - print or set the system date and time  
+#mam -f date  
+date (1)             - print or set the system date and time  
+更多请查看：  
+#man man  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;关机前检查&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#who      //查看现在都有谁在线  
+#netstat  //查看网络的联机状态  
+#ps -aux  //查看后台程序  
+#reboot   //重启电脑  
+#shutdown -h now //立即关机  
+#shutdown -r now //立即重启  
+#shutdown -h 10  //10分钟后关机  
+#poweroff           //断电关机  
+#init 0          //执行等级设置为关机  
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>虚拟机CentOS使用记录-安装篇</title>
+   <link href="http://perthcharles.github.com/linux-learning/2013/03/03/virtualbox-centos-using-log"/>
+   <updated>2013-03-03T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/linux-learning/2013/03/03/virtualbox-centos-using-log</id>
+   <content type="html">&lt;h3&gt;Install CentOS in VirtualBox&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;Centos 6.3 LiveCD  
+share dir:CentOS-Shared  
+install openssh in Centos  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Shutdown the firewall&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#service iptables status  //查看防火墙状态  
+#service iptables stop/start  //关闭或开启防火墙  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;安装并开启ssh服务&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum install openssh  
+#service sshd status  
+#service sshd start/stop  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;设置host ssh to guest失败&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;VirtualBox version:4.1.12-1  
+ubuntu(host):12.04LTS  
+CentOS(guset):6.3  
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>linux命令学习(一)</title>
+   <link href="http://perthcharles.github.com/2013/03/01/linux-using"/>
+   <updated>2013-03-01T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/2013/03/01/linux-using</id>
+   <content type="html">&lt;h2&gt;查找软件安装位置方法&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#whereis name-of-software  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;查看通过yum已安装的程序&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#rpm -qa |grep 程序名  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;du读取文件大小&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#man du  
+#du -h  //自动的用更易读的方法输出结果  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;xargs（好用）&lt;/h2&gt;
+
+&lt;p&gt;xargs能够將上一个命令的执行结果当作参数传递给下一个命令。忘记细节了，请记得：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#man xargs  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;举例：將find找到的文件，传递给du命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#find /etc -name *id.conf |xargs du -h  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;删除文件夹内全部文件&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#rm -f *  //-f意味着不一一提示是否删除  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;注&lt;/strong&gt;：当文件夹没文件过多或文件名长度过长，会导致&lt;em&gt;argument list too long&lt;/em&gt;的错误，我理解的原因就是正则式“*”展开导致命令行长度过长。这是UNIX以来就有的限制。查看限制可使用命令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#getconf ARG_MAX  //我的电脑是2097152  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除所有文件：执行ls得到文件夹所有文件的路径，xargs將ls的输出，每10个一组（以空格为分割符）作为rm -rf 的参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#ls |xargs -n 10 rm -rf  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除符合特定命名的文件,其实多少个一组是可选的:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#find -name XXX |xargs [-n 10] rm -rf  
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>linux常用工具列表</title>
@@ -129,6 +255,12 @@ tags : jekyll
 &lt;h2&gt;我的posts列表样例&lt;/h2&gt;
 
 &lt;ul class=&quot;posts&quot;&gt;
+  
+    &lt;li&gt;&lt;span&gt;05 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/05/linux-using&quot;&gt;linux命令学习（二）&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;03 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/03/virtualbox-centos-using-log&quot;&gt;虚拟机CentOS使用记录-安装篇&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/01/linux-using&quot;&gt;linux命令学习(一)&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/01/linux-tools&quot;&gt;linux常用工具列表&lt;/a&gt;&lt;/li&gt;
   
