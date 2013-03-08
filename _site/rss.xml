@@ -5,10 +5,68 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-03-05T16:01:01+08:00</lastBuildDate>
-        <pubDate>2013-03-05T16:01:01+08:00</pubDate>
+        <lastBuildDate>2013-03-08T16:17:43+08:00</lastBuildDate>
+        <pubDate>2013-03-08T16:17:43+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>test search</title>
+                <description>
+
+&lt;!--Google站内搜索开始--&gt;
+
+
+&lt;p&gt;&lt;form method=get action=&quot;http://www.google.com/search&quot; target=&quot;_blank&quot;&gt;
+&lt;input type=text name=q&gt;
+&lt;input type=submit name=btnG value=&quot;搜索&quot;&gt;
+&lt;input type=hidden name=ie value=utf-8&gt;
+&lt;input type=hidden name=oe value=utf-8&gt;
+&lt;input type=hidden name=hl value=zh-CN&gt;
+&lt;input type=hidden name=domains value=&quot;perthcharles.github.com&quot;&gt;
+&lt;input type=hidden name=sitesearch value=&quot;perthcharles.github.com&quot;&gt;
+&lt;/form&gt;&lt;/p&gt;
+
+&lt;!--Google站内搜索结束--&gt;
+
+</description>
+                <link>http://perthcharles.github.com/2013/03/08/test-search</link>
+                <guid>http://perthcharles.github.com/2013/03/08/test-search</guid>
+                <pubDate>2013-03-08T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>linux命令学习（三）</title>
+                <description>&lt;h3&gt;关于pwd&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#cd /var/mail   
+#pwd    //显示当前完整路径  
+/var/mail  
+#pwd -P //显示当前真实路径，而非使用链接的路径  
+/var/spool/mail  
+#ls -al  
+（前面略去...）/var/mail -&amp;gt; /var/spool/mail  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;注：&lt;/strong&gt;当一个文件夹是一个链接文件时，上述两个命令的执行结果会出现上例中的不同&lt;/p&gt;
+
+&lt;h3&gt;创建多层目录&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#mkdir test/test  
+mkdir: cannot create directory `test/test': No such file or directory  
+#mkdir -p test/test  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参数&lt;strong&gt;-p&lt;/strong&gt;將帮助你把不存在的上层目录建立起来&lt;br/&gt;
+mkdir还有-m参数：手动配置文件属性，而不用默认值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;关于属性：r=4,w=2,x=1,故7=4+2+1表示具有可读可写可执行的权限  
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/03/08/linux-using</link>
+                <guid>http://perthcharles.github.com/2013/03/08/linux-using</guid>
+                <pubDate>2013-03-08T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>linux命令学习（二）</title>
@@ -40,6 +98,54 @@ date (1)             - print or set the system date and time
 #shutdown -h 10  //10分钟后关机  
 #poweroff           //断电关机  
 #init 0          //执行等级设置为关机  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;linux常见目录及其含义&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#/  
+    根目录(root)  
+#/usr  
+    软件存放位置(Unix Software Resource)  
+#/etc  
+    配置文件  
+#/opt  
+    第三方软件  
+    更多的情况是会装到**/usr/local/**目录下  
+#/boot  
+    开机与内核文件  
+    主要包括：Linux内核文件以及开机菜单和开机所需配置文件等  
+    linux kernel常用的文件名为vmlinuz  
+#/boot/grub  
+    如果使用grub引导装载程序，会存在这个文件夹  
+#/var  
+    与系统运作过程有关  
+#/bin  
+    放置的是在单用户模式下**还**能够被操作的命令  
+    主要有cat chmod chown date mv mkdir cp bash等常用命令   
+#/dev  
+    任何设备与接口设备都是以文件的形式存在于这个目录之中  
+#/lib  
+    放置开机时会用到的函数库  
+    **/lib/modules**会放置内核相关的模块(驱动程序)  
+#/media  
+    放置可删除的设备  
+#/mnt  
+    如需临时挂载设备，建议挂载到这个目录下面  
+
+#/sbin(system binary)  
+    放置包括开机，修复，还原系统所需的命令。常见的有：fdisk,fsck,ifconfig,init,mkfs  
+#/usr/sbin      服务器软件程序  
+#/usr/local/sbin    自行安装的软件  
+
+#/srv(service)  
+    常见的有网络服务WWW，FTP  
+
+#/lost+found  
+    当文件系统发生错误时 ，將一些丢弃的片段放置到这个目录下  
+    目录通常会在分区的最顶层  
+#/proc  
+    其实是虚拟文件系统，放置的内容都在内存中，不占用实际的硬盘空间  
+#/sys   与**/proc**文件夹类似  
 &lt;/code&gt;&lt;/pre&gt;
 </description>
                 <link>http://perthcharles.github.com/2013/03/05/linux-using</link>
@@ -250,6 +356,10 @@ tags : jekyll
 &lt;h2&gt;我的posts列表样例&lt;/h2&gt;
 
 &lt;ul class=&quot;posts&quot;&gt;
+  
+    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/test-search&quot;&gt;test search&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/linux-using&quot;&gt;linux命令学习（三）&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;05 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/05/linux-using&quot;&gt;linux命令学习（二）&lt;/a&gt;&lt;/li&gt;
   
