@@ -1,17 +1,21 @@
 
-http://perthcharles.github.com/archive.html
+http://perthcharles.github.com/index.html
+http://perthcharles.github.com/pages.html
 http://perthcharles.github.com/sitemap.txt
+http://perthcharles.github.com/archive.html
+http://perthcharles.github.com/rss.xml
+http://perthcharles.github.com/categories.html
 http://perthcharles.github.com/atom.xml
 http://perthcharles.github.com/tags.html
-http://perthcharles.github.com/pages.html
-http://perthcharles.github.com/index.html
-http://perthcharles.github.com/categories.html
-http://perthcharles.github.com/rss.xml
 
+http://perthcharles.github.com/2013/03/23/vim-decode
+http://perthcharles.github.com/benchmarks/2013/03/23/hp-bench
+http://perthcharles.github.com/centos6.4/2013/03/18/yum-using
+http://perthcharles.github.com/2013/03/11/232-centos59-using-log
 http://perthcharles.github.com/2013/03/08/test-search
+http://perthcharles.github.com/2013/03/08/linux-using-4
 http://perthcharles.github.com/2013/03/08/linux-using
 http://perthcharles.github.com/2013/03/05/linux-using
-http://perthcharles.github.com/linux-learning/2013/03/03/virtualbox-centos-using-log
 http://perthcharles.github.com/2013/03/01/linux-using
 http://perthcharles.github.com/linux-learning/2013/03/01/linux-tools
 http://perthcharles.github.com/linux-learning/2013/03/01/linux-system-info

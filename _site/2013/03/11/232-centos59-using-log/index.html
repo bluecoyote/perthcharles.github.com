@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>linux系统信息</title>
+	<title>centos5.9使用记录</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux系统信息" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="centos5.9使用记录" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,49 +44,32 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">linux系统信息</h1>
+						<h1 class="h2 entry-title">centos5.9使用记录</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h1>系统信息相关</h1>
+					<h3>配置内网</h3>
 
-<h4>查看系统发行版本号</h4>
+<p>更改文件：/etc/sysconfig/network-scripts/ifcfg-eth0<br/>
+1,将dhcp改为static<br/>
+2,添加IPADDR，NETMASK，GATEWAY，DNS等字段</p>
 
-<pre><code>#cat /etc/issue
-#lsb_release -a
-#cat /etc/redhat-release(针对redhat,Fedora)  
-</code></pre>
+<h3>配置外网连接</h3>
 
-<h4>查看内核版本等信息</h4>
+<p>更改文件：/etc/resolv.conf,加入nameserver配置，然后重启网络服务</p>
 
-<pre><code>#uname -a //a 表示 all  
-</code></pre>
-
-<p>更多信息：<a href="http://xiaozhen1900.blog.163.com/blog/static/17417325720115713351300/">查看LINUX发行版的名称及其版本号的命令</a></p>
-
-<h4>linux下文件编码格式转换方法</h4>
-
-<p>推荐工具：enca<br/>
-安装方法ubuntu：</p>
-
-<pre><code>#sudo apt-get install enca  
-</code></pre>
-
-<p>使用方法：</p>
-
-<pre><code>#enca -L zh_CN file  //检查file的编码
-#enca -L zh_CN -x UTF-8 file //將file转换为UTF-8编码格式  
+<pre><code>#service network restart  
 </code></pre>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-03-01T00:00:00+08:00" datetime="2013-03-01T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-03-11T00:00:00+08:00" datetime="2013-03-11T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>March</abbr></span>
-							<span class="day">01</span>
+							<span class="day">11</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -97,10 +80,6 @@
 
 
   
-     
-    	<li><a href="/categories.html#linux-learning-ref">
-    		linux-learning <span>2</span>
-    	</a></li>
     
   
 
@@ -114,7 +93,9 @@
 
   
      
-    	<li><a href="/tags.html#tricks-ref">tricks <span>1</span></a></li>
+    	<li><a href="/tags.html#CentOS-5.9-ref">CentOS-5.9 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#服务器232-ref">服务器232 <span>1</span></a></li>
     
   
 
@@ -160,13 +141,13 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/tools/2013/02/25/First-view-of-Jekyll" title="View 初识Jekyll">&laquo; 初识Jekyll</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/08/test-search" title="View test search">&laquo; test search</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/linux-learning/2013/03/01/linux-tools" title="View linux常用工具列表">linux常用工具列表 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/centos6.4/2013/03/18/yum-using" title="View yum使用指南">yum使用指南 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -213,7 +194,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/linux-learning/2013/03/01/linux-system-info" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/03/11/232-centos59-using-log" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

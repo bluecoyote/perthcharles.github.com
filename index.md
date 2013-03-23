@@ -15,8 +15,10 @@ tagline: Supporting tagline
   2.算法探讨  
   3.C/C++  
   4.计算机体系结构  
-  5.操作系统细节  
-  6.记录生命
+  5.操作系统  
+  6.数据库  
+  7.记录生命
+
 
 ##Post List  
 <ul class="posts">

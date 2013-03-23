@@ -4,13 +4,230 @@
  <title>My blog</title>
  <link href="http://perthcharles.github.com/" rel="self"/>
  <link href="http://perthcharles.github.com"/>
- <updated>2013-03-08T16:17:43+08:00</updated>
+ <updated>2013-03-23T17:35:44+08:00</updated>
  <id>http://perthcharles.github.com</id>
  <author>
    <name>Perth Charles</name>
    <email>zhongbincharles@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>vim 编码相关问题</title>
+   <link href="http://perthcharles.github.com/2013/03/23/vim-decode"/>
+   <updated>2013-03-23T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/2013/03/23/vim-decode</id>
+   <content type="html">&lt;h3&gt;vim中文乱码问题--本机设置&lt;/h3&gt;
+
+&lt;p&gt;首先应该选用utf8格式的编码比较靠谱，同时为了防止乱码现象，应该保障系统设置和vim的设置相一致&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#echo $LANG //查看系统当前选用编码方式  
+#LANG=zh_CN.utf8  
+#vim /etc/vimrc  //将set fileencodings 设置如下  
+set fileencodings=utf8,gbk,big5,ucs-bom,latin1  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;其他推荐的设置&lt;/h3&gt;
+
+&lt;p&gt;中文环境GBK码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#LANG=zn_CN.gbk  
+#vim /etc/vimrc  
+set fileencodings=gbk,big5,ucs-bom,latin1  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;中文环境UTF8参照之前的本机设置&lt;br/&gt;
+英文环境就直接用就好了，所以推荐装机的时候就选择英文系统，毕竟码代码还是英文用的多点&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Bench 安装记录</title>
+   <link href="http://perthcharles.github.com/benchmarks/2013/03/23/hp-bench"/>
+   <updated>2013-03-23T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/benchmarks/2013/03/23/hp-bench</id>
+   <content type="html">&lt;h3&gt;操作系统信息&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#uname -r  
+2.6.32-220.el6.x86_64  
+#cat /etc/issue  
+CentOS release 6.2 (Final)  
+#gcc -v  
+Using built-in specs.  
+Target: x86_64-redhat-linux  
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-languages=c,c++,objc,obj-c++,java,fortran,ada --enable-java-awt=gtk --disable-dssi --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-1.5.0.0/jre --enable-libgcj-multifile --enable-java-maintainer-mode --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --disable-libjava-multilib --with-ppl --with-cloog --with-tune=generic --with-arch_32=i686 --build=x86_64-redhat-linux  
+Thread model: posix  
+gcc version 4.4.6 20110731 (Red Hat 4.4.6-3) (GCC)  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;MonetDB+tpc-h&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#tar -xjvf MonetDB-11.5.9.tar.bz2  
+#`pwd`/configure --enable-monetdb5 --enable-sql --enable-optimize --with-java=/usr/lib/jvm/java-1.6.0  
+//configure: error: OpenSSL library not found but required for MonetDB5  
+#yum install openssl-devel  
+//configure: error: PCRE library not found but required for MonetDB5  
+#yum install pcre-devel pcre  
+//configure: error: libxml2 library not found but required for MonetDB5  
+#yum install libxml2-devel  
+#make &amp;amp;&amp;amp; make install  
+
+#monetdbd create MonetDB-data  
+#monetdbd start MonetDB-data  
+#monetdb create SF4  
+#monetdb start SF4  
+#monetdb release SF4  
+
+#cd ./sql/benchmarks/tpch/dbgen  
+#cp makefile.suite makefile  
+#make  
+#./dbgen -s 4 //produce 4G data for test  
+#cd ..  
+#vim load.sh  //change the following stuff  
+SQL='mclient -l sql -d SF4'  
+SF='dbgen'  
+#vim run.all  //change the following stuff  
+SQL=&quot;mclient -l sql -d SF4&quot;  
+#vim .monetdb //add the defult user and password  
+user=monetdb  
+password=monetdb  
+#cp -r dbgen DBGEN  //rename the folder for load.sh  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;voltdb+tpc-c&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#unzip voltdb-master.zip //get this file from github  
+//add the EPEL yum source  
+//and make sure the ant's version is 1.7 or later  
+#ant dist  
+#cd tests/test_apps/tpcc  
+#./run.sh  //run the server  
+#./run.sh client //run the client  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;memcached+britus&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;//install libevent，download the file then  
+#./configure --prefix=/usr &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  
+//install php and extensions  
+#yum install php php-pecl-memcached php-pear-noarch  
+//install memcached  
+#./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  
+//start the memcached  
+#/usr/local/bin/memcached -d -m 1024 -u root -l [your ip address] -p 12000 -c 1024 -P memcached.pid  
+//if you want to stop memcached  
+#kill `cat /home/zhongbin/HP-Bench/log/log-memcached.pid`  
+//restart the apache  
+#service httpd restart  
+#./brutis -t tests/append.xml -x [your ip address]:12000 -o append -v  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;more tips&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//solution for PHP Fatal error: Call to undefined function posix_getppid()  
+#install php-process  
+//solution for function XXX is deprecated,in php  
+#add a '@' before the deprecated function  
+//solution for XML. Class DOMDocument missing  
+#yum install php-xml.x86_64  
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>yum使用指南</title>
+   <link href="http://perthcharles.github.com/centos6.4/2013/03/18/yum-using"/>
+   <updated>2013-03-18T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/centos6.4/2013/03/18/yum-using</id>
+   <content type="html">&lt;h3&gt;yum安装软件&lt;/h3&gt;
+
+&lt;p&gt;当你想安装软件的时候，可能你只知道一个大概的名字或者你想确认你系统的yum源中是否存在该软件包，那么你就可以用下面的命令来查找确认&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    #yum list |grep softname  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果想知道你现在已经安装来哪些包，可以使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#rpm -qa | grep softname  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;得到软件对应的正确软件包名称之后，就可以使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum install softname  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;来正确安装你需要的软件了&lt;/p&gt;
+
+&lt;h4&gt;如果提示有依赖文件没找到（通常是库文件）,那么可以尝试使用&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum provides */miss-file-name*  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;来看看哪些安装程序可能提供这样的库文件&lt;/p&gt;
+
+&lt;h3&gt;添加源&lt;/h3&gt;
+
+&lt;p&gt;如果你需要安装的软件在现有的源里没有，你就可以尝试添加一个新的源到你的系统里面。当然，你必须保证添加的源跟你的系统是一致的（比如都是64位，对应centos-6）&lt;br/&gt;
+//更改系统yum源配置,以添加google源为例&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#vim /etc/yum.repos.d/google.repo  
+[google]  
+name=Google - i386  
+baseurl=https://dl.google.com/linux/rpm/stable/i386  
+enabled=1  
+gpgchech=1  
+pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub  
+//之后你就可以在源里面找到之前你可能找不到的安装包，比如chrome  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要说明的是，上面google的源是对应32位系统的，如果你是64位系统你需要将stable后面改为x86_64.并且上面google的链接直接用浏览器应该是打不开的，也就是说你没法从浏览器里面看到这个源里面都有哪些安装包&lt;/p&gt;
+
+&lt;p&gt;如果碰到提示需要GPG-KEY的时候，可以先上网找到对应的KEY的链接，然后输入：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#rpm --import url-to-the-key-you-needed  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在添加完多个源后，可以再装一个yum的插件让它自动选择最开的源进行下载安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum install yum-fastestmirror -y //-y 表示需要你确认的时候，默认选择yes 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;对于国内的用户来说，&lt;a href=&quot;http://mirrors.ustc.edu.cn&quot;&gt;中科大的源&lt;/a&gt;是不错的选择,&lt;a href=&quot;lug.ustc.edu.cn/wiki/mirrors/help/debian&quot;&gt;这里&lt;/a&gt;是相关的使用帮助。&lt;/p&gt;
+
+&lt;h3&gt;安装单独的软件包&lt;/h3&gt;
+
+&lt;p&gt;如果你不能按照安装chrome那样直接找到正确的源的话，可以尝试到提供rpm包索引的网站去查找相应的软件&lt;br/&gt;
+推荐使用：&lt;a href=&quot;rpm.pbone.net&quot;&gt;pbone.net网站&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;常用第三方yum源&lt;/h3&gt;
+
+&lt;p&gt;推荐三个常用的yum源:&lt;br/&gt;
+&lt;a href=&quot;http://mirrors.fedoraproject.org/publiclist/EPEL/&quot;&gt;EPEL&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://pkgs.repoforge.org/rpmforge-release/&quot;&gt;rpmforge&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://download1.rpmfusion.org/&quot;&gt;rpmfusion&lt;/a&gt;&lt;br/&gt;
+在系统安装完多个源之后，最好再安装一个小工具:&lt;a href=&quot;http://mirrors.ustc.edu.cn/centos/6.4/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-14.el6.noarch.rpm&quot;&gt;fastestmirror&lt;/a&gt;帮助你自动找到下载最快的源&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>centos5.9使用记录</title>
+   <link href="http://perthcharles.github.com/2013/03/11/232-centos59-using-log"/>
+   <updated>2013-03-11T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/2013/03/11/232-centos59-using-log</id>
+   <content type="html">&lt;h3&gt;配置内网&lt;/h3&gt;
+
+&lt;p&gt;更改文件：/etc/sysconfig/network-scripts/ifcfg-eth0&lt;br/&gt;
+1,将dhcp改为static&lt;br/&gt;
+2,添加IPADDR，NETMASK，GATEWAY，DNS等字段&lt;/p&gt;
+
+&lt;h3&gt;配置外网连接&lt;/h3&gt;
+
+&lt;p&gt;更改文件：/etc/resolv.conf,加入nameserver配置，然后重启网络服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#service network restart  
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>test search</title>
@@ -34,6 +251,68 @@
 
 &lt;!--Google站内搜索结束--&gt;
 
+</content>
+ </entry>
+ 
+ <entry>
+   <title>linux命令学习（四）</title>
+   <link href="http://perthcharles.github.com/2013/03/08/linux-using-4"/>
+   <updated>2013-03-08T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/2013/03/08/linux-using-4</id>
+   <content type="html">&lt;h3&gt;常用命令简介&lt;/h3&gt;
+
+&lt;p&gt;cat:从第一行开始显示文件&lt;br/&gt;
+tac:从最后一行开始显示文件&lt;br/&gt;
+nl:显示的时候顺便显示行数&lt;br/&gt;
+more:一页一页地显示文件内容&lt;br/&gt;
+less：与more类似，但是支持向上翻页&lt;br/&gt;
+head:只看头几行&lt;br/&gt;
+tail:只看结尾几行&lt;br/&gt;
+od:以二进制的方式读取文件内容（效果不太好，希望以后找到合适的工具）&lt;/p&gt;
+
+&lt;h3&gt;一些更细节的解释&lt;/h3&gt;
+
+&lt;p&gt;cat:是concatenate(连续)的简写&lt;br/&gt;
+tail:如果想检测一个持续被写入的文件，可以输入下面的命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat -f filename  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;-f&lt;/strong&gt;的含义是follow，是指將新增加(append)到文件的内容打印出来&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3&gt;用户能进入某个目录&lt;/h3&gt;
+
+&lt;p&gt;让用户能够进入某个目录成为“可工作目录”的基本权限需求：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;可使用的命令：例如cd等切换工作目录的命令  
+目录所需权限：用户对这个目录至少需要有x权限  
+额外需求：如果用户想要在这个目录内利用ls查阅文件名，则用户对此目录还要有r的权限  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;用户在某目录下读文件&lt;/h3&gt;
+
+&lt;p&gt;用户在某个目录内读取一个文件的基本权限需求：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;可使用的命令：例如cat,more,less等  
+目录所需权限：用户对这个目录至少需要有x权限  
+文件所选权限：用户对文件至少需要具有r的权限才行  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;用户修改文件&lt;/h3&gt;
+
+&lt;p&gt;用户修改一个文件的基本权限需求：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;可使用的命令：vim等  
+目录所需权限：用户在该文件所在的目录至少需要x权限  
+文件所需权限：用户对该文件至少要有r,w权限  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;其他注意&lt;/h4&gt;
+
+&lt;p&gt;让一个用户可以创建一个文件的基本权限要求是用户在该目录要有w,x的权限&lt;br/&gt;
+让用户进入某目录并执行该目录下的某个命令的基本权限要求是用户对目录和对应文件都至少要有x的权限&lt;/p&gt;
 </content>
  </entry>
  
@@ -151,40 +430,6 @@ date (1)             - print or set the system date and time
 #/proc  
     其实是虚拟文件系统，放置的内容都在内存中，不占用实际的硬盘空间  
 #/sys   与**/proc**文件夹类似  
-&lt;/code&gt;&lt;/pre&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>虚拟机CentOS使用记录-安装篇</title>
-   <link href="http://perthcharles.github.com/linux-learning/2013/03/03/virtualbox-centos-using-log"/>
-   <updated>2013-03-03T00:00:00+08:00</updated>
-   <id>http://perthcharles.github.com/linux-learning/2013/03/03/virtualbox-centos-using-log</id>
-   <content type="html">&lt;h3&gt;Install CentOS in VirtualBox&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;Centos 6.3 LiveCD  
-share dir:CentOS-Shared  
-install openssh in Centos  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;Shutdown the firewall&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;#service iptables status  //查看防火墙状态  
-#service iptables stop/start  //关闭或开启防火墙  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;安装并开启ssh服务&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;#yum install openssh  
-#service sshd status  
-#service sshd start/stop  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;设置host ssh to guest失败&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;VirtualBox version:4.1.12-1  
-ubuntu(host):12.04LTS  
-CentOS(guset):6.3  
 &lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
@@ -362,13 +607,21 @@ tags : jekyll
 
 &lt;ul class=&quot;posts&quot;&gt;
   
+    &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/23/vim-decode&quot;&gt;vim 编码相关问题&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/benchmarks/2013/03/23/hp-bench&quot;&gt;Bench 安装记录&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;18 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/centos6.4/2013/03/18/yum-using&quot;&gt;yum使用指南&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;11 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/11/232-centos59-using-log&quot;&gt;centos5.9使用记录&lt;/a&gt;&lt;/li&gt;
+  
     &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/test-search&quot;&gt;test search&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/linux-using-4&quot;&gt;linux命令学习（四）&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/linux-using&quot;&gt;linux命令学习（三）&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;05 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/05/linux-using&quot;&gt;linux命令学习（二）&lt;/a&gt;&lt;/li&gt;
-  
-    &lt;li&gt;&lt;span&gt;03 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/03/virtualbox-centos-using-log&quot;&gt;虚拟机CentOS使用记录-安装篇&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/01/linux-using&quot;&gt;linux命令学习(一)&lt;/a&gt;&lt;/li&gt;
   

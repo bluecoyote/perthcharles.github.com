@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>linux系统信息</title>
+	<title>linux命令学习（四）</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux系统信息" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux命令学习（四）" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,49 +44,74 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">linux系统信息</h1>
+						<h1 class="h2 entry-title">linux命令学习（四）</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h1>系统信息相关</h1>
+					<h3>常用命令简介</h3>
 
-<h4>查看系统发行版本号</h4>
+<p>cat:从第一行开始显示文件<br/>
+tac:从最后一行开始显示文件<br/>
+nl:显示的时候顺便显示行数<br/>
+more:一页一页地显示文件内容<br/>
+less：与more类似，但是支持向上翻页<br/>
+head:只看头几行<br/>
+tail:只看结尾几行<br/>
+od:以二进制的方式读取文件内容（效果不太好，希望以后找到合适的工具）</p>
 
-<pre><code>#cat /etc/issue
-#lsb_release -a
-#cat /etc/redhat-release(针对redhat,Fedora)  
+<h3>一些更细节的解释</h3>
+
+<p>cat:是concatenate(连续)的简写<br/>
+tail:如果想检测一个持续被写入的文件，可以输入下面的命令</p>
+
+<pre><code>#cat -f filename  
 </code></pre>
 
-<h4>查看内核版本等信息</h4>
+<p><strong>-f</strong>的含义是follow，是指將新增加(append)到文件的内容打印出来</p>
 
-<pre><code>#uname -a //a 表示 all  
+<hr />
+
+<h3>用户能进入某个目录</h3>
+
+<p>让用户能够进入某个目录成为“可工作目录”的基本权限需求：</p>
+
+<pre><code>可使用的命令：例如cd等切换工作目录的命令  
+目录所需权限：用户对这个目录至少需要有x权限  
+额外需求：如果用户想要在这个目录内利用ls查阅文件名，则用户对此目录还要有r的权限  
 </code></pre>
 
-<p>更多信息：<a href="http://xiaozhen1900.blog.163.com/blog/static/17417325720115713351300/">查看LINUX发行版的名称及其版本号的命令</a></p>
+<h3>用户在某目录下读文件</h3>
 
-<h4>linux下文件编码格式转换方法</h4>
+<p>用户在某个目录内读取一个文件的基本权限需求：</p>
 
-<p>推荐工具：enca<br/>
-安装方法ubuntu：</p>
-
-<pre><code>#sudo apt-get install enca  
+<pre><code>可使用的命令：例如cat,more,less等  
+目录所需权限：用户对这个目录至少需要有x权限  
+文件所选权限：用户对文件至少需要具有r的权限才行  
 </code></pre>
 
-<p>使用方法：</p>
+<h3>用户修改文件</h3>
 
-<pre><code>#enca -L zh_CN file  //检查file的编码
-#enca -L zh_CN -x UTF-8 file //將file转换为UTF-8编码格式  
+<p>用户修改一个文件的基本权限需求：</p>
+
+<pre><code>可使用的命令：vim等  
+目录所需权限：用户在该文件所在的目录至少需要x权限  
+文件所需权限：用户对该文件至少要有r,w权限  
 </code></pre>
+
+<h4>其他注意</h4>
+
+<p>让一个用户可以创建一个文件的基本权限要求是用户在该目录要有w,x的权限<br/>
+让用户进入某目录并执行该目录下的某个命令的基本权限要求是用户对目录和对应文件都至少要有x的权限</p>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-03-01T00:00:00+08:00" datetime="2013-03-01T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-03-08T00:00:00+08:00" datetime="2013-03-08T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>March</abbr></span>
-							<span class="day">01</span>
+							<span class="day">08</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -97,10 +122,6 @@
 
 
   
-     
-    	<li><a href="/categories.html#linux-learning-ref">
-    		linux-learning <span>2</span>
-    	</a></li>
     
   
 
@@ -114,7 +135,7 @@
 
   
      
-    	<li><a href="/tags.html#tricks-ref">tricks <span>1</span></a></li>
+    	<li><a href="/tags.html#shell-ref">shell <span>4</span></a></li>
     
   
 
@@ -160,13 +181,13 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/tools/2013/02/25/First-view-of-Jekyll" title="View 初识Jekyll">&laquo; 初识Jekyll</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/08/linux-using" title="View linux命令学习（三）">&laquo; linux命令学习（三）</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/linux-learning/2013/03/01/linux-tools" title="View linux常用工具列表">linux常用工具列表 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/2013/03/08/test-search" title="View test search">test search &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -213,7 +234,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/linux-learning/2013/03/01/linux-system-info" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/03/08/linux-using-4" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

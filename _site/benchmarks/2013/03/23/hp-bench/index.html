@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>linux系统信息</title>
+	<title>Bench 安装记录</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux系统信息" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="Bench 安装记录" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,49 +44,105 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">linux系统信息</h1>
+						<h1 class="h2 entry-title">Bench 安装记录</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h1>系统信息相关</h1>
+					<h3>操作系统信息</h3>
 
-<h4>查看系统发行版本号</h4>
-
-<pre><code>#cat /etc/issue
-#lsb_release -a
-#cat /etc/redhat-release(针对redhat,Fedora)  
+<pre><code>#uname -r  
+2.6.32-220.el6.x86_64  
+#cat /etc/issue  
+CentOS release 6.2 (Final)  
+#gcc -v  
+Using built-in specs.  
+Target: x86_64-redhat-linux  
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-languages=c,c++,objc,obj-c++,java,fortran,ada --enable-java-awt=gtk --disable-dssi --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-1.5.0.0/jre --enable-libgcj-multifile --enable-java-maintainer-mode --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --disable-libjava-multilib --with-ppl --with-cloog --with-tune=generic --with-arch_32=i686 --build=x86_64-redhat-linux  
+Thread model: posix  
+gcc version 4.4.6 20110731 (Red Hat 4.4.6-3) (GCC)  
 </code></pre>
 
-<h4>查看内核版本等信息</h4>
+<h3>MonetDB+tpc-h</h3>
 
-<pre><code>#uname -a //a 表示 all  
+<pre><code>#tar -xjvf MonetDB-11.5.9.tar.bz2  
+#`pwd`/configure --enable-monetdb5 --enable-sql --enable-optimize --with-java=/usr/lib/jvm/java-1.6.0  
+//configure: error: OpenSSL library not found but required for MonetDB5  
+#yum install openssl-devel  
+//configure: error: PCRE library not found but required for MonetDB5  
+#yum install pcre-devel pcre  
+//configure: error: libxml2 library not found but required for MonetDB5  
+#yum install libxml2-devel  
+#make &amp;&amp; make install  
+
+#monetdbd create MonetDB-data  
+#monetdbd start MonetDB-data  
+#monetdb create SF4  
+#monetdb start SF4  
+#monetdb release SF4  
+
+#cd ./sql/benchmarks/tpch/dbgen  
+#cp makefile.suite makefile  
+#make  
+#./dbgen -s 4 //produce 4G data for test  
+#cd ..  
+#vim load.sh  //change the following stuff  
+SQL='mclient -l sql -d SF4'  
+SF='dbgen'  
+#vim run.all  //change the following stuff  
+SQL="mclient -l sql -d SF4"  
+#vim .monetdb //add the defult user and password  
+user=monetdb  
+password=monetdb  
+#cp -r dbgen DBGEN  //rename the folder for load.sh  
 </code></pre>
 
-<p>更多信息：<a href="http://xiaozhen1900.blog.163.com/blog/static/17417325720115713351300/">查看LINUX发行版的名称及其版本号的命令</a></p>
+<h3>voltdb+tpc-c</h3>
 
-<h4>linux下文件编码格式转换方法</h4>
-
-<p>推荐工具：enca<br/>
-安装方法ubuntu：</p>
-
-<pre><code>#sudo apt-get install enca  
+<pre><code>#unzip voltdb-master.zip //get this file from github  
+//add the EPEL yum source  
+//and make sure the ant's version is 1.7 or later  
+#ant dist  
+#cd tests/test_apps/tpcc  
+#./run.sh  //run the server  
+#./run.sh client //run the client  
 </code></pre>
 
-<p>使用方法：</p>
+<h3>memcached+britus</h3>
 
-<pre><code>#enca -L zh_CN file  //检查file的编码
-#enca -L zh_CN -x UTF-8 file //將file转换为UTF-8编码格式  
+<pre><code>//install libevent，download the file then  
+#./configure --prefix=/usr &amp;&amp; make &amp;&amp; make install  
+//install php and extensions  
+#yum install php php-pecl-memcached php-pear-noarch  
+//install memcached  
+#./configure &amp;&amp; make &amp;&amp; make install  
+//start the memcached  
+#/usr/local/bin/memcached -d -m 1024 -u root -l [your ip address] -p 12000 -c 1024 -P memcached.pid  
+//if you want to stop memcached  
+#kill `cat /home/zhongbin/HP-Bench/log/log-memcached.pid`  
+//restart the apache  
+#service httpd restart  
+#./brutis -t tests/append.xml -x [your ip address]:12000 -o append -v  
+</code></pre>
+
+<p>more tips</p>
+
+<pre><code>//solution for PHP Fatal error: Call to undefined function posix_getppid()  
+#install php-process  
+//solution for function XXX is deprecated,in php  
+#add a '@' before the deprecated function  
+//solution for XML. Class DOMDocument missing  
+#yum install php-xml.x86_64  
 </code></pre>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-03-01T00:00:00+08:00" datetime="2013-03-01T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-03-23T00:00:00+08:00" datetime="2013-03-23T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>March</abbr></span>
-							<span class="day">01</span>
+							<span class="day">23</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -98,8 +154,8 @@
 
   
      
-    	<li><a href="/categories.html#linux-learning-ref">
-    		linux-learning <span>2</span>
+    	<li><a href="/categories.html#benchmarks-ref">
+    		benchmarks <span>1</span>
     	</a></li>
     
   
@@ -114,7 +170,11 @@
 
   
      
-    	<li><a href="/tags.html#tricks-ref">tricks <span>1</span></a></li>
+    	<li><a href="/tags.html#tpc-h-ref">tpc-h <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#tpc-c-ref">tpc-c <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#memcached+brutis-ref">memcached+brutis <span>1</span></a></li>
     
   
 
@@ -160,13 +220,13 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/tools/2013/02/25/First-view-of-Jekyll" title="View 初识Jekyll">&laquo; 初识Jekyll</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/centos6.4/2013/03/18/yum-using" title="View yum使用指南">&laquo; yum使用指南</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/linux-learning/2013/03/01/linux-tools" title="View linux常用工具列表">linux常用工具列表 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/2013/03/23/vim-decode" title="View vim 编码相关问题">vim 编码相关问题 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -213,7 +273,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/linux-learning/2013/03/01/linux-system-info" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/benchmarks/2013/03/23/hp-bench" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>
