@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>yum使用指南</title>
+	<title>在centos系统下，挂在ntfs格式的磁盘分区</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="yum使用指南" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="在centos系统下，挂在ntfs格式的磁盘分区" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,87 +44,51 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">yum使用指南</h1>
+						<h1 class="h2 entry-title">在centos系统下，挂在ntfs格式的磁盘分区</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h3>yum安装软件</h3>
+					<h3>前提介绍</h3>
 
-<p>当你想安装软件的时候，可能你只知道一个大概的名字或者你想确认你系统的yum源中是否存在该软件包，那么你就可以用下面的命令来查找确认</p>
+<p>在我在WIN7系统下硬盘安装好双系统后，有不少时候需要访问一些WIN7系统下的文件，如果反复的重启电脑的话那就太烦人了。而Centos又不能直接挂载ntfs格式的磁盘分区，网上搜来一圈找到一个可行的方法</p>
 
-<pre><code>    #yum list |grep softname  
+<h3>需要的软件</h3>
+
+<p><em>fuse</em></p>
+
+<pre><code>#rpm -qa |grep fuse //查看系统是否已经安装软件  
+#yum list |grep fuse  
+#yum install fuse  
 </code></pre>
 
-<p>如果想知道你现在已经安装来哪些包，可以使用</p>
+<p>如果你的源里面没有这个软件，那就去添加更好的源吧，不会添加源的可以参照我另一片博客：<a href="http://perthcharles.github.com/centos6.4/2013/03/18/yum-using">yum使用指南</a></p>
 
-<pre><code>#rpm -qa | grep softname  
+<p><em>ntfs-3g</em><br/>
+这个软件我选择的从源码安装，当然你也可以选择从yum源安装<br/>
+<a href="http://www.tuxera.com/community/ntfs-3g-download/">ntfs-3g下载地址:www.tuxera.com/community/ntfs-3g-download/</a></p>
+
+<pre><code>#./configure &amp;&amp; make &amp;&amp; make install  
 </code></pre>
 
-<p>得到软件对应的正确软件包名称之后，就可以使用</p>
+<h3>挂在分区</h3>
 
-<pre><code>#yum install softname  
+<p>在安装好上面这两个软件后，应该就可以挂在ntfs磁盘分区了</p>
+
+<pre><code>#fdisk -l //查看硬盘所有分区  
+#mount -t ntfs-3g /dev/xxx /mnt/xxx  
 </code></pre>
 
-<p>来正确安装你需要的软件了</p>
-
-<h4>如果提示有依赖文件没找到（通常是库文件）,那么可以尝试使用</h4>
-
-<pre><code>#yum provides */miss-file-name*  
-</code></pre>
-
-<p>来看看哪些安装程序可能提供这样的库文件</p>
-
-<h3>添加源</h3>
-
-<p>如果你需要安装的软件在现有的源里没有，你就可以尝试添加一个新的源到你的系统里面。当然，你必须保证添加的源跟你的系统是一致的（比如都是64位，对应centos-6）<br/>
-//更改系统yum源配置,以添加google源为例</p>
-
-<pre><code>#vim /etc/yum.repos.d/google.repo  
-[google]  
-name=Google - i386  
-baseurl=https://dl.google.com/linux/rpm/stable/i386  
-enabled=1  
-gpgchech=1  
-pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub  
-//之后你就可以在源里面找到之前你可能找不到的安装包，比如chrome  
-</code></pre>
-
-<p>需要说明的是，上面google的源是对应32位系统的，如果你是64位系统你需要将stable后面改为x86_64.并且上面google的链接直接用浏览器应该是打不开的，也就是说你没法从浏览器里面看到这个源里面都有哪些安装包</p>
-
-<p>如果碰到提示需要GPG-KEY的时候，可以先上网找到对应的KEY的链接，然后输入：</p>
-
-<pre><code>#rpm --import url-to-the-key-you-needed  
-</code></pre>
-
-<p>在添加完多个源后，可以再装一个yum的插件让它自动选择最开的源进行下载安装</p>
-
-<pre><code>#yum install yum-fastestmirror -y //-y 表示需要你确认的时候，默认选择yes 
-</code></pre>
-
-<p>对于国内的用户来说，<a href="http://mirrors.ustc.edu.cn">中科大的源</a>是不错的选择,<a href="lug.ustc.edu.cn/wiki/mirrors/help/debian">这里</a>是相关的使用帮助。</p>
-
-<h3>安装单独的软件包</h3>
-
-<p>如果你不能按照安装chrome那样直接找到正确的源的话，可以尝试到提供rpm包索引的网站去查找相应的软件<br/>
-推荐使用：<a href="rpm.pbone.net">pbone.net网站</a></p>
-
-<h3>常用第三方yum源</h3>
-
-<p>推荐三个常用的yum源:<br/>
-<a href="http://mirrors.fedoraproject.org/publiclist/EPEL/">EPEL</a><br/>
-<a href="http://pkgs.repoforge.org/rpmforge-release/">rpmforge</a><br/>
-<a href="http://download1.rpmfusion.org/">rpmfusion</a><br/>
-在系统安装完多个源之后，最好再安装一个小工具:<a href="http://mirrors.ustc.edu.cn/centos/6.4/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-14.el6.noarch.rpm">fastestmirror</a>帮助你自动找到下载最快的源</p>
+<p>如果想开机就挂在上的话，我的方法是修改/etc/profile，再最后加上上面的mount命令</p>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-03-18T00:00:00+08:00" datetime="2013-03-18T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-03-24T00:00:00+08:00" datetime="2013-03-24T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>March</abbr></span>
-							<span class="day">18</span>
+							<span class="day">24</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -152,9 +116,9 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 
   
      
-    	<li><a href="/tags.html#yum-ref">yum <span>1</span></a></li>
-     
     	<li><a href="/tags.html#centos-ref">centos <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#mount-ref">mount <span>1</span></a></li>
     
   
 
@@ -200,13 +164,13 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/11/232-centos59-using-log" title="View centos5.9使用记录">&laquo; centos5.9使用记录</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/23/vim-decode" title="View vim 编码相关问题">&laquo; vim 编码相关问题</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/benchmarks/2013/03/23/hp-bench" title="View Bench 安装记录">Bench 安装记录 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/2013/03/24/install-linux-from-disk" title="View 硬盘安装linux">硬盘安装linux &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -253,7 +217,7 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/centos6.4/2013/03/18/yum-using" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/centos6.4/2013/03/24/centos-mount-ntfs" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

@@ -1,4 +1,5 @@
 
+http://perthcharles.github.com/todo.html
 http://perthcharles.github.com/index.html
 http://perthcharles.github.com/pages.html
 http://perthcharles.github.com/sitemap.txt
@@ -8,7 +9,12 @@ http://perthcharles.github.com/categories.html
 http://perthcharles.github.com/atom.xml
 http://perthcharles.github.com/tags.html
 
+http://perthcharles.github.com/2013/03/24/ssh-free-pwd
+http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c
+http://perthcharles.github.com/2013/03/24/install-linux-from-disk
+http://perthcharles.github.com/centos6.4/2013/03/24/centos-mount-ntfs
 http://perthcharles.github.com/2013/03/23/vim-decode
+http://perthcharles.github.com/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer
 http://perthcharles.github.com/benchmarks/2013/03/23/hp-bench
 http://perthcharles.github.com/centos6.4/2013/03/18/yum-using
 http://perthcharles.github.com/2013/03/11/232-centos59-using-log

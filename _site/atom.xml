@@ -4,13 +4,224 @@
  <title>My blog</title>
  <link href="http://perthcharles.github.com/" rel="self"/>
  <link href="http://perthcharles.github.com"/>
- <updated>2013-03-23T17:35:44+08:00</updated>
+ <updated>2013-03-24T16:17:29+08:00</updated>
  <id>http://perthcharles.github.com</id>
  <author>
    <name>Perth Charles</name>
    <email>zhongbincharles@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>ssh免密码登录</title>
+   <link href="http://perthcharles.github.com/2013/03/24/ssh-free-pwd"/>
+   <updated>2013-03-24T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/2013/03/24/ssh-free-pwd</id>
+   <content type="html">&lt;h3&gt;博客背景&lt;/h3&gt;
+
+&lt;p&gt;有时候在两台服务器上面工作，需要同时操作它们，如果在两个窗口里面反复切换就显得很麻烦。所以先配置ssh免密码登录，然后用其他工具&lt;/p&gt;
+
+&lt;p&gt;假设A是本地主机，B是远程主机。想要从A远程访问B的时候免密码登录&lt;br/&gt;
+首先在A上生成公钥和私钥，然后在B机器上记录在公钥&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#(A)ssh-keygen -t rsa //连续三次回车，这里选择不设置密码  
+#(A)ssh root@ip-of-B  //这次还需要密码  
+#(B)ls -a  //查看是否存在.ssh文件夹  
+#(B)mkdir .ssh &amp;amp;&amp;amp; chmod 0700.ssh &amp;amp;&amp;amp; exit   
+#(A)scp ~/.ssh/id_rsa.pub root@ip-of-B:.ssh/id_rsa.pub //还需要输入密码  
+#(B)touch /root/.ssh/authorized_keys  //生成一个空文件，如果文件已经存在，则跳过这条命令  
+#chmod 600 ~/.ssh/authorized_keys  //设置该文件只有root能查看，因为这个文件是用于保存ssh客户端生成的公钥的，该文件是在ssh服务端配置文件/etc/sshd_config中指定的  
+#cat /root/.ssh/id_rsa.pub &amp;gt;&amp;gt; /root/.ssh/authorized_keys  //将A传过来的公钥写入authorized_keys文件，注意这里必须使用 &quot;&amp;gt;&amp;gt;&quot;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;至此配置完成了，现在在A上面使用ssh登录B应该就不用输入密码了。&lt;/p&gt;
+
+&lt;h3&gt;其他说明&lt;/h3&gt;
+
+&lt;p&gt;如果在A上面需要在脚本里面执行B机器上面的命令，除来使用实验室提供的工具外，可以简单的使用下面的方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#ssh root@ip-of-B:/pwd &quot;command1;command list&quot;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然这里只是一个简单的例子，所以生成的密钥没有设置密码。如果是短期使用可以先这样配置使用，然后再将密码从B机器上面的authorized_keys里面删除，下次你再需要用的时候再将其加进去。这样安全性要好些，如果长期使用还是建议不要使用没有密码的密钥，特别是共用服务器。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>一道C语言二进制反码题</title>
+   <link href="http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c"/>
+   <updated>2013-03-24T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c</id>
+   <content type="html">&lt;h3&gt;题目&lt;/h3&gt;
+
+&lt;p&gt;请写出下面程序在32/64位机器上的输出结果&lt;br/&gt;
+编译器：GCC&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include&amp;lt;sdtio.h&amp;gt;  
+
+int main(void)
+{
+    unsigned char a = 0xa5;
+    printf(&quot;%d\n&quot;,~a);
+    char b = ~a;
+    printf(&quot;%d\n&quot;,b);
+    unsigned char c = ~a;
+    printf(&quot;%d\n&quot;,c);
+
+    return 0;
+}  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;解答:&lt;/h3&gt;
+
+&lt;p&gt;char型数据占一个字节，故&lt;br/&gt;
+(a)0xa5 = 1010 0101 = 165&lt;br/&gt;
+但是~a并不是a直观的取反，在32位或int长度为4的64位系统中，char和unsigned char 都是按照32位（4字节）取反的，所以这样一来&lt;br/&gt;
+(~a) = ~(0x000000a5) = 0xffffff5a//这点可以按照%x格式打印~a验证&lt;br/&gt;
+按照%d输出的话，最高位会当成符号位&lt;br/&gt;
+所以0xffffff5a先取反得到(符号位除外)&lt;br/&gt;
+0x000000a5,然后+1得到//补码与原码的相互转化规则：除符号位外取反再+1&lt;br/&gt;
+0x000000a6 = 166&lt;br/&gt;
+符号为负，所以第一条打印信息为-166&lt;/p&gt;
+
+&lt;p&gt;解释完第一条打印信息，后两个就好解释了，因为先将~a存入到了char或unsigned char型中，~a取反后的高位被抛弃，所以直接得到0x5a，即90&lt;/p&gt;
+
+&lt;h3&gt;更进一步  todo&lt;/h3&gt;
+
+&lt;p&gt;将下面代码反汇编，查看取反操作是否是上面的说法：按照32位取反&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include&amp;lt;stdio.h&amp;gt;
+int main(void)
+{
+    unsigned char a = 0xa5;
+    printf(&quot;%d\n&quot;,~a);
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;我本子相关信息&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#uname -r
+2.6.32-358.el6.x86_64
+#gcc -v
+gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#gcc test.c -o test
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>硬盘安装linux</title>
+   <link href="http://perthcharles.github.com/2013/03/24/install-linux-from-disk"/>
+   <updated>2013-03-24T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/2013/03/24/install-linux-from-disk</id>
+   <content type="html">&lt;h3&gt;介绍&lt;/h3&gt;
+
+&lt;p&gt;目前正在用的系统是WIN7系统，由于现在系统性能表现越来越差，而自己又不想重新安装这个系统，所以就选择在电脑上面安装双系统。&lt;br/&gt;
+再者最近在学习linux，所以就干脆选择安一个linux来玩玩，目前选择的是CentOS6.4。至于为什么选择这个版本，大家都知道的：稳定！当然这样一来桌面软件支持就略显不足，不过暂时够用就好。&lt;/p&gt;
+
+&lt;h3&gt;用到的软件&lt;/h3&gt;
+
+&lt;p&gt;EasyBCD:这款软件用来帮助你在WIN7系统下面制作启动项。这里只简单说明我用的步骤，更具体的使用方法请&lt;a href=&quot;www.google.com&quot;&gt;google之&lt;/a&gt;&lt;br/&gt;
+wingrub:利用这个软件，可以帮助你在制作EasyBCD启动项的时候确定你需要选用的分区号。&lt;br/&gt;
+Acronis Disk Director Suite:帮助你在WIN7下无损分区，目前用户体验良好。不过保险起见，最好还是先备份重要文件啦。&lt;/p&gt;
+
+&lt;h3&gt;安装步骤&lt;/h3&gt;
+
+&lt;p&gt;话不多说，这就开工&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;打开EasyBCD-&amp;gt;  
+Add New Entry-&amp;gt;  //这一步就是给你liunx镜像文件制作启动项，或许在linux下更准确的说法是修改grub？  
+选择NeoGrub标签页-&amp;gt;  
+点击Install,点击Configure,进行配置，其实我感觉这个是标准的grub的写法。最重要的是各个操作系统的配置文件对应镜像需要解压出来的文件有区别，这点很重要。很多人的博客并没有明显的区分或是主要针对Ubuntu这个系统进行讲解的    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最重要的就是配置了，这个地方网上有不少人进行了解释，但是我觉得我觉得最简单最实用的还是百度空间的&lt;a href=&quot;http://hi.baidu.com/sf_chipan&quot;&gt;小治的空间&lt;/a&gt;,在此感谢作者！&lt;/p&gt;
+
+&lt;h3&gt;各个系统的配置文件写法和镜像需要解压缩的文件&lt;/h3&gt;
+
+&lt;h4&gt;CentOS系列&lt;/h4&gt;
+
+&lt;p&gt;文件目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CentOS-xx-i386/x86_64-bin-DVD1/2.iso  
+initrd.img  //initrd.img和vmlinuz这两个文件在ioslinux文件夹下  
+vmlinuz  
+images/  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;配置文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;title install centos XXX  
+kernel (hd0,6)/vmlinuz  //hd0 表示你的镜像文件放在你电脑对应的那块硬盘；6表示镜像存放分区的编号。  
+initrd (hd0,6)/initrd.img  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;其他系列&lt;/h4&gt;
+
+&lt;p&gt;其他发行版本目前还没有尝试，有需求的话，可以去参考百度空间的&lt;a href=&quot;http://hi.baidu.com/sf_chipan&quot;&gt;小治的空间&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;几点注意事项&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;配置文件中对应的分区编号可以用wingrub帮忙确定的^_^&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;镜像文件最好放在linux能够识别的文件系统中，由于FAT32单个文件最大不能超过4G，对于CentOS-DVD安装可能就不能可行了。大家可以尝试放到ext系列的文件系统下(推荐ext3)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;再多说一句，如果你想在WIN7环境下识别ext3文件系统的分区的话，可以安装Ext2Fsd这个软件。&lt;/p&gt;
+
+&lt;hr /&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>在centos系统下，挂在ntfs格式的磁盘分区</title>
+   <link href="http://perthcharles.github.com/centos6.4/2013/03/24/centos-mount-ntfs"/>
+   <updated>2013-03-24T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/centos6.4/2013/03/24/centos-mount-ntfs</id>
+   <content type="html">&lt;h3&gt;前提介绍&lt;/h3&gt;
+
+&lt;p&gt;在我在WIN7系统下硬盘安装好双系统后，有不少时候需要访问一些WIN7系统下的文件，如果反复的重启电脑的话那就太烦人了。而Centos又不能直接挂载ntfs格式的磁盘分区，网上搜来一圈找到一个可行的方法&lt;/p&gt;
+
+&lt;h3&gt;需要的软件&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;fuse&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#rpm -qa |grep fuse //查看系统是否已经安装软件  
+#yum list |grep fuse  
+#yum install fuse  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果你的源里面没有这个软件，那就去添加更好的源吧，不会添加源的可以参照我另一片博客：&lt;a href=&quot;http://perthcharles.github.com/centos6.4/2013/03/18/yum-using&quot;&gt;yum使用指南&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;ntfs-3g&lt;/em&gt;&lt;br/&gt;
+这个软件我选择的从源码安装，当然你也可以选择从yum源安装&lt;br/&gt;
+&lt;a href=&quot;http://www.tuxera.com/community/ntfs-3g-download/&quot;&gt;ntfs-3g下载地址:www.tuxera.com/community/ntfs-3g-download/&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;挂在分区&lt;/h3&gt;
+
+&lt;p&gt;在安装好上面这两个软件后，应该就可以挂在ntfs磁盘分区了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#fdisk -l //查看硬盘所有分区  
+#mount -t ntfs-3g /dev/xxx /mnt/xxx  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果想开机就挂在上的话，我的方法是修改/etc/profile，再最后加上上面的mount命令&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>vim 编码相关问题</title>
@@ -38,6 +249,36 @@ set fileencodings=gbk,big5,ucs-bom,latin1
 
 &lt;p&gt;中文环境UTF8参照之前的本机设置&lt;br/&gt;
 英文环境就直接用就好了，所以推荐装机的时候就选择英文系统，毕竟码代码还是英文用的多点&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>utorrent+mplayer使用</title>
+   <link href="http://perthcharles.github.com/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer"/>
+   <updated>2013-03-23T00:00:00+08:00</updated>
+   <id>http://perthcharles.github.com/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer</id>
+   <content type="html">&lt;h3&gt;utorrent&lt;/h3&gt;
+
+&lt;p&gt;为了在centos上面下载六维空间的资源，就必须选择一个给力的下载器，但是目前utorrent客户端只有WINDOWS版本，所以就必须曲线救国了。我的方法如下：&lt;br/&gt;
+首先确保你添加了第三方的源，如果不会添加请移步&lt;a href=&quot;http://perthcharles.github.com/centos6.4/2013/03/18/yum-using/&quot;&gt;yum 源的使用&lt;/a&gt;&lt;br/&gt;
+然后安装在linux环境下安装windows软件的平台，想了解更多的请&lt;a href=&quot;www.google.com&quot;&gt;google wine&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum installl wine  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装好wine环境后，只要下载一个windows环境下的utorrent.exe文件，就可以直接打开这个软件下载六维的软件了。开始享受吧！&lt;/p&gt;
+
+&lt;h3&gt;mplayer使用&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum list|grep mplayer  //查看你的源中是否有mplayer  
+#mplayer [-fs] filename  //-fs是可选项，表示全屏播放  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要说明的是我的mplayer没有安装图形界面(自己懒的动)，所以只能选择在命令行下输入命令播放视频，不过够用就行。&lt;/p&gt;
+
+&lt;h4&gt;无线网卡配置&lt;/h4&gt;
+
+&lt;p&gt;目前笔记本的无线网络功能处于无效状态。同时目前还没有需求，所以就没有配置。&lt;/p&gt;
 </content>
  </entry>
  
@@ -429,7 +670,7 @@ date (1)             - print or set the system date and time
     目录通常会在分区的最顶层  
 #/proc  
     其实是虚拟文件系统，放置的内容都在内存中，不占用实际的硬盘空间  
-#/sys   与**/proc**文件夹类似  
+#/sys   与/proc文件夹类似  
 &lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
@@ -607,7 +848,17 @@ tags : jekyll
 
 &lt;ul class=&quot;posts&quot;&gt;
   
+    &lt;li&gt;&lt;span&gt;24 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/24/ssh-free-pwd&quot;&gt;ssh免密码登录&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;24 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c&quot;&gt;一道C语言二进制反码题&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;24 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/24/install-linux-from-disk&quot;&gt;硬盘安装linux&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;24 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/centos6.4/2013/03/24/centos-mount-ntfs&quot;&gt;在centos系统下，挂在ntfs格式的磁盘分区&lt;/a&gt;&lt;/li&gt;
+  
     &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/23/vim-decode&quot;&gt;vim 编码相关问题&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer&quot;&gt;utorrent+mplayer使用&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/benchmarks/2013/03/23/hp-bench&quot;&gt;Bench 安装记录&lt;/a&gt;&lt;/li&gt;
   
