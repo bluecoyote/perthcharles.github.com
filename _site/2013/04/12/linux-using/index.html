@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>博客简介</title>
+	<title>linux 命令学习（五）</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="博客简介" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux 命令学习（五）" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -38,95 +38,120 @@
 			<div class="unit-inner unit-body-inner">
 				<div class="entry-content">
 					
-<article class="unit-article layout-page">
+<article class="unit-article layout-post">
 	<div class="unit-inner unit-article-inner">
 		<div class="content">
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">博客简介</h1>
+						<h1 class="h2 entry-title">linux 命令学习（五）</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h2>写该博客的初衷</h2>
+					<h2>/etc/motd使用</h2>
 
-<p>读研之后，接触的东西日渐丰富。为了不被“淹死”，所以觉得非常有必要把自己每天学到的东西记录下来。试用了一些软件后发现很难满足自己各种无聊的要求，在特定的博客网站写又无法获得root权限，思来想去决定在github上面挂载自己的博客。边学边写，乐在其中。</p>
+<p>如果你正在使用一台服务器，并且想通知每一个新登录这台服务器的用户一个消息。<br/>
+比如你需要在服务器上进行一些测试工作，肯定希望其他登录进来的用户不要跑别的程序。这时你可以在/etc/motd文件中编辑你的通知消息，每一个新登录的用户都会看到这个消息。</p>
 
-<h4>脚踏实地，记录学习的点点滴滴</h4>
+<pre><code>#cat /etc/motd
+Hello everyone,
+This server will be used to run some test-programs at 2013/04/12 0:00 ~ 24:00
+Please do not login server at this time. ^_^
+</code></pre>
 
-<h4>生命不止，奋斗不息</h4>
+<h2>找出含特定字符串的所有文件</h2>
 
-<h2>主要内容</h2>
+<pre><code>#grep -ir (string-to-find) (search-files)
+</code></pre>
 
-<p>  1.linux系统使用技巧<br/>
-  2.算法探讨<br/>
-  3.C/C++<br/>
-  4.计算机体系结构<br/>
-  5.操作系统<br/>
-  6.数据库<br/>
-  7.记录生命</p>
+					<div class="meta">
+						<p class="date-publish">
+							Published: 
+							<date class="date-pub" title="2013-04-12T00:00:00+08:00" datetime="2013-04-12T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>April</abbr></span>
+							<span class="day">12</span>
+							<span class="year">2013</span>
+							</date>
+						</p>
+						<ul class="list-category list-linear">
+							<li class="list-head">category: </li>
+							
+							
 
-<h2>Post List</h2>
 
-<ul class="posts">
   
-    <li><span>13 Apr 2013</span> &raquo; <a href="/papars/2013/04/13/trace-driven-survey">Trace驱动的memory模拟：综述</a></li>
+    
   
-    <li><span>12 Apr 2013</span> &raquo; <a href="/2013/04/12/linux-using">linux 命令学习（五）</a></li>
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags: </li>
+							
+							
+
+
   
-    <li><span>28 Mar 2013</span> &raquo; <a href="/2013/03/28/x-window">X window</a></li>
+     
+    	<li><a href="/tags.html#Shell-ref">Shell <span>1</span></a></li>
+    
   
-    <li><span>25 Mar 2013</span> &raquo; <a href="/2013/03/25/linux-disassemble">linux 反汇编初步</a></li>
-  
-    <li><span>25 Mar 2013</span> &raquo; <a href="/2013/03/25/gnu-as-pratice">Gnu AS 汇编实践</a></li>
-  
-    <li><span>24 Mar 2013</span> &raquo; <a href="/2013/03/24/ssh-free-pwd">ssh免密码登录</a></li>
-  
-    <li><span>24 Mar 2013</span> &raquo; <a href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c">一道C语言二进制反码题</a></li>
-  
-    <li><span>24 Mar 2013</span> &raquo; <a href="/2013/03/24/install-linux-from-disk">硬盘安装linux</a></li>
-  
-    <li><span>24 Mar 2013</span> &raquo; <a href="/centos6.4/2013/03/24/centos-mount-ntfs">在centos系统下，挂在ntfs格式的磁盘分区</a></li>
-  
-    <li><span>23 Mar 2013</span> &raquo; <a href="/2013/03/23/vim-decode">vim 编码相关问题</a></li>
-  
-    <li><span>23 Mar 2013</span> &raquo; <a href="/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer">utorrent+mplayer使用</a></li>
-  
-    <li><span>23 Mar 2013</span> &raquo; <a href="/benchmarks/2013/03/23/hp-bench">Bench 安装记录</a></li>
-  
-    <li><span>18 Mar 2013</span> &raquo; <a href="/centos6.4/2013/03/18/yum-using">yum使用指南</a></li>
-  
-    <li><span>11 Mar 2013</span> &raquo; <a href="/2013/03/11/232-centos59-using-log">centos5.9使用记录</a></li>
-  
-    <li><span>08 Mar 2013</span> &raquo; <a href="/2013/03/08/test-search">test search</a></li>
-  
-    <li><span>08 Mar 2013</span> &raquo; <a href="/2013/03/08/linux-using-4">linux命令学习（四）</a></li>
-  
-    <li><span>08 Mar 2013</span> &raquo; <a href="/2013/03/08/linux-using">linux命令学习（三）</a></li>
-  
-    <li><span>05 Mar 2013</span> &raquo; <a href="/2013/03/05/linux-using">linux命令学习（二）</a></li>
-  
-    <li><span>01 Mar 2013</span> &raquo; <a href="/2013/03/01/linux-using">linux命令学习(一)</a></li>
-  
-    <li><span>01 Mar 2013</span> &raquo; <a href="/linux-learning/2013/03/01/linux-tools">linux常用工具列表</a></li>
-  
-    <li><span>01 Mar 2013</span> &raquo; <a href="/linux-learning/2013/03/01/linux-system-info">linux系统信息</a></li>
-  
-    <li><span>25 Feb 2013</span> &raquo; <a href="/tools/2013/02/25/First-view-of-Jekyll">初识Jekyll</a></li>
-  
-</ul>
 
 
 
-
+						</ul>
+					</div><!-- meta -->
 				</div><!-- entry-content -->
-			</div><!-- bd -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					<div class="comment">
+					
 
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'mybloglife-perthcharles'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+					</div>
+				</div><!-- misc-content -->
+			</div><!-- bd -->
 			<footer class="unit-foot">
 				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/28/x-window" title="View X window">&laquo; X window</a></li>
+							
+							
+							<li class="pipe"> | </li>
+							
+							
+							<li class="next"><a class="internal" rel="next"  href="/papars/2013/04/13/trace-driven-survey" title="View Trace驱动的memory模拟：综述">Trace驱动的memory模拟：综述 &raquo;</a></li>
+							
+						</ul>
+					</nav>
 					<p class="gotop">
 						<a href="#page">Back to Top</a>
 					</p>
@@ -170,7 +195,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/index.html" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/04/12/linux-using" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

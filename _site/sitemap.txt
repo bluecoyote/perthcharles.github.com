@@ -9,6 +9,11 @@ http://perthcharles.github.com/categories.html
 http://perthcharles.github.com/atom.xml
 http://perthcharles.github.com/tags.html
 
+http://perthcharles.github.com/papars/2013/04/13/trace-driven-survey
+http://perthcharles.github.com/2013/04/12/linux-using
+http://perthcharles.github.com/2013/03/28/x-window
+http://perthcharles.github.com/2013/03/25/linux-disassemble
+http://perthcharles.github.com/2013/03/25/gnu-as-pratice
 http://perthcharles.github.com/2013/03/24/ssh-free-pwd
 http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c
 http://perthcharles.github.com/2013/03/24/install-linux-from-disk

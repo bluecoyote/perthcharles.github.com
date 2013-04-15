@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>一道C语言二进制反码题</title>
+	<title>Trace驱动的memory模拟：综述</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="一道C语言二进制反码题" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="Trace驱动的memory模拟：综述" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,129 +44,103 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">一道C语言二进制反码题</h1>
+						<h1 class="h2 entry-title">Trace驱动的memory模拟：综述</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h3>题目</h3>
+					<h1>论文来源</h1>
 
-<p>请写出下面程序在32/64位机器上的输出结果<br/>
-编译器：GCC</p>
-
-<pre><code>#include&lt;sdtio.h&gt;  
-
-int main(void)
-{
-    unsigned char a = 0xa5;
-    printf("%d\n",~a);
-    char b = ~a;
-    printf("%d\n",b);
-    unsigned char c = ~a;
-    printf("%d\n",c);
-
-    return 0;
-}  
+<pre><code>(在google scholar中搜索：trace-driven memory simulation a survey )
+#wget http://www.cs.amherst.edu/~sfkaplan/courses/spring-2004/cs40/papers/UM:TDMS.pdf
 </code></pre>
 
-<h3>解答:</h3>
+<p>博客里面写的只是粗略的理解，错误难免。想更准确的了解还是请看论文原文。</p>
 
-<p>char型数据占一个字节，故<br/>
-(a)0xa5 = 1010 0101 = 165<br/>
-但是~a并不是a直观的取反，在32位或int长度为4的64位系统中，char和unsigned char 都是按照32位（4字节）取反的，所以这样一来<br/>
-(~a) = ~(0x000000a5) = 0xffffff5a//这点可以按照%x格式打印~a验证<br/>
-按照%d输出的话，最高位会当成符号位<br/>
-所以0xffffff5a先取反得到(符号位除外)<br/>
-0x000000a5,然后+1得到//补码与原码的相互转化规则：除符号位外取反再+1<br/>
-0x000000a6 = 166<br/>
-符号为负，所以第一条打印信息为-166</p>
+<h1>简介</h1>
 
-<p>解释完第一条打印信息，后两个就好解释了，因为先将~a存入到了char或unsigned char型中，~a取反后的高位被抛弃，所以直接得到0x5a，即90</p>
+<p>处理器速度与memory速度之间的差距越来越大，成“剪刀口”型增长趋势。在memory-system设计被硬件实现之前，找到评价memory-system设计的方法显得十分重要。<br/>
+其中一种有效的方法就是：通过抓取真实应用的访存trace，然后通过在模拟器上模拟抓取下来的trace行为达到测试memory-system的性能效果。下面将根据前面提到的论文，适当整理思路，以便之后学习。<br/>
+所谓访存trace，就是一系列的对内存进行访问的操作序列（a sequence of memory references）</p>
 
-<h3>更进一步</h3>
+<hr />
 
-<p>将下面代码反汇编，查看取反操作是否是上面的说法：按照32位取反</p>
+<h2>主要难点</h2>
 
-<pre><code>#include&lt;stdio.h&gt;
-int main(void)
-{
-    unsigned char a = 0xa5;
-    printf("%d\n",~a);
-
-    return 0;
-}
-
-#gcc test.c -o -g test 
-#objdump -S test &gt; test.debug
-#cat test.debug
-...
-00000000004004c4 &lt;main&gt;:
-#include&lt;stdio.h&gt;
-int main(void)
-{
-  4004c4:   55                      push   %rbp
-  4004c5:   48 89 e5                mov    %rsp,%rbp
-  4004c8:   48 83 ec 10             sub    $0x10,%rsp
-    unsigned char a = 0xa5;
-  4004cc:   c6 45 ff a5             movb   $0xa5,-0x1(%rbp)
-    printf("%d\n",~a);
-  4004d0:   0f b6 45 ff             movzbl -0x1(%rbp),%eax
-  4004d4:   89 c2                   mov    %eax,%edx
-  4004d6:   f7 d2                   not    %edx
-  4004d8:   b8 f8 05 40 00          mov    $0x4005f8,%eax
-  4004dd:   89 d6                   mov    %edx,%esi
-  4004df:   48 89 c7                mov    %rax,%rdi
-  4004e2:   b8 00 00 00 00          mov    $0x0,%eax
-  4004e7:   e8 cc fe ff ff          callq  4003b8 &lt;printf@plt&gt;
-
-    return 0;
-  4004ec:   b8 00 00 00 00          mov    $0x0,%eax
-}
-...
+<pre><code>1，收集完整的trace信息很难。特别是对于多进程，操作系统，动态链接或动态编译产生的访存trace很难获取。
+2，访存trace一般很大。一般都是10G～100G这个量级的。
 </code></pre>
 
-<p>可以看到指令"not %edx"是直接按照32位进行取反的<br/>
-如果对程序进行-O2优化编译的话，就看得更直观</p>
+<h2>Trace driven memory simulation主要流程</h2>
 
-<pre><code>#gcc -O2 test.c -g -o test-O2
-#objdump -S test-O2 &gt;test-O2.debug
-#cat test-O2.debug
-...
-00000000004004d0 &lt;main&gt;:
-#include&lt;stdio.h&gt;
-int main(void)
-{
-  4004d0:       48 83 ec 08             sub    $0x8,%rsp
-     unsigned char a = 0xa5;
-     printf("%d\n",~a);
-  4004d4:       be 5a ff ff ff          mov    $0xffffff5a,%esi
-  4004d9:       bf e8 05 40 00          mov    $0x4005e8,%edi
-  4004de:       31 c0                   xor    %eax,%eax
-  4004e0:       e8 d3 fe ff ff          callq  4003b8 &lt;printf@plt&gt;
-
-     return 0;
-}
-...
+<pre><code>1，trace collect：    收集某些选定负载的访存序列。
+2，trace reduction:    由于trace文件一般都很大，如果模拟完成的trace将会十分耗时。通过去除不需要、冗余或是不感兴趣的数据来提高整体的效率。
+3，trace processing:   将得到的trace文件当初输入给模拟器处理
 </code></pre>
 
-<p>可以看到程序直接将0xffffff5a赋给esi寄存器了</p>
+<h2>对各类方法的评价标准</h2>
 
-<h3>我本子相关信息</h3>
-
-<pre><code>#uname -r
-2.6.32-358.el6.x86_64
-#gcc -v
-gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
+<pre><code>准确性：    模拟出来的性能与真实性能之间的差距；reduction之后的trace模拟结果与完成trace模拟结果之间的差异等
+速度：       每秒收集到的trace entry个数（无法跨平台对比）；entry收集速度/entry产生速度;entry processing速度/entry产生速度；总模拟时间/正常执行时间
+额外的内存开销
+reduction 比例
+portability,flexibility,expense,easy-of-use
 </code></pre>
+
+<h3>Trace collect</h3>
+
+<p>评价trace质量的标准主要就是：完整性和详细性。另外在收集过程中，不得收录额外引起的访存动作，主要就是收集工作本身产生的访存动作不应该被收录到trace中</p>
+
+<pre><code>完整性：所有的访存动作都要收集，包括所有用户级进程和操作系统内核产生的访存动作。
+详细性：是否给trace添加一些额外的信息，比如VM page-table状态，访存动作类型（读，写，执行），大小（字，半字，字节等）
+</code></pre>
+
+<p>一般的工具在收集的时候如果trace buffer写满了，都需要停下来将buffer里面的数据导出到外部。<br/>
+各种工具收集方法：</p>
+
+<pre><code>trace收集方式的不同主要体现在收集动作对应系统层次的不同
+------------软件层次-------------
+|   操作系统级的单步执行  |
+|   编译器           |
+|   汇编器           |
+|   连接器和加载器       |
+|--------------------------------
+|   微指令           |
+|--------------------------------
+|   物理层：探测物理信号  |
+---------------------------------
+</code></pre>
+
+<h3>Trace reduction</h3>
+
+<p>各类方法的主要不同在于reduction比例的不同和reduction方式</p>
+
+<pre><code>主要reduction方式：
+压缩：       利用标准的数据压缩算法对数据进行压缩（觉得这种方法不实用）
+重要事件： 在收集trace的时候只收集满足一定条件的trace，详见论文
+过滤：       由于每个研究人员的研究兴趣重点不同，想要模拟的trace类型也就不同
+抽样：       分时间抽样和集合抽样。（这种方法使用组内开发的工具：HMTT实践过）
+</code></pre>
+
+<h3>Trace processing</h3>
+
+<p>因为memory-system设计的多样性（页面替换算法、cache大小、写策略：写穿透等，line大小），所以在将trace输入到模拟器时，自然就想一遍输入，就能跑几种不同的配置方式。为了达到这个目的就导致来trace processing方式的多样性。</p>
+
+<hr />
+
+<p>转载请注明出处。<br/>
+版权所有，侵犯必究</p>
+
+<hr />
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-03-24T00:00:00+08:00" datetime="2013-03-24T00:00:00+08:00" pubdate>
-							<span class="month"><abbr>March</abbr></span>
-							<span class="day">24</span>
+							<date class="date-pub" title="2013-04-13T00:00:00+08:00" datetime="2013-04-13T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>April</abbr></span>
+							<span class="day">13</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -178,8 +152,8 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 
   
      
-    	<li><a href="/categories.html#面试题-ref">
-    		面试题 <span>1</span>
+    	<li><a href="/categories.html#papars-ref">
+    		papars <span>1</span>
     	</a></li>
     
   
@@ -194,7 +168,7 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 
   
      
-    	<li><a href="/tags.html#C-ref">C <span>1</span></a></li>
+    	<li><a href="/tags.html#trace-ref">trace <span>1</span></a></li>
     
   
 
@@ -240,13 +214,9 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/24/install-linux-from-disk" title="View 硬盘安装linux">&laquo; 硬盘安装linux</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/04/12/linux-using" title="View linux 命令学习（五）">&laquo; linux 命令学习（五）</a></li>
 							
 							
-							<li class="pipe"> | </li>
-							
-							
-							<li class="next"><a class="internal" rel="next"  href="/2013/03/24/ssh-free-pwd" title="View ssh免密码登录">ssh免密码登录 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -293,7 +263,7 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/papars/2013/04/13/trace-driven-survey" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

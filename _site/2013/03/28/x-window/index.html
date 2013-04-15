@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>一道C语言二进制反码题</title>
+	<title>X window</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="一道C语言二进制反码题" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="X window" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,129 +44,74 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">一道C语言二进制反码题</h1>
+						<h1 class="h2 entry-title">X window</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h3>题目</h3>
+					<h2>Type of XEvent</h2>
 
-<p>请写出下面程序在32/64位机器上的输出结果<br/>
-编译器：GCC</p>
-
-<pre><code>#include&lt;sdtio.h&gt;  
-
-int main(void)
-{
-    unsigned char a = 0xa5;
-    printf("%d\n",~a);
-    char b = ~a;
-    printf("%d\n",b);
-    unsigned char c = ~a;
-    printf("%d\n",c);
-
-    return 0;
-}  
+<pre><code>Keyboard events                | KeyPress, KeyRelease
+Pointer events                 | ButtonPress, ButtonRelease, MotionNotify
+Window crossing events         | EnterNotify, LeaveNotify
+Input focus events             | FocusIn, FocusOut
 </code></pre>
 
-<h3>解答:</h3>
+<p>参考资料：(X Window学习xlib---X Event)[http://blog.csdn.net/unailbobo/article/details/3036618]</p>
 
-<p>char型数据占一个字节，故<br/>
-(a)0xa5 = 1010 0101 = 165<br/>
-但是~a并不是a直观的取反，在32位或int长度为4的64位系统中，char和unsigned char 都是按照32位（4字节）取反的，所以这样一来<br/>
-(~a) = ~(0x000000a5) = 0xffffff5a//这点可以按照%x格式打印~a验证<br/>
-按照%d输出的话，最高位会当成符号位<br/>
-所以0xffffff5a先取反得到(符号位除外)<br/>
-0x000000a5,然后+1得到//补码与原码的相互转化规则：除符号位外取反再+1<br/>
-0x000000a6 = 166<br/>
-符号为负，所以第一条打印信息为-166</p>
+<h3>问题</h3>
 
-<p>解释完第一条打印信息，后两个就好解释了，因为先将~a存入到了char或unsigned char型中，~a取反后的高位被抛弃，所以直接得到0x5a，即90</p>
+<p>如果仅仅是调整x window的位置，是不是没有数据发送出去？！  ----添加DEBUG，只是调整位置，看是否有数据包发送</p>
 
-<h3>更进一步</h3>
+<p>怎么给X window发送event?？？？</p>
 
-<p>将下面代码反汇编，查看取反操作是否是上面的说法：按照32位取反</p>
-
-<pre><code>#include&lt;stdio.h&gt;
-int main(void)
-{
-    unsigned char a = 0xa5;
-    printf("%d\n",~a);
-
-    return 0;
-}
-
-#gcc test.c -o -g test 
-#objdump -S test &gt; test.debug
-#cat test.debug
-...
-00000000004004c4 &lt;main&gt;:
-#include&lt;stdio.h&gt;
-int main(void)
-{
-  4004c4:   55                      push   %rbp
-  4004c5:   48 89 e5                mov    %rsp,%rbp
-  4004c8:   48 83 ec 10             sub    $0x10,%rsp
-    unsigned char a = 0xa5;
-  4004cc:   c6 45 ff a5             movb   $0xa5,-0x1(%rbp)
-    printf("%d\n",~a);
-  4004d0:   0f b6 45 ff             movzbl -0x1(%rbp),%eax
-  4004d4:   89 c2                   mov    %eax,%edx
-  4004d6:   f7 d2                   not    %edx
-  4004d8:   b8 f8 05 40 00          mov    $0x4005f8,%eax
-  4004dd:   89 d6                   mov    %edx,%esi
-  4004df:   48 89 c7                mov    %rax,%rdi
-  4004e2:   b8 00 00 00 00          mov    $0x0,%eax
-  4004e7:   e8 cc fe ff ff          callq  4003b8 &lt;printf@plt&gt;
-
-    return 0;
-  4004ec:   b8 00 00 00 00          mov    $0x0,%eax
-}
-...
+<pre><code>关键点：xwin_process_events函数调用XNextEvent来从g_display中获取event事件，所以问题变为如何在g_display中加入我们想要的事件？？？
+    这种方式现在还没思路，改用直接调用rdp_send_input()函数来处理
 </code></pre>
 
-<p>可以看到指令"not %edx"是直接按照32位进行取反的<br/>
-如果对程序进行-O2优化编译的话，就看得更直观</p>
+<p>现在需要保证前后发送的两个数据包依赖性要保证好，比如第一个操作是打开word，那么第二个操作必须等服务器那边发送回响应后才发送过去</p>
 
-<pre><code>#gcc -O2 test.c -g -o test-O2
-#objdump -S test-O2 &gt;test-O2.debug
-#cat test-O2.debug
-...
-00000000004004d0 &lt;main&gt;:
-#include&lt;stdio.h&gt;
-int main(void)
-{
-  4004d0:       48 83 ec 08             sub    $0x8,%rsp
-     unsigned char a = 0xa5;
-     printf("%d\n",~a);
-  4004d4:       be 5a ff ff ff          mov    $0xffffff5a,%esi
-  4004d9:       bf e8 05 40 00          mov    $0x4005e8,%edi
-  4004de:       31 c0                   xor    %eax,%eax
-  4004e0:       e8 d3 fe ff ff          callq  4003b8 &lt;printf@plt&gt;
-
-     return 0;
-}
-...
+<pre><code>关键问题：怎么设置响应时间？
 </code></pre>
 
-<p>可以看到程序直接将0xffffff5a赋给esi寄存器了</p>
+<p>如果单纯的从rdp_send_input发送数据（比如移动鼠标），那么返回数据后，客户端是否能显示正常？这点要验证！</p>
 
-<h3>我本子相关信息</h3>
+<p>Standard KeySym names are obtained from &lt;X11/keysymdef.h> by removing the XK_ prefix from each name.</p>
 
-<pre><code>#uname -r
-2.6.32-358.el6.x86_64
-#gcc -v
-gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
+<h5>coding log</h5>
+
+<p>bool RECORD is define in rdesktop.c  line:460</p>
+
+<p>因为想读取的是二进制文件，所以要规定一个文件格式</p>
+
+<p>xwin.c:2283: warning: format ‘%u’ expects type ‘unsigned int’, but argument 2 has type ‘time_t’
+xwin.c: In function ‘xwin_process_events’:
+xwin.c:2379: warning: format ‘%x’ expects type ‘unsigned int’, but argument 2 has type ‘KeySym’
+xwin.c:2382: warning: format ‘%x’ expects type ‘unsigned int’, but argument 2 has type ‘KeySym’</p>
+
+<pre><code>%x,  (unsigned int) keysym
+</code></pre>
+
+<p>xwin.c:2432: warning: format ‘%u’ expects type ‘unsigned int’, but argument 2 has type ‘time_t’</p>
+
+<h3>注意事项</h3>
+
+<pre><code>自己定义的：FILE * record 需要用完后关闭
+</code></pre>
+
+<h1>问题</h1>
+
+<pre><code>直接设置timeout判断上一个动作是否完成不行，因为在上一个动作还在进行的时候，也有可能中途图像不变，这样虽然会timeout，但是上一个动作其实并没有完成！
 </code></pre>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-03-24T00:00:00+08:00" datetime="2013-03-24T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-03-28T00:00:00+08:00" datetime="2013-03-28T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>March</abbr></span>
-							<span class="day">24</span>
+							<span class="day">28</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -177,10 +122,6 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 
 
   
-     
-    	<li><a href="/categories.html#面试题-ref">
-    		面试题 <span>1</span>
-    	</a></li>
     
   
 
@@ -193,8 +134,6 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 
 
   
-     
-    	<li><a href="/tags.html#C-ref">C <span>1</span></a></li>
     
   
 
@@ -240,13 +179,13 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/24/install-linux-from-disk" title="View 硬盘安装linux">&laquo; 硬盘安装linux</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/25/linux-disassemble" title="View linux 反汇编初步">&laquo; linux 反汇编初步</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/2013/03/24/ssh-free-pwd" title="View ssh免密码登录">ssh免密码登录 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/2013/04/12/linux-using" title="View linux 命令学习（五）">linux 命令学习（五） &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -293,7 +232,7 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/03/28/x-window" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

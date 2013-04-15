@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>一道C语言二进制反码题</title>
+	<title>linux 反汇编初步</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="一道C语言二进制反码题" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux 反汇编初步" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,129 +44,182 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">一道C语言二进制反码题</h1>
+						<h1 class="h2 entry-title">linux 反汇编初步</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h3>题目</h3>
+					<h2>工具</h2>
 
-<p>请写出下面程序在32/64位机器上的输出结果<br/>
-编译器：GCC</p>
+<p>十六进制编辑器：hexedit<br/>
+objdump:</p>
 
-<pre><code>#include&lt;sdtio.h&gt;  
+<hr />
 
-int main(void)
-{
-    unsigned char a = 0xa5;
-    printf("%d\n",~a);
-    char b = ~a;
-    printf("%d\n",b);
-    unsigned char c = ~a;
-    printf("%d\n",c);
+<h3>hexedit使用</h3>
 
-    return 0;
-}  
+<p>暂时只用hexedit来读二进制文件</p>
+
+<pre><code>#hexedit filename  //查看文件  
 </code></pre>
 
-<h3>解答:</h3>
+<p>常用操作键</p>
 
-<p>char型数据占一个字节，故<br/>
-(a)0xa5 = 1010 0101 = 165<br/>
-但是~a并不是a直观的取反，在32位或int长度为4的64位系统中，char和unsigned char 都是按照32位（4字节）取反的，所以这样一来<br/>
-(~a) = ~(0x000000a5) = 0xffffff5a//这点可以按照%x格式打印~a验证<br/>
-按照%d输出的话，最高位会当成符号位<br/>
-所以0xffffff5a先取反得到(符号位除外)<br/>
-0x000000a5,然后+1得到//补码与原码的相互转化规则：除符号位外取反再+1<br/>
-0x000000a6 = 166<br/>
-符号为负，所以第一条打印信息为-166</p>
-
-<p>解释完第一条打印信息，后两个就好解释了，因为先将~a存入到了char或unsigned char型中，~a取反后的高位被抛弃，所以直接得到0x5a，即90</p>
-
-<h3>更进一步</h3>
-
-<p>将下面代码反汇编，查看取反操作是否是上面的说法：按照32位取反</p>
-
-<pre><code>#include&lt;stdio.h&gt;
-int main(void)
-{
-    unsigned char a = 0xa5;
-    printf("%d\n",~a);
-
-    return 0;
-}
-
-#gcc test.c -o -g test 
-#objdump -S test &gt; test.debug
-#cat test.debug
-...
-00000000004004c4 &lt;main&gt;:
-#include&lt;stdio.h&gt;
-int main(void)
-{
-  4004c4:   55                      push   %rbp
-  4004c5:   48 89 e5                mov    %rsp,%rbp
-  4004c8:   48 83 ec 10             sub    $0x10,%rsp
-    unsigned char a = 0xa5;
-  4004cc:   c6 45 ff a5             movb   $0xa5,-0x1(%rbp)
-    printf("%d\n",~a);
-  4004d0:   0f b6 45 ff             movzbl -0x1(%rbp),%eax
-  4004d4:   89 c2                   mov    %eax,%edx
-  4004d6:   f7 d2                   not    %edx
-  4004d8:   b8 f8 05 40 00          mov    $0x4005f8,%eax
-  4004dd:   89 d6                   mov    %edx,%esi
-  4004df:   48 89 c7                mov    %rax,%rdi
-  4004e2:   b8 00 00 00 00          mov    $0x0,%eax
-  4004e7:   e8 cc fe ff ff          callq  4003b8 &lt;printf@plt&gt;
-
-    return 0;
-  4004ec:   b8 00 00 00 00          mov    $0x0,%eax
-}
-...
+<pre><code>   Ctrl-X: save and exit  
+   Ctrl-C: exit without saving  
+   tab: 在hex和ascii窗口之间切换  
+   Ctrl-U: undo all  
+   Ctrl-S: search forward  
 </code></pre>
 
-<p>可以看到指令"not %edx"是直接按照32位进行取反的<br/>
-如果对程序进行-O2优化编译的话，就看得更直观</p>
+<h3>objdump使用</h3>
 
-<pre><code>#gcc -O2 test.c -g -o test-O2
-#objdump -S test-O2 &gt;test-O2.debug
-#cat test-O2.debug
-...
-00000000004004d0 &lt;main&gt;:
-#include&lt;stdio.h&gt;
-int main(void)
-{
-  4004d0:       48 83 ec 08             sub    $0x8,%rsp
-     unsigned char a = 0xa5;
-     printf("%d\n",~a);
-  4004d4:       be 5a ff ff ff          mov    $0xffffff5a,%esi
-  4004d9:       bf e8 05 40 00          mov    $0x4005e8,%edi
-  4004de:       31 c0                   xor    %eax,%eax
-  4004e0:       e8 d3 fe ff ff          callq  4003b8 &lt;printf@plt&gt;
+<p>编译程序的时候，gcc添加-g选项，增加调试信息</p>
 
-     return 0;
-}
-...
+<pre><code>#gcc test.c -g -o test
 </code></pre>
 
-<p>可以看到程序直接将0xffffff5a赋给esi寄存器了</p>
+<p>常用参数</p>
 
-<h3>我本子相关信息</h3>
-
-<pre><code>#uname -r
-2.6.32-358.el6.x86_64
-#gcc -v
-gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
+<pre><code>-S(source):表示读取哪个文件
+-j:选择读出哪个section，可以通过objdump -h来查看所有的section
 </code></pre>
+
+<hr />
+
+<hr />
+
+<h3>看懂AT&amp;T汇编</h3>
+
+<p>由于objdump反汇编得到的结果主要都是AT&amp;T格式的汇编(不过好像可以选择？)，而且linux内核代码也有不少AT&amp;T格式的汇编代码，所以有必要学习一下</p>
+
+<h4>AT&amp;T汇编特点</h4>
+
+<pre><code>1.寄存器前面要加%，如：mov %eab,%ebx
+    注意源寄存器和目标寄存器的顺序与intel汇编更好相反，at&amp;t中左边是源寄存器，右边是目标寄存器。所以上面指令是将eax的值赋给ebx
+2.立即数/常数前面要加‘$’,符号常数值直接用。
+    关于符号常量注意理解下面两句：
+    mov A,%eax  //将A代表的值赋给eax,如A=10，则eax里面的值就是10
+    mov $A,%eax     //将A代表的值当作地址，将对应地址的值赋给eax，如A=0x10,0x10处存则20，则把地址0x10处对应的值20赋给eax
+3.movb:8位(byte)   movw：16位(word)  movl：32位(long)  
+others: s=short(16-bit integer) or single(32-bit floating point)
+    q=quad(64 bits)
+    t=ten bytes(80 bits floating point)
+注：如果suffix没有指定且不是内存操作，GAS(Gnu AS)会根据目标寄存器的大小来决定
+4.call/jmp语句的操作数前面要加上“*”作为前缀，远跳转ljmp,远调用lcall，远返回lret
+
+5.寻址规则：displacement(base register, offset register, scalar multiplier)
+  计算方法：(base+dis)+(offset*multiplier)
+  举例：
+    movl    -4(%ebp, %edx, 4), %eax  # Full example: load *(ebp - 4 + (edx * 4)) into eax
+    movl    (%ecx), %edx             # No offset: copy the target of a pointer into a register
+</code></pre>
+
+<h4>C语言内嵌汇编</h4>
+
+<p>格式：</p>
+
+<pre><code>_asm_("asm statement":outputs:inputs:registers-modified)
+</code></pre>
+
+<p>tips:</p>
+
+<pre><code>1.在嵌入汇编中，寄存器前面要加两个%，因为gcc在编译时，会去掉一个%再输出成汇编格式
+</code></pre>
+
+<h4>主要寄存器及其作用</h4>
+
+<h5>8086有14个16位寄存器，按照用途分为：</h5>
+
+<p>1.通用寄存器(8个)<br/>
+2.指令指针(IP,1个)<br/>
+3.标志寄存器(FR，1个)<br/>
+4.段寄存器(4个)</p>
+
+<hr />
+
+<p><em>通用寄存器</em>又可以分成2类：数据寄存器和指针寄存器及变址寄存器，各4个</p>
+
+<pre><code>ax:常用于计算。另外所有的I/O指令都使用这一寄存器与外界设备传送数据
+bx:基址寄存器  
+cx:计数寄存器  
+dx:数据寄存器  
+
+SP:堆栈指针，与SS配合使用，可指向目前的堆栈位置  
+BP:基址寄存器，可作为SS的相对基址位置  
+SI:source index,源变址寄存器------暂不理解  
+DI：destination index,目的变址寄存器  
+上面四个寄存器只能按16位进行操作，主要用来形成操作数的地址  
+</code></pre>
+
+<p><em>指令指针IP</em></p>
+
+<pre><code>IP:16位专用寄存器，用来指向当前执行指令的下一条指令的地址。注意，IP指向的是指令地址的段内地址偏移量  
+</code></pre>
+
+<p><em>标志寄存器FR</em><br/>
+16位的寄存器，有意义的有9位，6位是状态位，3位是控制位<br/>
+分布图：</p>
+
+<pre><code>#################################################
+#  #  #  #  #OF#DF#IF#TF#SF#ZF#  #AF#  #PF#  #CF#
+#################################################
+#15#14#13#12#11#10# 9# 8# 7# 6# 5# 4# 3# 2# 1# 0#
+#################################################
+各个标志的含义：  
+OF:overflow  
+DF:direction
+IF:中断允许标志，标志是否响应CPU‘外部可屏蔽‘中断，1表示响应
+TF:跟踪标志
+SF:符号标志，与运算结果的最高位相同
+ZF:零标志，反映运算结果是否为0
+AF:辅助进位标志
+PF:奇偶标志反映运算结果中’1‘的个数，PF=1表示偶数个’1‘
+CF:进位标志反映运算结果是否产生进位或借位
+</code></pre>
+
+<p><em>段寄存器</em></p>
+
+<pre><code>CS:code segment
+DS:data segment
+SS:stack segment
+ES:extra segment
+</code></pre>
+
+<hr />
+
+<h4>80386寄存器</h4>
+
+<p>寄存器都是32位宽<br/>
+<em>通用寄存器</em></p>
+
+<pre><code>EAX，EBX，ECX，EDX
+</code></pre>
+
+<p><em>特殊寄存器</em></p>
+
+<pre><code>ESI：通常在内存操作中作为“源地址指针”使用，DS是默认段寄存器
+EDI：通常在内存操作中作为“目标地址指针”，DS是默认段寄存器
+EBP：通常被高级语言编译器用以建造‘堆栈帧’来保存函数或过程的局部变量，SS是默认段寄存器
+</code></pre>
+
+<hr />
+
+<h3>主要参考资料</h3>
+
+<p><a href="http://www.cppblog.com/tdweng/articles/120852.html">汇编中各寄存器的作用-堂吉歌德</a><br/>
+<a href="http://en.wikibooks.org/wiki/X86_Assembly/GAS_Syntax">X86 Assembly/GAS Syntax</a></p>
+
+<hr />
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-03-24T00:00:00+08:00" datetime="2013-03-24T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-03-25T00:00:00+08:00" datetime="2013-03-25T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>March</abbr></span>
-							<span class="day">24</span>
+							<span class="day">25</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -177,10 +230,6 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 
 
   
-     
-    	<li><a href="/categories.html#面试题-ref">
-    		面试题 <span>1</span>
-    	</a></li>
     
   
 
@@ -194,7 +243,7 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 
   
      
-    	<li><a href="/tags.html#C-ref">C <span>1</span></a></li>
+    	<li><a href="/tags.html#反汇编-ref">反汇编 <span>1</span></a></li>
     
   
 
@@ -240,13 +289,13 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/24/install-linux-from-disk" title="View 硬盘安装linux">&laquo; 硬盘安装linux</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/03/25/gnu-as-pratice" title="View Gnu AS 汇编实践">&laquo; Gnu AS 汇编实践</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/2013/03/24/ssh-free-pwd" title="View ssh免密码登录">ssh免密码登录 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/2013/03/28/x-window" title="View X window">X window &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -293,7 +342,7 @@ gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/03/25/linux-disassemble" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

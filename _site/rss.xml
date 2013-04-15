@@ -5,10 +5,395 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-03-24T16:17:29+08:00</lastBuildDate>
-        <pubDate>2013-03-24T16:17:29+08:00</pubDate>
+        <lastBuildDate>2013-04-15T21:33:22+08:00</lastBuildDate>
+        <pubDate>2013-04-15T21:33:22+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>Trace驱动的memory模拟：综述</title>
+                <description>&lt;h1&gt;论文来源&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;(在google scholar中搜索：trace-driven memory simulation a survey )
+#wget http://www.cs.amherst.edu/~sfkaplan/courses/spring-2004/cs40/papers/UM:TDMS.pdf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;博客里面写的只是粗略的理解，错误难免。想更准确的了解还是请看论文原文。&lt;/p&gt;
+
+&lt;h1&gt;简介&lt;/h1&gt;
+
+&lt;p&gt;处理器速度与memory速度之间的差距越来越大，成“剪刀口”型增长趋势。在memory-system设计被硬件实现之前，找到评价memory-system设计的方法显得十分重要。&lt;br/&gt;
+其中一种有效的方法就是：通过抓取真实应用的访存trace，然后通过在模拟器上模拟抓取下来的trace行为达到测试memory-system的性能效果。下面将根据前面提到的论文，适当整理思路，以便之后学习。&lt;br/&gt;
+所谓访存trace，就是一系列的对内存进行访问的操作序列（a sequence of memory references）&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;主要难点&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;1，收集完整的trace信息很难。特别是对于多进程，操作系统，动态链接或动态编译产生的访存trace很难获取。
+2，访存trace一般很大。一般都是10G～100G这个量级的。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Trace driven memory simulation主要流程&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;1，trace collect：    收集某些选定负载的访存序列。
+2，trace reduction:    由于trace文件一般都很大，如果模拟完成的trace将会十分耗时。通过去除不需要、冗余或是不感兴趣的数据来提高整体的效率。
+3，trace processing:   将得到的trace文件当初输入给模拟器处理
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;对各类方法的评价标准&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;准确性：    模拟出来的性能与真实性能之间的差距；reduction之后的trace模拟结果与完成trace模拟结果之间的差异等
+速度：       每秒收集到的trace entry个数（无法跨平台对比）；entry收集速度/entry产生速度;entry processing速度/entry产生速度；总模拟时间/正常执行时间
+额外的内存开销
+reduction 比例
+portability,flexibility,expense,easy-of-use
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Trace collect&lt;/h3&gt;
+
+&lt;p&gt;评价trace质量的标准主要就是：完整性和详细性。另外在收集过程中，不得收录额外引起的访存动作，主要就是收集工作本身产生的访存动作不应该被收录到trace中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;完整性：所有的访存动作都要收集，包括所有用户级进程和操作系统内核产生的访存动作。
+详细性：是否给trace添加一些额外的信息，比如VM page-table状态，访存动作类型（读，写，执行），大小（字，半字，字节等）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一般的工具在收集的时候如果trace buffer写满了，都需要停下来将buffer里面的数据导出到外部。&lt;br/&gt;
+各种工具收集方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;trace收集方式的不同主要体现在收集动作对应系统层次的不同
+------------软件层次-------------
+|   操作系统级的单步执行  |
+|   编译器           |
+|   汇编器           |
+|   连接器和加载器       |
+|--------------------------------
+|   微指令           |
+|--------------------------------
+|   物理层：探测物理信号  |
+---------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Trace reduction&lt;/h3&gt;
+
+&lt;p&gt;各类方法的主要不同在于reduction比例的不同和reduction方式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;主要reduction方式：
+压缩：       利用标准的数据压缩算法对数据进行压缩（觉得这种方法不实用）
+重要事件： 在收集trace的时候只收集满足一定条件的trace，详见论文
+过滤：       由于每个研究人员的研究兴趣重点不同，想要模拟的trace类型也就不同
+抽样：       分时间抽样和集合抽样。（这种方法使用组内开发的工具：HMTT实践过）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Trace processing&lt;/h3&gt;
+
+&lt;p&gt;因为memory-system设计的多样性（页面替换算法、cache大小、写策略：写穿透等，line大小），所以在将trace输入到模拟器时，自然就想一遍输入，就能跑几种不同的配置方式。为了达到这个目的就导致来trace processing方式的多样性。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;转载请注明出处。&lt;br/&gt;
+版权所有，侵犯必究&lt;/p&gt;
+
+&lt;hr /&gt;
+</description>
+                <link>http://perthcharles.github.com/papars/2013/04/13/trace-driven-survey</link>
+                <guid>http://perthcharles.github.com/papars/2013/04/13/trace-driven-survey</guid>
+                <pubDate>2013-04-13T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>linux 命令学习（五）</title>
+                <description>&lt;h2&gt;/etc/motd使用&lt;/h2&gt;
+
+&lt;p&gt;如果你正在使用一台服务器，并且想通知每一个新登录这台服务器的用户一个消息。&lt;br/&gt;
+比如你需要在服务器上进行一些测试工作，肯定希望其他登录进来的用户不要跑别的程序。这时你可以在/etc/motd文件中编辑你的通知消息，每一个新登录的用户都会看到这个消息。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat /etc/motd
+Hello everyone,
+This server will be used to run some test-programs at 2013/04/12 0:00 ~ 24:00
+Please do not login server at this time. ^_^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;找出含特定字符串的所有文件&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#grep -ir (string-to-find) (search-files)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/04/12/linux-using</link>
+                <guid>http://perthcharles.github.com/2013/04/12/linux-using</guid>
+                <pubDate>2013-04-12T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>X window</title>
+                <description>&lt;h2&gt;Type of XEvent&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;Keyboard events                | KeyPress, KeyRelease
+Pointer events                 | ButtonPress, ButtonRelease, MotionNotify
+Window crossing events         | EnterNotify, LeaveNotify
+Input focus events             | FocusIn, FocusOut
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考资料：(X Window学习xlib---X Event)[http://blog.csdn.net/unailbobo/article/details/3036618]&lt;/p&gt;
+
+&lt;h3&gt;问题&lt;/h3&gt;
+
+&lt;p&gt;如果仅仅是调整x window的位置，是不是没有数据发送出去？！  ----添加DEBUG，只是调整位置，看是否有数据包发送&lt;/p&gt;
+
+&lt;p&gt;怎么给X window发送event?？？？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;关键点：xwin_process_events函数调用XNextEvent来从g_display中获取event事件，所以问题变为如何在g_display中加入我们想要的事件？？？
+    这种方式现在还没思路，改用直接调用rdp_send_input()函数来处理
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在需要保证前后发送的两个数据包依赖性要保证好，比如第一个操作是打开word，那么第二个操作必须等服务器那边发送回响应后才发送过去&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;关键问题：怎么设置响应时间？
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果单纯的从rdp_send_input发送数据（比如移动鼠标），那么返回数据后，客户端是否能显示正常？这点要验证！&lt;/p&gt;
+
+&lt;p&gt;Standard KeySym names are obtained from &amp;lt;X11/keysymdef.h&gt; by removing the XK_ prefix from each name.&lt;/p&gt;
+
+&lt;h5&gt;coding log&lt;/h5&gt;
+
+&lt;p&gt;bool RECORD is define in rdesktop.c  line:460&lt;/p&gt;
+
+&lt;p&gt;因为想读取的是二进制文件，所以要规定一个文件格式&lt;/p&gt;
+
+&lt;p&gt;xwin.c:2283: warning: format ‘%u’ expects type ‘unsigned int’, but argument 2 has type ‘time_t’
+xwin.c: In function ‘xwin_process_events’:
+xwin.c:2379: warning: format ‘%x’ expects type ‘unsigned int’, but argument 2 has type ‘KeySym’
+xwin.c:2382: warning: format ‘%x’ expects type ‘unsigned int’, but argument 2 has type ‘KeySym’&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;%x,  (unsigned int) keysym
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;xwin.c:2432: warning: format ‘%u’ expects type ‘unsigned int’, but argument 2 has type ‘time_t’&lt;/p&gt;
+
+&lt;h3&gt;注意事项&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;自己定义的：FILE * record 需要用完后关闭
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;问题&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;直接设置timeout判断上一个动作是否完成不行，因为在上一个动作还在进行的时候，也有可能中途图像不变，这样虽然会timeout，但是上一个动作其实并没有完成！
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/03/28/x-window</link>
+                <guid>http://perthcharles.github.com/2013/03/28/x-window</guid>
+                <pubDate>2013-03-28T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>linux 反汇编初步</title>
+                <description>&lt;h2&gt;工具&lt;/h2&gt;
+
+&lt;p&gt;十六进制编辑器：hexedit&lt;br/&gt;
+objdump:&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3&gt;hexedit使用&lt;/h3&gt;
+
+&lt;p&gt;暂时只用hexedit来读二进制文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#hexedit filename  //查看文件  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;常用操作键&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;   Ctrl-X: save and exit  
+   Ctrl-C: exit without saving  
+   tab: 在hex和ascii窗口之间切换  
+   Ctrl-U: undo all  
+   Ctrl-S: search forward  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;objdump使用&lt;/h3&gt;
+
+&lt;p&gt;编译程序的时候，gcc添加-g选项，增加调试信息&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#gcc test.c -g -o test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;常用参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-S(source):表示读取哪个文件
+-j:选择读出哪个section，可以通过objdump -h来查看所有的section
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;h3&gt;看懂AT&amp;amp;T汇编&lt;/h3&gt;
+
+&lt;p&gt;由于objdump反汇编得到的结果主要都是AT&amp;amp;T格式的汇编(不过好像可以选择？)，而且linux内核代码也有不少AT&amp;amp;T格式的汇编代码，所以有必要学习一下&lt;/p&gt;
+
+&lt;h4&gt;AT&amp;amp;T汇编特点&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;1.寄存器前面要加%，如：mov %eab,%ebx
+    注意源寄存器和目标寄存器的顺序与intel汇编更好相反，at&amp;amp;t中左边是源寄存器，右边是目标寄存器。所以上面指令是将eax的值赋给ebx
+2.立即数/常数前面要加‘$’,符号常数值直接用。
+    关于符号常量注意理解下面两句：
+    mov A,%eax  //将A代表的值赋给eax,如A=10，则eax里面的值就是10
+    mov $A,%eax     //将A代表的值当作地址，将对应地址的值赋给eax，如A=0x10,0x10处存则20，则把地址0x10处对应的值20赋给eax
+3.movb:8位(byte)   movw：16位(word)  movl：32位(long)  
+others: s=short(16-bit integer) or single(32-bit floating point)
+    q=quad(64 bits)
+    t=ten bytes(80 bits floating point)
+注：如果suffix没有指定且不是内存操作，GAS(Gnu AS)会根据目标寄存器的大小来决定
+4.call/jmp语句的操作数前面要加上“*”作为前缀，远跳转ljmp,远调用lcall，远返回lret
+
+5.寻址规则：displacement(base register, offset register, scalar multiplier)
+  计算方法：(base+dis)+(offset*multiplier)
+  举例：
+    movl    -4(%ebp, %edx, 4), %eax  # Full example: load *(ebp - 4 + (edx * 4)) into eax
+    movl    (%ecx), %edx             # No offset: copy the target of a pointer into a register
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;C语言内嵌汇编&lt;/h4&gt;
+
+&lt;p&gt;格式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;_asm_(&quot;asm statement&quot;:outputs:inputs:registers-modified)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;tips:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.在嵌入汇编中，寄存器前面要加两个%，因为gcc在编译时，会去掉一个%再输出成汇编格式
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;主要寄存器及其作用&lt;/h4&gt;
+
+&lt;h5&gt;8086有14个16位寄存器，按照用途分为：&lt;/h5&gt;
+
+&lt;p&gt;1.通用寄存器(8个)&lt;br/&gt;
+2.指令指针(IP,1个)&lt;br/&gt;
+3.标志寄存器(FR，1个)&lt;br/&gt;
+4.段寄存器(4个)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;通用寄存器&lt;/em&gt;又可以分成2类：数据寄存器和指针寄存器及变址寄存器，各4个&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ax:常用于计算。另外所有的I/O指令都使用这一寄存器与外界设备传送数据
+bx:基址寄存器  
+cx:计数寄存器  
+dx:数据寄存器  
+
+SP:堆栈指针，与SS配合使用，可指向目前的堆栈位置  
+BP:基址寄存器，可作为SS的相对基址位置  
+SI:source index,源变址寄存器------暂不理解  
+DI：destination index,目的变址寄存器  
+上面四个寄存器只能按16位进行操作，主要用来形成操作数的地址  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;指令指针IP&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;IP:16位专用寄存器，用来指向当前执行指令的下一条指令的地址。注意，IP指向的是指令地址的段内地址偏移量  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;标志寄存器FR&lt;/em&gt;&lt;br/&gt;
+16位的寄存器，有意义的有9位，6位是状态位，3位是控制位&lt;br/&gt;
+分布图：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#################################################
+#  #  #  #  #OF#DF#IF#TF#SF#ZF#  #AF#  #PF#  #CF#
+#################################################
+#15#14#13#12#11#10# 9# 8# 7# 6# 5# 4# 3# 2# 1# 0#
+#################################################
+各个标志的含义：  
+OF:overflow  
+DF:direction
+IF:中断允许标志，标志是否响应CPU‘外部可屏蔽‘中断，1表示响应
+TF:跟踪标志
+SF:符号标志，与运算结果的最高位相同
+ZF:零标志，反映运算结果是否为0
+AF:辅助进位标志
+PF:奇偶标志反映运算结果中’1‘的个数，PF=1表示偶数个’1‘
+CF:进位标志反映运算结果是否产生进位或借位
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;段寄存器&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CS:code segment
+DS:data segment
+SS:stack segment
+ES:extra segment
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h4&gt;80386寄存器&lt;/h4&gt;
+
+&lt;p&gt;寄存器都是32位宽&lt;br/&gt;
+&lt;em&gt;通用寄存器&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EAX，EBX，ECX，EDX
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;特殊寄存器&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ESI：通常在内存操作中作为“源地址指针”使用，DS是默认段寄存器
+EDI：通常在内存操作中作为“目标地址指针”，DS是默认段寄存器
+EBP：通常被高级语言编译器用以建造‘堆栈帧’来保存函数或过程的局部变量，SS是默认段寄存器
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h3&gt;主要参考资料&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.cppblog.com/tdweng/articles/120852.html&quot;&gt;汇编中各寄存器的作用-堂吉歌德&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://en.wikibooks.org/wiki/X86_Assembly/GAS_Syntax&quot;&gt;X86 Assembly/GAS Syntax&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/03/25/linux-disassemble</link>
+                <guid>http://perthcharles.github.com/2013/03/25/linux-disassemble</guid>
+                <pubDate>2013-03-25T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>Gnu AS 汇编实践</title>
+                <description>&lt;h3&gt;首先尝试一个最近简单的Hello world程序&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdio.h&amp;gt;
+
+int main(void) 
+{
+        printf(&quot;Hello, world!\n&quot;);
+        return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保存文件：hello.c&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#gcc hello.c -o hello
+#./hello
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;产生等价的32位X86 汇编语言程序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#gcc -S -m64 hello.c  //将m32改位m64，因为我的机器是64的
+#ls hello*
+hello  hello.c  hello.s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到产生来与hello.c等价的汇编语言程序hello.s,下面用gcc编译这个汇编程序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#gcc -m64 hello.s -o hello-asm
+#./hello-asm
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/03/25/gnu-as-pratice</link>
+                <guid>http://perthcharles.github.com/2013/03/25/gnu-as-pratice</guid>
+                <pubDate>2013-03-25T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>ssh免密码登录</title>
@@ -81,7 +466,7 @@ int main(void)
 
 &lt;p&gt;解释完第一条打印信息，后两个就好解释了，因为先将~a存入到了char或unsigned char型中，~a取反后的高位被抛弃，所以直接得到0x5a，即90&lt;/p&gt;
 
-&lt;h3&gt;更进一步  todo&lt;/h3&gt;
+&lt;h3&gt;更进一步&lt;/h3&gt;
 
 &lt;p&gt;将下面代码反汇编，查看取反操作是否是上面的说法：按照32位取反&lt;/p&gt;
 
@@ -93,7 +478,61 @@ int main(void)
 
     return 0;
 }
+
+#gcc test.c -o -g test 
+#objdump -S test &amp;gt; test.debug
+#cat test.debug
+...
+00000000004004c4 &amp;lt;main&amp;gt;:
+#include&amp;lt;stdio.h&amp;gt;
+int main(void)
+{
+  4004c4:   55                      push   %rbp
+  4004c5:   48 89 e5                mov    %rsp,%rbp
+  4004c8:   48 83 ec 10             sub    $0x10,%rsp
+    unsigned char a = 0xa5;
+  4004cc:   c6 45 ff a5             movb   $0xa5,-0x1(%rbp)
+    printf(&quot;%d\n&quot;,~a);
+  4004d0:   0f b6 45 ff             movzbl -0x1(%rbp),%eax
+  4004d4:   89 c2                   mov    %eax,%edx
+  4004d6:   f7 d2                   not    %edx
+  4004d8:   b8 f8 05 40 00          mov    $0x4005f8,%eax
+  4004dd:   89 d6                   mov    %edx,%esi
+  4004df:   48 89 c7                mov    %rax,%rdi
+  4004e2:   b8 00 00 00 00          mov    $0x0,%eax
+  4004e7:   e8 cc fe ff ff          callq  4003b8 &amp;lt;printf@plt&amp;gt;
+
+    return 0;
+  4004ec:   b8 00 00 00 00          mov    $0x0,%eax
+}
+...
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到指令&quot;not %edx&quot;是直接按照32位进行取反的&lt;br/&gt;
+如果对程序进行-O2优化编译的话，就看得更直观&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#gcc -O2 test.c -g -o test-O2
+#objdump -S test-O2 &amp;gt;test-O2.debug
+#cat test-O2.debug
+...
+00000000004004d0 &amp;lt;main&amp;gt;:
+#include&amp;lt;stdio.h&amp;gt;
+int main(void)
+{
+  4004d0:       48 83 ec 08             sub    $0x8,%rsp
+     unsigned char a = 0xa5;
+     printf(&quot;%d\n&quot;,~a);
+  4004d4:       be 5a ff ff ff          mov    $0xffffff5a,%esi
+  4004d9:       bf e8 05 40 00          mov    $0x4005e8,%edi
+  4004de:       31 c0                   xor    %eax,%eax
+  4004e0:       e8 d3 fe ff ff          callq  4003b8 &amp;lt;printf@plt&amp;gt;
+
+     return 0;
+}
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到程序直接将0xffffff5a赋给esi寄存器了&lt;/p&gt;
 
 &lt;h3&gt;我本子相关信息&lt;/h3&gt;
 
@@ -101,11 +540,6 @@ int main(void)
 2.6.32-358.el6.x86_64
 #gcc -v
 gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;编译命令&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#gcc test.c -o test
 &lt;/code&gt;&lt;/pre&gt;
 </description>
                 <link>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c</link>
@@ -573,7 +1007,7 @@ tail:如果想检测一个持续被写入的文件，可以输入下面的命令
 &lt;h3&gt;创建多层目录&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;#mkdir test/test  
-mkdir: cannot create directory `test/test': No such file or directory  
+mkdir: cannot create directory `test/test`: No such file or directory  
 #mkdir -p test/test  
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -582,6 +1016,20 @@ mkdir还有-m参数：手动配置文件属性，而不用默认值&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;关于属性：r=4,w=2,x=1,故7=4+2+1表示具有可读可写可执行的权限  
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;简易随机数&lt;/h3&gt;
+
+&lt;p&gt;如果想生成一个随机数，linux环境下可以简单的输出&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#echo $RANDOM
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是这样的范围是在0～32767之间，如果想生成一个在某个范围之内的随机数呢？这里将用到命令bc完成任务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#echo $RANDOM*10/32767 | bc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;首先通过echo命令完成计算表达式，然后用bc计算出来&lt;/p&gt;
 </description>
                 <link>http://perthcharles.github.com/2013/03/08/linux-using</link>
                 <guid>http://perthcharles.github.com/2013/03/08/linux-using</guid>
@@ -842,6 +1290,16 @@ tags : jekyll
 &lt;h2&gt;我的posts列表样例&lt;/h2&gt;
 
 &lt;ul class=&quot;posts&quot;&gt;
+  
+    &lt;li&gt;&lt;span&gt;13 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/papars/2013/04/13/trace-driven-survey&quot;&gt;Trace驱动的memory模拟：综述&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;12 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/04/12/linux-using&quot;&gt;linux 命令学习（五）&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;28 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/28/x-window&quot;&gt;X window&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;25 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/25/linux-disassemble&quot;&gt;linux 反汇编初步&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;25 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/25/gnu-as-pratice&quot;&gt;Gnu AS 汇编实践&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;24 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/24/ssh-free-pwd&quot;&gt;ssh免密码登录&lt;/a&gt;&lt;/li&gt;
   
