@@ -121,7 +121,7 @@ password=monetdb
 //start the memcached  
 #/usr/local/bin/memcached -d -m 1024 -u root -l [your ip address] -p 12000 -c 1024 -P memcached.pid  
 //if you want to stop memcached  
-#kill `cat /home/zhongbin/HP-Bench/log/log-memcached.pid`  
+#kill `cat memcached.pid`  
 //restart the apache  
 #service httpd restart  
 #./brutis -t tests/append.xml -x [your ip address]:12000 -o append -v  

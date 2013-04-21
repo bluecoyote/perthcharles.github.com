@@ -26,6 +26,7 @@ author :
 #
 #production_url : http://username.github.com
 production_url : http://perthcharles.github.com
+#img_url: http://perthcharles.github.com/assets/images
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #

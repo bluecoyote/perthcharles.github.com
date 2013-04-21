@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Trace驱动的memory模拟：综述</title>
+	<title>并行最小生成树算法</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="Trace驱动的memory模拟：综述" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="并行最小生成树算法" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,93 +44,72 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">Trace驱动的memory模拟：综述</h1>
+						<h1 class="h2 entry-title">并行最小生成树算法</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h1>论文来源</h1>
+					<h2>论文</h2>
 
-<pre><code>(在google scholar中搜索：trace-driven memory simulation a survey )
-#wget http://www.cs.amherst.edu/~sfkaplan/courses/spring-2004/cs40/papers/UM:TDMS.pdf
+<p>A distributed algorithm for minimum-weight spanning tree By:PG Gallager</p>
+
+<h2>重要定理</h2>
+
+<p>最小生成树重要定理：</p>
+
+<pre><code>一个点的最小边一定是在最小生成树中的。
 </code></pre>
 
-<p>博客里面写的只是粗略的理解，错误难免。想更准确的了解还是请看论文原文。</p>
+<p>利用反正法能很快证明。</p>
 
-<h1>简介</h1>
+<h2>算法步骤</h2>
 
-<p>处理器速度与memory速度之间的差距越来越大，成“剪刀口”型增长趋势。在memory-system设计被硬件实现之前，找到评价memory-system设计的方法显得十分重要。<br/>
-其中一种有效的方法就是：通过抓取真实应用的访存trace，然后通过在模拟器上模拟抓取下来的trace行为达到测试memory-system的性能效果。下面将根据前面提到的论文，适当整理思路，以便之后学习。<br/>
-所谓访存trace，就是一系列的对内存进行访问的操作序列（a sequence of memory references）</p>
+<p>1.找到每个点对应的权值最小的边。<br/>
+2.完成步骤1后，原图会被分割成若干个部分。每个部分用一个点代替，各个部分之间可能会存在多条边，仅保留权值最小的那条来表示相应两个部分的距离。<br/>
+3.完成步骤2后，得到一个缩减后的图。重复前两个步骤直到缩减后的图只有一个节点。</p>
+
+<h3>图示</h3>
+
+<p><img src="/assets/images/222.png" alt="算法图示" /></p>
+
+<h2>MapReduce模型并行算法</h2>
+
+<p>要说明的一点是各个节点是否属于同一个部分，利用并查集实现。初始化时，每个节点对应一个集合，随着迭代次数的增加，集合的数量会快速减少。</p>
 
 <hr />
 
-<h2>主要难点</h2>
-
-<pre><code>1，收集完整的trace信息很难。特别是对于多进程，操作系统，动态链接或动态编译产生的访存trace很难获取。
-2，访存trace一般很大。一般都是10G～100G这个量级的。
+<pre><code>Mapper
+输入：(src, dest:weight)
+输出：所有(src_setno, dest_setno:weight),其中src_setno != dest_setno
+注解：src_setno表示src节点所在集合。对于输入进来的src_setno == dest_setno的边直接删除，因为这些边很显然是多余的。从而提高效率
 </code></pre>
-
-<h2>Trace driven memory simulation主要流程</h2>
-
-<pre><code>1，trace collect：    收集某些选定负载的访存序列。
-2，trace reduction:    由于trace文件一般都很大，如果模拟完成的trace将会十分耗时。通过去除不需要、冗余或是不感兴趣的数据来提高整体的效率。
-3，trace processing:   将得到的trace文件当初输入给模拟器处理
-</code></pre>
-
-<h2>对各类方法的评价标准</h2>
-
-<pre><code>准确性：    模拟出来的性能与真实性能之间的差距；reduction之后的trace模拟结果与完成trace模拟结果之间的差异等
-速度：       每秒收集到的trace entry个数（无法跨平台对比）；entry收集速度/entry产生速度;entry processing速度/entry产生速度；总模拟时间/正常执行时间
-额外的内存开销
-reduction 比例
-portability,flexibility,expense,easy-of-use
-</code></pre>
-
-<h3>Trace collect</h3>
-
-<p>评价trace质量的标准主要就是：完整性和详细性。另外在收集过程中，不得收录额外引起的访存动作，主要就是收集工作本身产生的访存动作不应该被收录到trace中</p>
-
-<pre><code>完整性：所有的访存动作都要收集，包括所有用户级进程和操作系统内核产生的访存动作。
-详细性：是否给trace添加一些额外的信息，比如VM page-table状态，访存动作类型（读，写，执行），大小（字，半字，字节等）
-</code></pre>
-
-<p>一般的工具在收集的时候如果trace buffer写满了，都需要停下来将buffer里面的数据导出到外部。<br/>
-各种工具收集方法：</p>
-
-<pre><code>trace收集方式的不同主要体现在收集动作对应系统层次的不同
-------------软件层次-------------
-|   操作系统级的单步执行  |
-|   编译器           |
-|   汇编器           |
-|   连接器和加载器       |
-|--------------------------------
-|   微指令           |
-|--------------------------------
-|   物理层：探测物理信号  |
----------------------------------
-</code></pre>
-
-<h3>Trace reduction</h3>
-
-<p>各类方法的主要不同在于reduction比例的不同和reduction方式</p>
-
-<pre><code>主要reduction方式：
-压缩：       利用标准的数据压缩算法对数据进行压缩（觉得这种方法不实用）
-重要事件： 在收集trace的时候只收集满足一定条件的trace，详见论文
-过滤：       由于每个研究人员的研究兴趣重点不同，想要模拟的trace类型也就不同
-抽样：       分时间抽样和集合抽样。（这种方法使用组内开发的工具：HMTT实践过）
-</code></pre>
-
-<h3>Trace processing</h3>
-
-<p>因为memory-system设计的多样性（页面替换算法、cache大小、写策略：写穿透等，line大小），所以在将trace输入到模拟器时，自然就想一遍输入，就能跑几种不同的配置方式。为了达到这个目的就导致来trace processing方式的多样性。</p>
 
 <hr />
 
-<p>转载请注明出处。<br/>
+<pre><code>Reducer
+输入：(src_setno, dest_setno:weight)
+输出：1.对于src_setno相同的输入，保留weight最小的那条边到最终的解集合中
+      2.将保留边相应两个顶点所在集合进行合并
+</code></pre>
+
+<hr />
+
+<h3>缺点</h3>
+
+<p>需要在每个节点维持并查集，而且reduce过程要对并查集进行写操作，这里可能成为性能瓶颈。</p>
+
+<hr />
+
+<h3>进一步改进</h3>
+
+<p>在mapper与reducer之间添加combiner<br/>
+因为两个集合之间可能有多条边，这样Mapper可能产生很多src_setno，dest_setno都相同的输出。通过combiner将这类型的输出进行合并，只保留weight最小的输入。减少Reducer需要处理的数据量</p>
+
+<hr />
+
+<p>转载请注明出处<br/>
 版权所有，侵犯必究</p>
 
 <hr />
@@ -138,9 +117,9 @@ portability,flexibility,expense,easy-of-use
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-04-13T00:00:00+08:00" datetime="2013-04-13T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-04-21T00:00:00+08:00" datetime="2013-04-21T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>April</abbr></span>
-							<span class="day">13</span>
+							<span class="day">21</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -152,8 +131,8 @@ portability,flexibility,expense,easy-of-use
 
   
      
-    	<li><a href="/categories.html#papars-ref">
-    		papars <span>1</span>
+    	<li><a href="/categories.html#图论-ref">
+    		图论 <span>1</span>
     	</a></li>
     
   
@@ -168,7 +147,7 @@ portability,flexibility,expense,easy-of-use
 
   
      
-    	<li><a href="/tags.html#trace-ref">trace <span>1</span></a></li>
+    	<li><a href="/tags.html#MST-ref">MST <span>1</span></a></li>
     
   
 
@@ -214,13 +193,9 @@ portability,flexibility,expense,easy-of-use
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/04/12/linux-using" title="View linux 命令学习（五）">&laquo; linux 命令学习（五）</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one" title="View 已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]">&laquo; 已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]</a></li>
 							
 							
-							<li class="pipe"> | </li>
-							
-							
-							<li class="next"><a class="internal" rel="next"  href="/2013/04/19/mapreduce-learning" title="View mapreduce 学习笔记">mapreduce 学习笔记 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -267,7 +242,7 @@ portability,flexibility,expense,easy-of-use
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/papars/2013/04/13/trace-driven-survey" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

@@ -53,5 +53,5 @@ Pages支持较多文件类型，我主要用MARKDOWN和HTML这两种文件类型
 [使用Liquid模板语言](http://www.mceiba.com/develop/liquid-learn.html)  
 [Zero to Hosted Jekyll Blog in 3 Minetes](http://jekyllbootstrap.com/)  
 [像黑客一样写博客--Jekyll入门](http://www.soimort.org/posts/101/)  
-  
+[快速入门指南](brionas.github.io/2013/03/01/test/)  
 

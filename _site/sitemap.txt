@@ -9,6 +9,9 @@ http://perthcharles.github.com/categories.html
 http://perthcharles.github.com/atom.xml
 http://perthcharles.github.com/tags.html
 
+http://perthcharles.github.com/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel
+http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one
+http://perthcharles.github.com/2013/04/19/mapreduce-learning
 http://perthcharles.github.com/papars/2013/04/13/trace-driven-survey
 http://perthcharles.github.com/2013/04/12/linux-using
 http://perthcharles.github.com/2013/03/28/x-window
