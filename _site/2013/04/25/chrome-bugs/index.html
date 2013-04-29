@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Categories</title>
+	<title>chrome bugs</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="Categories" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="chrome bugs" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -38,306 +38,117 @@
 			<div class="unit-inner unit-body-inner">
 				<div class="entry-content">
 					
-<article class="unit-article layout-page">
+<article class="unit-article layout-post">
 	<div class="unit-inner unit-article-inner">
 		<div class="content">
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">Categories</h1>
+						<h1 class="h2 entry-title">chrome bugs</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
+					<h3>chrome bug</h3>
+
+<p>不知到怎么回事，我本子(centos6.4)chrome每次打开后自动进入全屏模式，而且无法退出。尝试了一下方法：</p>
+
+<pre><code>#yum update google-chrome-stable.x86_64  //首先当然是想更新,结果无效
+//然后yum remove后再yum install，依然无效
+//最后找到可能原因是chrome配置出现了问题，所以先备份了先前的配置文件，然后重新让chrome生成一遍全新的配置文件
+#cd /.config
+#cp -r google-chrome google-chrome-bak 
+#rm -rf google-chrome
+//之后重新启动chrome，就像是chrome刚装上一样。
+</code></pre>
+
+<p>目前就是这样解决的无法退出全屏的问题，如果有更好的解决办法，请在博客下方留言，谢谢:)</p>
+
+					<div class="meta">
+						<p class="date-publish">
+							Published: 
+							<date class="date-pub" title="2013-04-25T00:00:00+08:00" datetime="2013-04-25T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>April</abbr></span>
+							<span class="day">25</span>
+							<span class="year">2013</span>
+							</date>
+						</p>
+						<ul class="list-category list-linear">
+							<li class="list-head">category: </li>
+							
+							
+
+
+  
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags: </li>
+							
+							
+
+
+  
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					<div class="comment">
 					
 
-<ul class="tag_box inline">
-  
-  
 
-
-  
-     
-    	<li><a href="/categories.html#papars-ref">
-    		papars <span>1</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#tools-ref">
-    		tools <span>1</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#面试题-ref">
-    		面试题 <span>2</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#linux-learning-ref">
-    		linux-learning <span>2</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#软件使用-ref">
-    		软件使用 <span>1</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#x window 学习-ref">
-    		x window 学习 <span>1</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#图论-ref">
-    		图论 <span>1</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#centos6.4-ref">
-    		centos6.4 <span>2</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#benchmarks-ref">
-    		benchmarks <span>1</span>
-    	</a></li>
-     
-    	<li><a href="/categories.html#编程之美-ref">
-    		编程之美 <span>1</span>
-    	</a></li>
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'mybloglife-perthcharles'; // required: replace example with your forum shortname
     
-  
-
-
-</ul>
-
-
- 
-  <h2 id="papars-ref">papars</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/papars/2013/04/13/trace-driven-survey">Trace驱动的memory模拟：综述</a></li>
-      	
-      
-    
-  
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
 
-  </ul>
- 
-  <h2 id="tools-ref">tools</h2>
-  <ul>
-      
-    
 
-
-  
-    
-      
-      	
-      	<li><a href="/tools/2013/02/25/First-view-of-Jekyll">初识Jekyll</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="面试题-ref">面试题</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one">已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-in-c">一道C语言二进制反码题</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="linux-learning-ref">linux-learning</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/linux-learning/2013/03/01/linux-tools">linux常用工具列表</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/linux-learning/2013/03/01/linux-system-info">linux系统信息</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="软件使用-ref">软件使用</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer">utorrent+mplayer使用</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="x window 学习-ref">x window 学习</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window">x window学习笔记</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="图论-ref">图论</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel">并行最小生成树算法</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="centos6.4-ref">centos6.4</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/centos6.4/2013/03/24/centos-mount-ntfs">在centos系统下，挂在ntfs格式的磁盘分区</a></li>
-      	
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/centos6.4/2013/03/18/yum-using">yum使用指南</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="benchmarks-ref">benchmarks</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/benchmarks/2013/03/23/hp-bench">Bench 安装记录</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
- 
-  <h2 id="编程之美-ref">编程之美</h2>
-  <ul>
-      
-    
-
-
-  
-    
-      
-      	
-      	<li><a href="/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line">[编程之美]控制CPU使用率曲线</a></li>
-      	
-      
-    
-  
-
-
-
-  </ul>
-
-
-
-				</div><!-- entry-content -->
+					</div>
+				</div><!-- misc-content -->
 			</div><!-- bd -->
-
 			<footer class="unit-foot">
 				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel" title="View 并行最小生成树算法">&laquo; 并行最小生成树算法</a></li>
+							
+							
+							<li class="pipe"> | </li>
+							
+							
+							<li class="next"><a class="internal" rel="next"  href="/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line" title="View [编程之美]控制CPU使用率曲线">[编程之美]控制CPU使用率曲线 &raquo;</a></li>
+							
+						</ul>
+					</nav>
 					<p class="gotop">
 						<a href="#page">Back to Top</a>
 					</p>
@@ -381,7 +192,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/categories.html" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/04/25/chrome-bugs" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

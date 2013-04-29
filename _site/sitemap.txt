@@ -9,6 +9,10 @@ http://perthcharles.github.com/categories.html
 http://perthcharles.github.com/atom.xml
 http://perthcharles.github.com/tags.html
 
+http://perthcharles.github.com/2013/04/27/kvm-qemu
+http://perthcharles.github.com/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window
+http://perthcharles.github.com/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line
+http://perthcharles.github.com/2013/04/25/chrome-bugs
 http://perthcharles.github.com/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel
 http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one
 http://perthcharles.github.com/2013/04/19/mapreduce-learning

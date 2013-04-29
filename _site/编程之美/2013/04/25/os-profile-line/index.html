@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>并行最小生成树算法</title>
+	<title>[编程之美]控制CPU使用率曲线</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="并行最小生成树算法" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="[编程之美]控制CPU使用率曲线" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,82 +44,53 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">并行最小生成树算法</h1>
+						<h1 class="h2 entry-title">[编程之美]控制CPU使用率曲线</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h2>论文</h2>
+					<h3>闲聊</h3>
 
-<p>A distributed algorithm for minimum-weight spanning tree By:PG Gallager</p>
+<p>由于我的电脑被WIN7鄙视(跑WIN7显得比较慢)，同时如果按照原书中的代码需要掌握相当的WINDOWS API，对于这点目前我同样是做不到的。所以必须摸索一种LINUX下的方法完成类似的任务。<br/>
+程序的思路应该不难理解，CPU使用率曲线是<em>刷新间隔内CPU的平均使用率</em>。同时需要确认你的电脑CPU是几核的。比如我的电脑是双核的，则跑一个while(1)的话，CPU使用率只会达到50%。这点验证代码如下(shell)：</p>
 
-<h2>重要定理</h2>
-
-<p>最小生成树重要定理：</p>
-
-<pre><code>一个点的最小边一定是在最小生成树中的。
+<pre><code>#cat 50-percent-cpu.sh
+#!/bin/bash
+while [ 1 ] 
+do
+:   
+done
+//注:shell空语句必须填上，在bash里冒号“:”表示空语句
 </code></pre>
 
-<p>利用反正法能很快证明。</p>
+<h3>linux下实现</h3>
 
-<h2>算法步骤</h2>
+<p>我机器System Monitor更新CPU History的频率大概是1s(通过观察下方CPU1和CPU2使用率刷新频率得出)<br/>
+如果将正弦曲线周期设置为40s，则至少需要制作40份不同的CPU使用频率出来。<br/>
+对于特定值的CPU使用率，比如30%，则需要让CPU在1s内睡眠700ms, 执行while(1)300ms。至此具体的实现方法应该逐渐清晰了。<br/>
+代码请见我github codeware仓库中的<a href="https://github.com/PerthCharles/codeware/blob/master/sine-cpu.c">sine-cpu.c</a>。简单说明在用gcc编译的时候，由于用到了sin函数，所以需要加入-lm选项。即:</p>
 
-<p>1.找到每个点对应的权值最小的边。<br/>
-2.完成步骤1后，原图会被分割成若干个部分。每个部分用一个点代替，各个部分之间可能会存在多条边，仅保留权值最小的那条来表示相应两个部分的距离。<br/>
-3.完成步骤2后，得到一个缩减后的图。重复前两个步骤直到缩减后的图只有一个节点。</p>
-
-<h3>图示</h3>
-
-<p><img src="/assets/images/222.png" alt="算法图示" /></p>
-
-<h2>MapReduce模型并行算法</h2>
-
-<p>要说明的一点是各个节点是否属于同一个部分，利用并查集实现。初始化时，每个节点对应一个集合，随着迭代次数的增加，集合的数量会快速减少。</p>
-
-<hr />
-
-<pre><code>Mapper
-输入：(src, dest:weight)
-输出：所有(src_setno, dest_setno:weight),其中src_setno != dest_setno
-注解：src_setno表示src节点所在集合。对于输入进来的src_setno == dest_setno的边直接删除，因为这些边很显然是多余的。从而提高效率
+<pre><code>#gcc -lm sine-cpu.c -o sine-cpu
 </code></pre>
 
-<hr />
+<p>跑的时候使用taskset将程序设置到一个CPU上跑</p>
 
-<pre><code>Reducer
-输入：(src_setno, dest_setno:weight)
-输出：1.对于src_setno相同的输入，保留weight最小的那条边到最终的解集合中
-      2.将保留边相应两个顶点所在集合进行合并
+<pre><code>#taskset -c 0 ./sine-cpu
 </code></pre>
 
-<hr />
+<h3>遇到问题</h3>
 
-<h3>缺点</h3>
-
-<p>需要在每个节点维持并查集，而且reduce过程要对并查集进行写操作，这里可能成为性能瓶颈。</p>
-
-<hr />
-
-<h3>进一步改进</h3>
-
-<p>在mapper与reducer之间添加combiner<br/>
-因为两个集合之间可能有多条边，这样Mapper可能产生很多src_setno，dest_setno都相同的输出。通过combiner将这类型的输出进行合并，只保留weight最小的输入。减少Reducer需要处理的数据量</p>
-
-<hr />
-
-<p>转载请注明出处<br/>
-版权所有，侵犯必究</p>
-
-<hr />
+<p>1.使用库函数请一定包含全部正确的头文件。<br/>
+2.忙闲时间控制体现在:busy[i] = (double)(base_line + base_line<em>sin(w</em>i))；</p>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-04-21T00:00:00+08:00" datetime="2013-04-21T00:00:00+08:00" pubdate>
+							<date class="date-pub" title="2013-04-25T00:00:00+08:00" datetime="2013-04-25T00:00:00+08:00" pubdate>
 							<span class="month"><abbr>April</abbr></span>
-							<span class="day">21</span>
+							<span class="day">25</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -131,8 +102,8 @@
 
   
      
-    	<li><a href="/categories.html#图论-ref">
-    		图论 <span>1</span>
+    	<li><a href="/categories.html#编程之美-ref">
+    		编程之美 <span>1</span>
     	</a></li>
     
   
@@ -146,8 +117,6 @@
 
 
   
-     
-    	<li><a href="/tags.html#MST-ref">MST <span>1</span></a></li>
     
   
 
@@ -193,13 +162,13 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one" title="View 已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]">&laquo; 已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/04/25/chrome-bugs" title="View chrome bugs">&laquo; chrome bugs</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/2013/04/25/chrome-bugs" title="View chrome bugs">chrome bugs &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window" title="View x window学习笔记">x window学习笔记 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -246,7 +215,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

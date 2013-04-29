@@ -119,6 +119,15 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 <a href="http://download1.rpmfusion.org/">rpmfusion</a><br/>
 在系统安装完多个源之后，最好再安装一个小工具:<a href="http://mirrors.ustc.edu.cn/centos/6.4/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-14.el6.noarch.rpm">fastestmirror</a>帮助你自动找到下载最快的源</p>
 
+<h3>yum常用命令</h3>
+
+<pre><code>#yum info installed     //列出所有安装包的信息
+#yum update [包名称] //更新指定包
+#yum search [keyword]   //搜索包
+#yum remove [包名称] //卸载指定包
+#yum -y ...     //默认使用yes回答后续的提问
+</code></pre>
+
 					<div class="meta">
 						<p class="date-publish">
 							Published: 

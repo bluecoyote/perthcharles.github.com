@@ -5,10 +5,258 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-04-21T20:23:22+08:00</lastBuildDate>
-        <pubDate>2013-04-21T20:23:22+08:00</pubDate>
+        <lastBuildDate>2013-04-29T17:28:52+08:00</lastBuildDate>
+        <pubDate>2013-04-29T17:28:52+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>kvm qemu环境搭建</title>
+                <description>&lt;h3&gt;主要用到软件&lt;/h3&gt;
+
+&lt;p&gt;vnc&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum install vnc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;kvm&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//检查CPU是否支持kvm，输出为空表示不支持
+#egrep '(vmx|svm)' /proc/cpuinfo
+//安装kvm
+#yum install kvm kmod-kvm qemu kvm-qemu-img virt-viewer virt-manager
+or
+#yum groupinstall KVM  //我选用这种命令 :)
+//检查模块是否加载
+#lsmod |grep kvm
+//应该有以下输出
+kvm_intel             xxxxxx  0 
+kvm                   xxxxxx  1 kvm_intel
+//如果没有上面两个模块，尝试
+#modprobe kvm
+#modprobe kvm-intel
+//还是检查kvm是否安装成功,祈祷不要得到erroe信息吧:)
+#virsh -c qume:///system list
+//如果遇到error:unable connect ...libvirtd...,尝试一般是因为没有启用libvirtd服务，使用命令
+#service libvirtd restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;qume&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum install qemu
+//note:我服务器没能正确执行这条命令，用下面命令发现, so...
+#yum list |grep qemu
+kvm-qemu-img.x86_64 ... installed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;创建一台虚拟机器&lt;/h3&gt;
+
+&lt;p&gt;如果不明白下面命令的含义，请查看man :) &lt;br/&gt;
+1.创建一块虚拟硬盘&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#qemu-img create -f qcow2 disk.img 20G
+or
+#dd if=/dev/zero of=disk.img bs=1G count=5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.在虚拟硬盘中安装操作系统&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#qemu-kvm -enable-kvm -m 2024 -hda disk.img -cdrom win7XXXX.iso -boot d  //内存设置为2G
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h4&gt;可能遇到问题&lt;/h4&gt;
+
+&lt;p&gt;a.如果你遇到qemu-kvm命令不存在的情况，可能是因为：&lt;br/&gt;
+从 6 系列开始 RedHat 推荐使用 virt-install/virsh 系列工具操作 kvm，而不是直接使用 qemu-kvm，所以 qemu-kvm 被移到一个不起眼的地方 /usr/libexec/，这点可以通过命令确认一下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum provides */qemu-kvm
+//在filename位置会发现：/usr/libexec/qemu-kvm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;针对这个问题，可以建立一个链接&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ln -sf /usr/libexec/qemu-kvm /usr/bin/qemu-kvm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;b.qemu-kvm could not initialize sdl - exiting&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//尝试方法一：
+加入-no-quit选项，忽略SDL窗口的退出(无效)
+//最后发现是我的xshell中没有对这台服务器选用x window功能 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;c.vncviewer连接问题&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;据说是vnc的bug，在连接的时候加上AutoSelect=0就好了。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;3.运行一个虚拟机&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//后台启动虚拟机
+#qemu-kvm -m 2048 -hda win7.img -k en-us -vnc 127.0.0.1:29 -daemonize -redir tcp:3389::3389
+//connect via vnc
+#vncviewer localhost:29 AutoSelect=0
+//connect via rdesktop, 必须首先通过设置开启远程链接服务
+#rdesktop localhost
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;运行多个虚拟机&lt;/h3&gt;
+
+&lt;p&gt;从网上找了不少资料，但是配置bridge和tap总是出现问题，最后改用virtual manager来管理，就挺顺利的&lt;/p&gt;
+
+&lt;p&gt;1.确保系统中安装了libvirt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum list |grep libvirt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.使用脚本安装系统&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat win7.sh
+virt-install \
+--name win7 \
+--ram 2048 \
+--vcpus=1 \
+--disk path=win7.img,size=20 \
+--accelerate \
+--cdrom win7.iso \
+--vnc \
+--keymap=en-us
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;具体参数可能会略有不同，详情请查看man virt-install&lt;br/&gt;
+3.在虚拟机中开启远程桌面连接功能&lt;br/&gt;
+4.查看虚拟机ip地址&lt;br/&gt;
+5.用rdesktop连接到虚拟机&lt;/p&gt;
+
+&lt;hr /&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/04/27/kvm-qemu</link>
+                <guid>http://perthcharles.github.com/2013/04/27/kvm-qemu</guid>
+                <pubDate>2013-04-27T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>x window学习笔记</title>
+                <description>&lt;h3&gt;常用函数&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;1.Display *XOpenDisplay(char *display_name);  
+用途:connect to X server  
+参数display_name指明将X window窗口显示到哪个硬件(Specifies the hardware display name)。为空(NULL)时,默认值为当前系统的DISPLAY环境变量。  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;详见:&lt;a href=&quot;http://www.x.org/releases/X11R7.5/doc/man/man3/XOpenDisplay.3.html&quot;&gt;http://www.x.org/releases/X11R7.5/doc/man/man3/XOpenDisplay.3.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2.Window XCreateWindow(Display *display, Window parent, int x, int y, unsigned int width, unsigned int height, unsigned int border_width, int depth, unsigned int class, Visual *visual, unsigned long valuemask, XSetWindowAttributes *attributes);  
+The XCreateWindow function creates an unmapped subwindow for a specified parent window, returns the window ID of the created window, and causes the X server to generate a CreateNotify event. The created window is placed on top in the stacking order with respect to siblings.  
+The created window is not yet displayed (mapped) on the user's display. To display the window, call XMapWindow. The new window initially uses the same cursor as its parent. A new cursor can be defined for the new window by calling XDefineCursor. The window will not be visible on the screen unless it and all of its ancestors are mapped and it is not obscured by any of its ancestors.  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;详见:&lt;a href=&quot;http://www.x.org/releases/X11R7.5/doc/man/man3/XCreateSimpleWindow.3.html&quot;&gt;http://www.x.org/releases/X11R7.5/doc/man/man3/XCreateSimpleWindow.3.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;3.int XMapWindow(Display *display, Window w);
+The XMapWindow function maps the window and all of its subwindows that have had map requests. Mapping a window that has an unmapped ancestor does not display the window but marks it as eligible for display when the ancestor becomes mapped. 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;详见:&lt;a href=&quot;http://www.x.org/releases/X11R7.5/doc/man/man3/XMapWindow.3.html&quot;&gt;http://www.x.org/releases/X11R7.5/doc/man/man3/XMapWindow.3.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;简单用法&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;Display* display = XOpenDisplay(NULL);
+Window win = XCreateSimpleWindow(display, RootWindow(display, screen), 0, 0, width, height, 3, BlackPixel(display, screen), WhitePixel(display, screen));
+XMapWindow(display, win);//完成这一步才会最终在显示器上显示窗口
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;基本流程&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;建立一个 display至 X Server  
+取得 display的相关资料  
+建立视窗  
+和视窗管理程式(Window Manager)沟通  
+显示视窗  
+关闭(destroy)视窗  
+关闭 display
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;常用名词&lt;/h3&gt;
+
+&lt;p&gt;XIC: input context&lt;br/&gt;
+GC:  graphic context&lt;/p&gt;
+
+&lt;h3&gt;参考资料&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://fanqiang.chinaunix.net/a4/b8/20010601/190001312.html&quot;&gt;X Window 程式设计入门--第二章 X Programming 的第一步&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window</link>
+                <guid>http://perthcharles.github.com/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window</guid>
+                <pubDate>2013-04-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>[编程之美]控制CPU使用率曲线</title>
+                <description>&lt;h3&gt;闲聊&lt;/h3&gt;
+
+&lt;p&gt;由于我的电脑被WIN7鄙视(跑WIN7显得比较慢)，同时如果按照原书中的代码需要掌握相当的WINDOWS API，对于这点目前我同样是做不到的。所以必须摸索一种LINUX下的方法完成类似的任务。&lt;br/&gt;
+程序的思路应该不难理解，CPU使用率曲线是&lt;em&gt;刷新间隔内CPU的平均使用率&lt;/em&gt;。同时需要确认你的电脑CPU是几核的。比如我的电脑是双核的，则跑一个while(1)的话，CPU使用率只会达到50%。这点验证代码如下(shell)：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat 50-percent-cpu.sh
+#!/bin/bash
+while [ 1 ] 
+do
+:   
+done
+//注:shell空语句必须填上，在bash里冒号“:”表示空语句
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;linux下实现&lt;/h3&gt;
+
+&lt;p&gt;我机器System Monitor更新CPU History的频率大概是1s(通过观察下方CPU1和CPU2使用率刷新频率得出)&lt;br/&gt;
+如果将正弦曲线周期设置为40s，则至少需要制作40份不同的CPU使用频率出来。&lt;br/&gt;
+对于特定值的CPU使用率，比如30%，则需要让CPU在1s内睡眠700ms, 执行while(1)300ms。至此具体的实现方法应该逐渐清晰了。&lt;br/&gt;
+代码请见我github codeware仓库中的&lt;a href=&quot;https://github.com/PerthCharles/codeware/blob/master/sine-cpu.c&quot;&gt;sine-cpu.c&lt;/a&gt;。简单说明在用gcc编译的时候，由于用到了sin函数，所以需要加入-lm选项。即:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#gcc -lm sine-cpu.c -o sine-cpu
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;跑的时候使用taskset将程序设置到一个CPU上跑&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#taskset -c 0 ./sine-cpu
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;遇到问题&lt;/h3&gt;
+
+&lt;p&gt;1.使用库函数请一定包含全部正确的头文件。&lt;br/&gt;
+2.忙闲时间控制体现在:busy[i] = (double)(base_line + base_line&lt;em&gt;sin(w&lt;/em&gt;i))；&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line</link>
+                <guid>http://perthcharles.github.com/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line</guid>
+                <pubDate>2013-04-25T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>chrome bugs</title>
+                <description>&lt;h3&gt;chrome bug&lt;/h3&gt;
+
+&lt;p&gt;不知到怎么回事，我本子(centos6.4)chrome每次打开后自动进入全屏模式，而且无法退出。尝试了一下方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum update google-chrome-stable.x86_64  //首先当然是想更新,结果无效
+//然后yum remove后再yum install，依然无效
+//最后找到可能原因是chrome配置出现了问题，所以先备份了先前的配置文件，然后重新让chrome生成一遍全新的配置文件
+#cd /.config
+#cp -r google-chrome google-chrome-bak 
+#rm -rf google-chrome
+//之后重新启动chrome，就像是chrome刚装上一样。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;目前就是这样解决的无法退出全屏的问题，如果有更好的解决办法，请在博客下方留言，谢谢:)&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/04/25/chrome-bugs</link>
+                <guid>http://perthcharles.github.com/2013/04/25/chrome-bugs</guid>
+                <pubDate>2013-04-25T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>并行最小生成树算法</title>
@@ -146,7 +394,7 @@ b[0]=a[1],b[N-1]=b[N-2].&lt;/p&gt;
 &lt;a href=&quot;http://blog.csdn.net/inte_sleeper/article/details/7217787&quot;&gt;基于map-reduce的并行最短路径算法&lt;/a&gt;&lt;br/&gt;
 &lt;a href=&quot;blog.csdn.net/v_july_v/article/details/6637014&quot;&gt;MapReduce技术的初步了解与学习&lt;/a&gt;
 下面这篇有空再看看，且里面代码的显示方案很不错&lt;br/&gt;
-&lt;a href=&quot;yangguan.org/mapreduce-patterns-algorithms-and-use-cases/&quot;&gt;MapReduce的模式、算法和用例&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&quot;http://yangguan.org/mapreduce-patterns-algorithms-and-use-cases/&quot;&gt;MapReduce的模式、算法和用例&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2&gt;过程中发现的优秀博客&lt;/h2&gt;
 
@@ -1030,6 +1278,15 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 &lt;a href=&quot;http://pkgs.repoforge.org/rpmforge-release/&quot;&gt;rpmforge&lt;/a&gt;&lt;br/&gt;
 &lt;a href=&quot;http://download1.rpmfusion.org/&quot;&gt;rpmfusion&lt;/a&gt;&lt;br/&gt;
 在系统安装完多个源之后，最好再安装一个小工具:&lt;a href=&quot;http://mirrors.ustc.edu.cn/centos/6.4/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-14.el6.noarch.rpm&quot;&gt;fastestmirror&lt;/a&gt;帮助你自动找到下载最快的源&lt;/p&gt;
+
+&lt;h3&gt;yum常用命令&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#yum info installed     //列出所有安装包的信息
+#yum update [包名称] //更新指定包
+#yum search [keyword]   //搜索包
+#yum remove [包名称] //卸载指定包
+#yum -y ...     //默认使用yes回答后续的提问
+&lt;/code&gt;&lt;/pre&gt;
 </description>
                 <link>http://perthcharles.github.com/centos6.4/2013/03/18/yum-using</link>
                 <guid>http://perthcharles.github.com/centos6.4/2013/03/18/yum-using</guid>
@@ -1444,6 +1701,14 @@ tags : jekyll
 &lt;h2&gt;我的posts列表样例&lt;/h2&gt;
 
 &lt;ul class=&quot;posts&quot;&gt;
+  
+    &lt;li&gt;&lt;span&gt;27 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/04/27/kvm-qemu&quot;&gt;kvm qemu环境搭建&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;26 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window&quot;&gt;x window学习笔记&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;25 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line&quot;&gt;[编程之美]控制CPU使用率曲线&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;25 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/04/25/chrome-bugs&quot;&gt;chrome bugs&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;21 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel&quot;&gt;并行最小生成树算法&lt;/a&gt;&lt;/li&gt;
   

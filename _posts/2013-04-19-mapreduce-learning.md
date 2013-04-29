@@ -23,7 +23,7 @@ MapReduce编程模型对数据密集型的问题效果比较显著。
 [基于map-reduce的并行最短路径算法](http://blog.csdn.net/inte_sleeper/article/details/7217787)  
 [MapReduce技术的初步了解与学习](blog.csdn.net/v_july_v/article/details/6637014)
 下面这篇有空再看看，且里面代码的显示方案很不错  
-[MapReduce的模式、算法和用例](yangguan.org/mapreduce-patterns-algorithms-and-use-cases/)  
+[MapReduce的模式、算法和用例](http://yangguan.org/mapreduce-patterns-algorithms-and-use-cases/)  
 
 ##过程中发现的优秀博客  
 [famousphil.com](famousphil.com/blog)  
