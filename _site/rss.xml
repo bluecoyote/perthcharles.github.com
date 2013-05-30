@@ -5,10 +5,504 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-04-29T17:28:52+08:00</lastBuildDate>
-        <pubDate>2013-04-29T17:28:52+08:00</pubDate>
+        <lastBuildDate>2013-05-26T15:12:48+08:00</lastBuildDate>
+        <pubDate>2013-05-26T15:12:48+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>POJ上看到一种O(nm)求逆序数的方法</title>
+                <description>&lt;h1&gt;思路其实很简单，直接上代码&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;int count_inver(char *str, int len)
+{
+        int i;  
+        int cnt = 0;
+        int a[4] = {0};
+        for(i = len - 1; i &amp;gt;= 0; i--) {
+                switch (str[i]) {
+                        case 'A':
+                                a[1]++; 
+                                a[2]++; 
+                                a[3]++; 
+                                break;  
+                        case 'C':
+                                a[2]++; 
+                                a[3]++; 
+                                cnt += a[1];
+                                break;  
+                        case 'G':
+                                a[3]++; 
+                                cnt += a[2];
+                                break;  
+                        case 'T':
+                                cnt += a[3];
+                }
+        }
+        return cnt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;算法分析&lt;/h1&gt;
+
+&lt;p&gt;时间复杂度是O(mn)，其中m表示所有可能出现元素的个数，比如上例只可能出现“A,C,G和T”，那么m=4，而n表示该字符串的长度。由于m一般来讲比n小很多，所以这种以空间换时间的算法还是挺有效果的。&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/05/22/inverse-number</link>
+                <guid>http://perthcharles.github.com/2013/05/22/inverse-number</guid>
+                <pubDate>2013-05-22T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>javascript quick learning</title>
+                <description>&lt;p&gt;字符串：&quot;perth charles&quot;&lt;br/&gt;
+求字符串长度：&quot;perth charles&quot;.length&lt;/p&gt;
+
+&lt;p&gt;&quot;cake&quot;.length * 9&lt;br/&gt;
+confirm(&quot;you must be kidding me!\n&quot;);  弹出窗口让用户确认某些信息
+prompt(&quot;what is your name?&quot;)； 弹出窗口接受用户输入
+console.log(&quot;Hello&quot;);   相当与printf语句&lt;/p&gt;
+
+&lt;p&gt;注意这两个比较操作符
+=== Equal to
+!== Not equal to&lt;/p&gt;
+
+&lt;p&gt;&quot;wonderful day&quot;.substring(3,7);     输出字符的第4位到第7位&lt;/p&gt;
+
+&lt;p&gt;声明三种变量
+a. var myName = &quot;Leng&quot;;
+b. var myAge = 30;
+c. var isOdd = true;&lt;/p&gt;
+
+&lt;p&gt;// This is what a function looks like:
+var divideByThree = function (number) {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var val = number / 3;
+console.log(val);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;};  //注意这个地方也有分号&lt;/p&gt;
+
+&lt;p&gt;生成一个0到1之间的随机数，如一次结果为：0.8760658339597285
+var computerChoice = Math.random();&lt;/p&gt;
+
+&lt;p&gt;//检测x的类型
+typeof(x) ！== 'number'&lt;/p&gt;
+
+&lt;p&gt;// Example of a for loop:
+for (var counter = 1; counter &amp;lt; 6; counter++) {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;console.log(counter);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;数组/列表
+var arrayName = [data, data, data];
+arrayName.length    //求数组/列表 长度
+arrayName.push();   //给列表添加元素&lt;/p&gt;
+
+&lt;p&gt;isNaN() //判断是否是一个数&lt;/p&gt;
+
+&lt;p&gt;逻辑运算符跟C一样&lt;/p&gt;
+
+&lt;p&gt;//一个对象的例子
+var phonebookEntry = {};
+phonebookEntry.name = 'Oxnard Montalvo';
+phonebookEntry.number = '(555) 555-5555';
+phonebookEntry.phone = function() {
+  console.log('Calling ' + this.name + ' at ' + this.number + '...');
+};
+phonebookEntry.phone();&lt;/p&gt;
+
+&lt;p&gt;//又一个典型的对象声明例子
+var friends = {};//相当与一个对象列表？
+friends.bill = {
+  firstName: &quot;Bill&quot;,
+  lastName: &quot;Gates&quot;,
+  number: &quot;(206) 555-5555&quot;,
+  address: ['One Microsoft Way','Redmond','WA','98052']
+};&lt;/p&gt;
+
+&lt;p&gt;friends.steve = {
+  firstName: &quot;Steve&quot;,
+  lastName: &quot;Jobs&quot;,
+  number: &quot;(408) 555-5555&quot;,
+  address: ['1 Infinite Loop','Cupertino','CA','95014']
+};&lt;/p&gt;
+
+&lt;p&gt;//一个更加复杂的例子
+/*
+var friends = {};
+friends.bill = {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;firstName: &quot;Bill&quot;,
+lastName: &quot;gates&quot;,
+number: &quot;20&quot;,
+address: [&quot;beijing&quot;, &quot;china&quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;};
+friends.steve = {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;firstName: &quot;Steve&quot;,
+lastName: &quot;dddddd&quot;,
+number: &quot;22&quot;,
+address: [&quot;shanghai&quot;, &quot;china&quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;};
+var list = function(){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for(var example in friends){
+    console.log(example);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;};&lt;/p&gt;
+
+&lt;p&gt;var search = function(name){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for(var entity in friends){
+    if(friends[entiry].firstName === name){
+        console.log(friends[entiry]);
+        return friends[entity];
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;};
+*/&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/05/17/javascript-quick-learning</link>
+                <guid>http://perthcharles.github.com/2013/05/17/javascript-quick-learning</guid>
+                <pubDate>2013-05-17T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>中国剩余定理</title>
+                <description>&lt;h2&gt;问题&lt;/h2&gt;
+
+&lt;p&gt;一个整数除以三余二，除以五余三，除以七余二，求最小的满足条件的整数&lt;/p&gt;
+
+&lt;h2&gt;要点&lt;/h2&gt;
+
+&lt;p&gt;各个除数之间要互质&lt;/p&gt;
+
+&lt;h2&gt;解法要点&lt;/h2&gt;
+
+&lt;p&gt;求出5和7的最小公倍数35的倍数中除以3余数为1的最小一个70（这个称为35相对于3的数论倒数），3和7的最小公倍数21相对于5的数论倒数21，3和5的最小公倍数15相对于7的数论倒数15，然后&lt;br/&gt;
+$$70\times 2+21\times 3+15\times 2=233$$&lt;br/&gt;
+但这求出的并不是最小值，因为35%3已经等于2了，所以最终的求解算法应该是：&lt;br/&gt;
+$$n=\left( a\ast 10+b\ast 4+c\ast 15\right) \%105$$&lt;br/&gt;
+求模是因为如果存在一个比105大的可行解，则必然存在一个比105小的可行解。
+然后根据题目要求确定满足条件的n。&lt;/p&gt;
+
+&lt;h2&gt;C代码&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#include&amp;lt;stdio.h&amp;gt;
+
+//get_m()的作用就是求a*b 相对与c 的数论倒数
+int get_m(int a, int b, int c)
+{
+    int ab, ab_r;
+    int i, j;
+    ab = a*b;
+    ab_r = ab%c;
+    j = ab;
+    for(i = 0; i &amp;lt; c; i ++){
+        if(ab % c == 1)
+            return ab;
+        else
+            ab += j;
+    }
+    return -1;
+}
+
+int main()
+{
+    int a, b, c, n;
+    int a_r, b_r, c_r;  //a_r是n%a的余数
+    int a_m, b_m, c_m;  //a_m是(b*c)相对与a的数论倒数
+    scanf(&quot;%d %d %d&quot;, &amp;amp;a, &amp;amp;b, &amp;amp;c);
+    if(a*b*c == 0){
+        printf(&quot;you must be kidding me!\n&quot;);
+        return 0;
+    }
+    scanf(&quot;%d %d %d&quot;, &amp;amp;a_r, &amp;amp;b_r, &amp;amp;c_r);
+    if((a_m = get_m(b, c, a)) != -1 &amp;amp;&amp;amp; (b_m = get_m(a, c, b)) != -1 &amp;amp;&amp;amp; (c_m = get_m(a, b, c)) != -1){
+        printf(&quot;n is:%d\n&quot;, (a_m*a_r + b_m*b_r + c_m*c_r) % (a*b*c));
+        return 0;
+    }
+    else{
+        printf(&quot;Can not find an answer!\n&quot;);
+        return 0; 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zh.wikipedia.org/zh-hans/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86&quot;&gt;中国剩余定理&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem</link>
+                <guid>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem</guid>
+                <pubDate>2013-05-14T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>交互式程序性能评测</title>
+                <description>
+</description>
+                <link>http://perthcharles.github.com/Papers/2013/05/11/</link>
+                <guid>http://perthcharles.github.com/Papers/2013/05/</guid>
+                <pubDate>2013-05-11T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>linux命令学习(七)：grep高级用法与正则表达式初步</title>
+                <description>&lt;h2&gt;grep 高级用法&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#grep -An -Bm -n -v  [--color=auto] '搜索字符串' filename
+-An 输出找到行之后的n行
+-Bm 输出找到行之前的m行
+//复习之前的用法
+-n  附带输出相应行号
+-v  反向选择
+-i  忽视大小写
+
+//为了让找到的字符串自动加上颜色，修改~/.bashrc,添加如下命令
+alias grep='grep --color=auto'
+//使更改后的文件生效
+#source ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;关于正则表达式需要注意的点&lt;/h2&gt;
+
+&lt;p&gt;1.处理单元是行&lt;br/&gt;
+2.正则表达式的结果可能收到不同语系编码的影响&lt;br/&gt;
+3.如需查找具有特殊含义的符号，需要使用转义字符'\'&lt;/p&gt;
+
+&lt;h3&gt;集合[]用法&lt;/h3&gt;
+
+&lt;p&gt;[]中可以包含多个字符，如[abcd]。含义为:出现abcd四个中的任意一个都可以，而且出现且仅出现一次。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#grep 't[ab]st' filename    //找出filename中所有的tast和tbst串
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;^反选符&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#grep '[^g]oo' filename     //找出filename中所有包含'oo'字符串且'oo'前面不是字符g的出现
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-连续出现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#grep '[a-z]oo' filename    //找出filename中所有以a到z的字符开始后接oo的出现
+#grep '[[:lower:]]' filename    //效果与上句类似，但是排除了语系不同可能带来的干扰
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;行首与行尾字符^$&lt;/h3&gt;
+
+&lt;p&gt;行首字符'^',这点要与集合[]中出现的^区别开&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#grep -n 'the' filename     //找出filename中所有以the开始的行
+#grep -n '\.$' filename     //找出filename中所有以'.'结束的行
+#grep -n '^$' filename      //找出空白行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;任意一个字符和重复字符(. 和 *)&lt;/h3&gt;
+
+&lt;p&gt;'.'表示有且仅有一个字符&lt;br/&gt;
+'&lt;em&gt;'表示重复0个或多个前面的字符，这点与通配符(表示任意个字符)'&lt;/em&gt;'需要区分开&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#echo o |grep 'oo*' //如果按照通配符的理解，至少需要两个oo后接任意个字符,但实际上这条命令的含义是找到至少含有一个o，且后面跟0个o或多个o的所有字符串
+//下面命令的含义是：找到字符串开头和结尾都是g，且两个g之间只能存在字符o，且至少有一个
+#grep -n '^goo*g$' filename
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;sed命令用法&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#sed [-nefi] [action]
+-n  仅输出经过特殊处理的那些行到屏幕
+-e  直接在命令行模式下进行sed动作的编辑
+-f  直接将sed的动作写在一个文件内 -f filename
+-i  直接修改读取的文件内容，而不是由屏幕输出
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;sed命令很强大，也很繁琐。所以这里不罗嗦直接上我练习的几个命令&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#nl /etc/passwd | sed  '2a drink tea' |sed '4a drink tea, too' |grep -A3 -B3 'drink tea'            //在第2行和第4行添加相应内容
+#nl /etc/passwd | sed  '2a drink tea' |sed '4a drink tea, too' |sed -n '2,5p' |grep -A3 -B3 'drink tea'     //在上一条的基础上只显示2-5行数据
+#nl /etc/passwd | sed  '2a drink tea' |sed '4a drink tea, too' |sed 's/drink/drinking/g' |grep -A3 -B3 'drink.* tea'    //将drink替换为drinking
+#ifconfig eth0 |grep 'inet addr' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g'  //用两次替换，将电脑的IP地址从ifconfig中抽取出来
+#ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed '/^.*X.*$/d'    //删除特定的行，显示IP地址
+#ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed 's/^.*X.*$//g' |sed '/^$/d'     //将某些特定的行替换为空行，并删除
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;awk命令&lt;/h3&gt;
+
+&lt;p&gt;awk对比sed：awk主要针对行内数据进行操作，sed主要是以行为单位进行操作&lt;br/&gt;
+命令语法格式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#awk '条件类型1{动作1} 条件类型2{动作2} ...' filename
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;awk过于复杂，所以以后慢慢练习。&lt;/p&gt;
+
+&lt;h3&gt;其他好用命令：&lt;/h3&gt;
+
+&lt;p&gt;diff+patch:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;diff用来比较两个文件的差别(虽然我基本都用vimdiff)，如果结合patch命令还能完成版本管理的一部分功能呢。命令如下：
+#last &amp;gt; last.text   //生成一个文件
+#cat last.text | sed '3,5d' |sed '$d' &amp;gt; last.text2  //生成一个*更新*的文件
+#diff -Naur last.text last.text2 &amp;gt; last.patch       //比较两个文件
+#ll last.text*  
+-rw-rw-r--. 1 zhongbin zhongbin 29298 May 21 15:28 last.text
+-rw-rw-r--. 1 zhongbin zhongbin 29030 May 21 15:30 last.text2
+#patch -p0 &amp;lt; last.patch //更新，将旧文件按照diff的结果更新到新的文件
+#ll last.text*
+-rw-rw-r--. 1 zhongbin zhongbin 29030 May 21 15:33 last.text
+-rw-rw-r--. 1 zhongbin zhongbin 29030 May 21 15:30 last.text2
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/05/09/linuxgrep</link>
+                <guid>http://perthcharles.github.com/2013/05/09/linuxgrep</guid>
+                <pubDate>2013-05-09T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>linux命令学习(六)：cut grep && || sort wc uniq</title>
+                <description>&lt;h2&gt;命令执行时的判断依据&lt;/h2&gt;
+
+&lt;p&gt;在一行中执行多条命令可能用到的用法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//不管cmd1是否执行成功，都会执行cmd2. 就是依次执行cmd1和cmd2
+#cmd1;cmd2
+
+//若cmd1执行完成并正确执行，则开始执行cmd2；若执行出错则跳过cmd2
+#cmd1 &amp;amp;&amp;amp; cmd2
+
+//若cmd1执行完成并正确执行，则跳过cmd2；若执行出错则执行cmd2
+#cmd1 || cmd2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;选取命令：cut、grep&lt;/h2&gt;
+
+&lt;h3&gt;cut用法&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#cut -d '分隔符' -f fields  &amp;lt;== 用于分隔字符
+#cut -c 字符范围            &amp;lt;== 用于处理排列整齐的信息
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;cut参数解释&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;-d 后面跟分隔符，与-f一同使用
+-f 后面跟需要取出来的段号，从1开始计数
+-c 以字符为单位取出固定字符区间
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;cut使用举例&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;//各段之间以'：'来分隔，命令取出第3和第5段
+#echo $PATH | cut -d ':' -f 3,5
+
+//用last在显示的登录者信息中仅留下用户名
+#last | cut -d ' ' -f 1
+
+//去掉export命令执行结果中每行的'declare -x '
+#export |cut -c 12-
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;cut使用总结&lt;/h3&gt;
+
+&lt;p&gt;cut的主要用途是以行为单位进行数据分解，对有固定格式的行尤其有效&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3&gt;grep用法&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#grep [-acinv] [--color=auto] '待查找字符串' filename
+参数解释：
+-a 将binary文件以text文件的方式查找数据
+-c 计算找到符合条件的字符串的次数
+-i 忽略大小写
+-n 顺便输出行号
+-v 反向选择
+-r recursive递归的查找，用于文件夹中还有文件夹的情形
+--color=auto 可以将找到的关键字部分加上颜色显示
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;grep举例&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#last |grep 'root'
+#last |grep -v 'root'
+#last |grep 'root' |cut -d ' ' -f 1
+#grep 'MANPATH' /etc/man.config
+
+//在文件夹中找寻所有包含'include'的文件
+#grep -r 'include' *
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;sort参数&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;-f 忽视大小写
+-b 忽视每行最前面的空格
+-n 以纯数字进行排序
+-r 反向排序
+-u 相同数据仅出现一个代表
+-t 指定分隔符，默认为Tab
+-k 指定排序field
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;举例&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat /etc/passwd |sort
+#cat /etc/passwd |sort -t ':' -k 3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;uniq 和wc&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#uniq [-ic]
+-i 忽视大小写
+-c 进行计数
+
+#wc [-lwm]
+-l 以行为单位
+-w 以单词为单位
+-m 以字符为单位
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;更多文本处理命令tr col join paste expand split&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#last |tr '[a-z]' '[A-Z]'   //转换所有小写字母到大写
+#cat /etc/passwd |tr -d ':' //删除输出信息中的':'
+
+#col -x             //将tab扩展为空格
+
+#man col |col -b &amp;gt; /root/col.man    //将man文件转为文本文件方便查阅
+
+#paste -d ':' file1 file2       //将两个文件同一行粘帖在一起，如果file位置为'-',则表示输入来自standant input
+
+#expand [-t num] file           //将file的tab转为num数量的空格
+
+#split -b 300k file PREFIX      //将file文件切成大小为300k的文件组
+#ls -al |split -l 10 - lsroot       //将ls执行结果以10行为单位存成文件
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/05/08/cut-and-grep</link>
+                <guid>http://perthcharles.github.com/2013/05/08/cut-and-grep</guid>
+                <pubDate>2013-05-08T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>kvm qemu环境搭建</title>
@@ -1287,6 +1781,10 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 #yum remove [包名称] //卸载指定包
 #yum -y ...     //默认使用yes回答后续的提问
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;参考资料&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://cissco.iteye.com/blog/397163&quot;&gt;CentOS 下 rpm包与 yum 安装与卸载&lt;/a&gt;&lt;/p&gt;
 </description>
                 <link>http://perthcharles.github.com/centos6.4/2013/03/18/yum-using</link>
                 <guid>http://perthcharles.github.com/centos6.4/2013/03/18/yum-using</guid>
@@ -1591,7 +2089,7 @@ date (1)             - print or set the system date and time
                 <title>linux常用工具列表</title>
                 <description>&lt;h3&gt;常用工具列表&lt;/h3&gt;
 
-&lt;p&gt;git&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;git&lt;/em&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;#git add *
 #git commmit -a -m &quot;commit-name&quot;
@@ -1599,19 +2097,33 @@ date (1)             - print or set the system date and time
 #git clone XXX
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;retext&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#retext filename  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;xsel&lt;/p&gt;
+&lt;p&gt;xsel:命令行复制到剪切板&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;#cat filename |xsel -b -i  
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;goagent&lt;/p&gt;
+&lt;p&gt;goagent：不懂的自己查去&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;#python proxy.py  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;iconv:解决打开windows txt文件中乱码问题&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#iconv -f gbk -t utf8 from.txt &amp;gt; to.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;screen:实现在断开ssh的情况下，在服务器上继续执行程序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#screen -S screen-name  //新建一个sreen
+#ctrl+a+d       //先按ctrl+a,然后再按d即可保留screen，下次ssh连接服务器后可以重新进入这个screen
+#exit           //如果在某个screen里面的工作完成后，该命令可以完全退出screen
+#screen -ls     //查看目前在跑的screen
+#screen -r screen-name or id    //恢复screen
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;foxit reader&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#wget http://cdn04.foxitsoftware.com/pub/foxit/reader/desktop/linux/1.x/1.1/enu/FoxitReader-1.1-0.fc9.i386.rpm
 &lt;/code&gt;&lt;/pre&gt;
 </description>
                 <link>http://perthcharles.github.com/linux-learning/2013/03/01/linux-tools</link>
@@ -1701,6 +2213,18 @@ tags : jekyll
 &lt;h2&gt;我的posts列表样例&lt;/h2&gt;
 
 &lt;ul class=&quot;posts&quot;&gt;
+  
+    &lt;li&gt;&lt;span&gt;22 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/22/inverse-number&quot;&gt;POJ上看到一种O(nm)求逆序数的方法&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;17 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/17/javascript-quick-learning&quot;&gt;javascript quick learning&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;14 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem&quot;&gt;中国剩余定理&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;11 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/Papers/2013/05/11/&quot;&gt;交互式程序性能评测&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;09 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/09/linuxgrep&quot;&gt;linux命令学习(七)：grep高级用法与正则表达式初步&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;08 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/08/cut-and-grep&quot;&gt;linux命令学习(六)：cut grep &amp;&amp; || sort wc uniq&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;27 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/04/27/kvm-qemu&quot;&gt;kvm qemu环境搭建&lt;/a&gt;&lt;/li&gt;
   

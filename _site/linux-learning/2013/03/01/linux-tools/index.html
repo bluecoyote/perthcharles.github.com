@@ -53,7 +53,7 @@
 				<div class="entry-content">
 					<h3>常用工具列表</h3>
 
-<p>git</p>
+<p><em>git</em></p>
 
 <pre><code>#git add *
 #git commmit -a -m "commit-name"
@@ -61,19 +61,33 @@
 #git clone XXX
 </code></pre>
 
-<p>retext</p>
-
-<pre><code>#retext filename  
-</code></pre>
-
-<p>xsel</p>
+<p>xsel:命令行复制到剪切板</p>
 
 <pre><code>#cat filename |xsel -b -i  
 </code></pre>
 
-<p>goagent</p>
+<p>goagent：不懂的自己查去</p>
 
 <pre><code>#python proxy.py  
+</code></pre>
+
+<p>iconv:解决打开windows txt文件中乱码问题</p>
+
+<pre><code>#iconv -f gbk -t utf8 from.txt &gt; to.txt
+</code></pre>
+
+<p>screen:实现在断开ssh的情况下，在服务器上继续执行程序</p>
+
+<pre><code>#screen -S screen-name  //新建一个sreen
+#ctrl+a+d       //先按ctrl+a,然后再按d即可保留screen，下次ssh连接服务器后可以重新进入这个screen
+#exit           //如果在某个screen里面的工作完成后，该命令可以完全退出screen
+#screen -ls     //查看目前在跑的screen
+#screen -r screen-name or id    //恢复screen
+</code></pre>
+
+<p>foxit reader</p>
+
+<pre><code>#wget http://cdn04.foxitsoftware.com/pub/foxit/reader/desktop/linux/1.x/1.1/enu/FoxitReader-1.1-0.fc9.i386.rpm
 </code></pre>
 
 					<div class="meta">
@@ -195,6 +209,7 @@
 					Theme: <a href="http://layouts-the.me">the_minimum</a> based on <a href="http://jekyllbootstrap.com/">Jekyll-bootstrap</a>.<br>
 					Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>.
 				</p>
+				<p> <iframe src="http://free.timeanddate.com/clock/i3n3olta/n33/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="211" height="58"></iframe> </p>
 			</div><!-- unit-foot-inner -->
 		</div><!-- unit-foot -->
 	</footer>
@@ -219,4 +234,21 @@
   
 </body>
 </html>
+
+
+<script type="text/javascript"
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
 

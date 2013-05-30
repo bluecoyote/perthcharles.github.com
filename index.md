@@ -29,4 +29,5 @@ tagline: Supporting tagline
 
 ###友情链接  
 [潘海洋的博客](http://pocean.blog.163.com/blog/#m=0)  
+[黎明灰烬的博客](http://www.jackwish.net/)  
 

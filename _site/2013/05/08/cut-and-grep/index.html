@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>linux命令学习(六)：cut grep && || sort wc uniq</title>
+	<meta name="author" content="Perth Charles">
+	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux命令学习(六)：cut grep && || sort wc uniq" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<nav class="nav-global">
+					<ul>
+						<li class="logo"><a href="/">My blog</a></li>
+						<li class="archive"><a href="/archive.html">archive</a></li>
+						<li class="page"><a href="/pages.html">pages</a></li>
+						<li class="category"><a href="/categories.html">categories</a></li>
+						<li class="tag"><a href="/tags.html">tags</a></li>
+						<li class="forkme"><div><iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=plusjade&repo=jekyll-bootstrap&type=fork&count=true"
+									allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe></div></li>
+					</ul>
+				</nav>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">linux命令学习(六)：cut grep && || sort wc uniq</h1>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					<h2>命令执行时的判断依据</h2>
+
+<p>在一行中执行多条命令可能用到的用法</p>
+
+<pre><code>//不管cmd1是否执行成功，都会执行cmd2. 就是依次执行cmd1和cmd2
+#cmd1;cmd2
+
+//若cmd1执行完成并正确执行，则开始执行cmd2；若执行出错则跳过cmd2
+#cmd1 &amp;&amp; cmd2
+
+//若cmd1执行完成并正确执行，则跳过cmd2；若执行出错则执行cmd2
+#cmd1 || cmd2
+</code></pre>
+
+<hr />
+
+<h2>选取命令：cut、grep</h2>
+
+<h3>cut用法</h3>
+
+<pre><code>#cut -d '分隔符' -f fields  &lt;== 用于分隔字符
+#cut -c 字符范围            &lt;== 用于处理排列整齐的信息
+</code></pre>
+
+<h3>cut参数解释</h3>
+
+<pre><code>-d 后面跟分隔符，与-f一同使用
+-f 后面跟需要取出来的段号，从1开始计数
+-c 以字符为单位取出固定字符区间
+</code></pre>
+
+<h3>cut使用举例</h3>
+
+<pre><code>//各段之间以'：'来分隔，命令取出第3和第5段
+#echo $PATH | cut -d ':' -f 3,5
+
+//用last在显示的登录者信息中仅留下用户名
+#last | cut -d ' ' -f 1
+
+//去掉export命令执行结果中每行的'declare -x '
+#export |cut -c 12-
+</code></pre>
+
+<h3>cut使用总结</h3>
+
+<p>cut的主要用途是以行为单位进行数据分解，对有固定格式的行尤其有效</p>
+
+<hr />
+
+<h3>grep用法</h3>
+
+<pre><code>#grep [-acinv] [--color=auto] '待查找字符串' filename
+参数解释：
+-a 将binary文件以text文件的方式查找数据
+-c 计算找到符合条件的字符串的次数
+-i 忽略大小写
+-n 顺便输出行号
+-v 反向选择
+-r recursive递归的查找，用于文件夹中还有文件夹的情形
+--color=auto 可以将找到的关键字部分加上颜色显示
+</code></pre>
+
+<h3>grep举例</h3>
+
+<pre><code>#last |grep 'root'
+#last |grep -v 'root'
+#last |grep 'root' |cut -d ' ' -f 1
+#grep 'MANPATH' /etc/man.config
+
+//在文件夹中找寻所有包含'include'的文件
+#grep -r 'include' *
+</code></pre>
+
+<hr />
+
+<h2>sort参数</h2>
+
+<pre><code>-f 忽视大小写
+-b 忽视每行最前面的空格
+-n 以纯数字进行排序
+-r 反向排序
+-u 相同数据仅出现一个代表
+-t 指定分隔符，默认为Tab
+-k 指定排序field
+</code></pre>
+
+<h3>举例</h3>
+
+<pre><code>#cat /etc/passwd |sort
+#cat /etc/passwd |sort -t ':' -k 3
+</code></pre>
+
+<hr />
+
+<p>uniq 和wc</p>
+
+<pre><code>#uniq [-ic]
+-i 忽视大小写
+-c 进行计数
+
+#wc [-lwm]
+-l 以行为单位
+-w 以单词为单位
+-m 以字符为单位
+</code></pre>
+
+<hr />
+
+<p>更多文本处理命令tr col join paste expand split</p>
+
+<pre><code>#last |tr '[a-z]' '[A-Z]'   //转换所有小写字母到大写
+#cat /etc/passwd |tr -d ':' //删除输出信息中的':'
+
+#col -x             //将tab扩展为空格
+
+#man col |col -b &gt; /root/col.man    //将man文件转为文本文件方便查阅
+
+#paste -d ':' file1 file2       //将两个文件同一行粘帖在一起，如果file位置为'-',则表示输入来自standant input
+
+#expand [-t num] file           //将file的tab转为num数量的空格
+
+#split -b 300k file PREFIX      //将file文件切成大小为300k的文件组
+#ls -al |split -l 10 - lsroot       //将ls执行结果以10行为单位存成文件
+</code></pre>
+
+					<div class="meta">
+						<p class="date-publish">
+							Published: 
+							<date class="date-pub" title="2013-05-08T00:00:00+08:00" datetime="2013-05-08T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>May</abbr></span>
+							<span class="day">08</span>
+							<span class="year">2013</span>
+							</date>
+						</p>
+						<ul class="list-category list-linear">
+							<li class="list-head">category: </li>
+							
+							
+
+
+  
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags: </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/tags.html#Shell-ref">Shell <span>3</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					<div class="comment">
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'mybloglife-perthcharles'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+					</div>
+				</div><!-- misc-content -->
+			</div><!-- bd -->
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/04/27/kvm-qemu" title="View kvm qemu环境搭建">&laquo; kvm qemu环境搭建</a></li>
+							
+							
+							<li class="pipe"> | </li>
+							
+							
+							<li class="next"><a class="internal" rel="next"  href="/2013/05/09/linuxgrep" title="View linux命令学习(七)：grep高级用法与正则表达式初步">linux命令学习(七)：grep高级用法与正则表达式初步 &raquo;</a></li>
+							
+						</ul>
+					</nav>
+					<p class="gotop">
+						<a href="#page">Back to Top</a>
+					</p>
+				</div>
+			</footer>
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+	<footer class="the-footer">
+		<div class="unit-foot">
+			<div class="unit-inner unit-foot-inner">
+				<div class="misc vcard">
+					<h4>about</h4>
+					<ul>
+						<li class="contact"><address><span class="author fn n">Perth Charles</span> - <span class="fn email">zhongbincharles@gmail.com</span></address></li>
+						<li class="github"><a href="http://github.com/PerthCharles/" rel="me">github.com/PerthCharles</a></li>
+						<li class="rss"><a href="http://feeds.feedburner.com/">Subscribe to RSS Feed</a></li>
+					</ul>
+				</div><!-- misc -->
+				<p class="licence">
+					Theme: <a href="http://layouts-the.me">the_minimum</a> based on <a href="http://jekyllbootstrap.com/">Jekyll-bootstrap</a>.<br>
+					Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>.
+				</p>
+				<p> <iframe src="http://free.timeanddate.com/clock/i3n3olta/n33/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="211" height="58"></iframe> </p>
+			</div><!-- unit-foot-inner -->
+		</div><!-- unit-foot -->
+	</footer>
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/05/08/cut-and-grep" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+  
+  
+</body>
+</html>
+
+
+<script type="text/javascript"
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+

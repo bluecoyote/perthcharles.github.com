@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>linux命令学习(七)：grep高级用法与正则表达式初步</title>
+	<meta name="author" content="Perth Charles">
+	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux命令学习(七)：grep高级用法与正则表达式初步" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<nav class="nav-global">
+					<ul>
+						<li class="logo"><a href="/">My blog</a></li>
+						<li class="archive"><a href="/archive.html">archive</a></li>
+						<li class="page"><a href="/pages.html">pages</a></li>
+						<li class="category"><a href="/categories.html">categories</a></li>
+						<li class="tag"><a href="/tags.html">tags</a></li>
+						<li class="forkme"><div><iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=plusjade&repo=jekyll-bootstrap&type=fork&count=true"
+									allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe></div></li>
+					</ul>
+				</nav>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">linux命令学习(七)：grep高级用法与正则表达式初步</h1>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					<h2>grep 高级用法</h2>
+
+<pre><code>#grep -An -Bm -n -v  [--color=auto] '搜索字符串' filename
+-An 输出找到行之后的n行
+-Bm 输出找到行之前的m行
+//复习之前的用法
+-n  附带输出相应行号
+-v  反向选择
+-i  忽视大小写
+
+//为了让找到的字符串自动加上颜色，修改~/.bashrc,添加如下命令
+alias grep='grep --color=auto'
+//使更改后的文件生效
+#source ~/.bashrc
+</code></pre>
+
+<hr />
+
+<h2>关于正则表达式需要注意的点</h2>
+
+<p>1.处理单元是行<br/>
+2.正则表达式的结果可能收到不同语系编码的影响<br/>
+3.如需查找具有特殊含义的符号，需要使用转义字符'\'</p>
+
+<h3>集合[]用法</h3>
+
+<p>[]中可以包含多个字符，如[abcd]。含义为:出现abcd四个中的任意一个都可以，而且出现且仅出现一次。</p>
+
+<pre><code>#grep 't[ab]st' filename    //找出filename中所有的tast和tbst串
+</code></pre>
+
+<p>^反选符</p>
+
+<pre><code>#grep '[^g]oo' filename     //找出filename中所有包含'oo'字符串且'oo'前面不是字符g的出现
+</code></pre>
+
+<p>-连续出现</p>
+
+<pre><code>#grep '[a-z]oo' filename    //找出filename中所有以a到z的字符开始后接oo的出现
+#grep '[[:lower:]]' filename    //效果与上句类似，但是排除了语系不同可能带来的干扰
+</code></pre>
+
+<h3>行首与行尾字符^$</h3>
+
+<p>行首字符'^',这点要与集合[]中出现的^区别开</p>
+
+<pre><code>#grep -n 'the' filename     //找出filename中所有以the开始的行
+#grep -n '\.$' filename     //找出filename中所有以'.'结束的行
+#grep -n '^$' filename      //找出空白行
+</code></pre>
+
+<h3>任意一个字符和重复字符(. 和 *)</h3>
+
+<p>'.'表示有且仅有一个字符<br/>
+'<em>'表示重复0个或多个前面的字符，这点与通配符(表示任意个字符)'</em>'需要区分开</p>
+
+<pre><code>#echo o |grep 'oo*' //如果按照通配符的理解，至少需要两个oo后接任意个字符,但实际上这条命令的含义是找到至少含有一个o，且后面跟0个o或多个o的所有字符串
+//下面命令的含义是：找到字符串开头和结尾都是g，且两个g之间只能存在字符o，且至少有一个
+#grep -n '^goo*g$' filename
+</code></pre>
+
+<h3>sed命令用法</h3>
+
+<pre><code>#sed [-nefi] [action]
+-n  仅输出经过特殊处理的那些行到屏幕
+-e  直接在命令行模式下进行sed动作的编辑
+-f  直接将sed的动作写在一个文件内 -f filename
+-i  直接修改读取的文件内容，而不是由屏幕输出
+</code></pre>
+
+<h3>sed命令很强大，也很繁琐。所以这里不罗嗦直接上我练习的几个命令</h3>
+
+<pre><code>#nl /etc/passwd | sed  '2a drink tea' |sed '4a drink tea, too' |grep -A3 -B3 'drink tea'            //在第2行和第4行添加相应内容
+#nl /etc/passwd | sed  '2a drink tea' |sed '4a drink tea, too' |sed -n '2,5p' |grep -A3 -B3 'drink tea'     //在上一条的基础上只显示2-5行数据
+#nl /etc/passwd | sed  '2a drink tea' |sed '4a drink tea, too' |sed 's/drink/drinking/g' |grep -A3 -B3 'drink.* tea'    //将drink替换为drinking
+#ifconfig eth0 |grep 'inet addr' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g'  //用两次替换，将电脑的IP地址从ifconfig中抽取出来
+#ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed '/^.*X.*$/d'    //删除特定的行，显示IP地址
+#ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed 's/^.*X.*$//g' |sed '/^$/d'     //将某些特定的行替换为空行，并删除
+</code></pre>
+
+<h3>awk命令</h3>
+
+<p>awk对比sed：awk主要针对行内数据进行操作，sed主要是以行为单位进行操作<br/>
+命令语法格式：</p>
+
+<pre><code>#awk '条件类型1{动作1} 条件类型2{动作2} ...' filename
+</code></pre>
+
+<p>awk过于复杂，所以以后慢慢练习。</p>
+
+<h3>其他好用命令：</h3>
+
+<p>diff+patch:</p>
+
+<pre><code>diff用来比较两个文件的差别(虽然我基本都用vimdiff)，如果结合patch命令还能完成版本管理的一部分功能呢。命令如下：
+#last &gt; last.text   //生成一个文件
+#cat last.text | sed '3,5d' |sed '$d' &gt; last.text2  //生成一个*更新*的文件
+#diff -Naur last.text last.text2 &gt; last.patch       //比较两个文件
+#ll last.text*  
+-rw-rw-r--. 1 zhongbin zhongbin 29298 May 21 15:28 last.text
+-rw-rw-r--. 1 zhongbin zhongbin 29030 May 21 15:30 last.text2
+#patch -p0 &lt; last.patch //更新，将旧文件按照diff的结果更新到新的文件
+#ll last.text*
+-rw-rw-r--. 1 zhongbin zhongbin 29030 May 21 15:33 last.text
+-rw-rw-r--. 1 zhongbin zhongbin 29030 May 21 15:30 last.text2
+</code></pre>
+
+					<div class="meta">
+						<p class="date-publish">
+							Published: 
+							<date class="date-pub" title="2013-05-09T00:00:00+08:00" datetime="2013-05-09T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>May</abbr></span>
+							<span class="day">09</span>
+							<span class="year">2013</span>
+							</date>
+						</p>
+						<ul class="list-category list-linear">
+							<li class="list-head">category: </li>
+							
+							
+
+
+  
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags: </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/tags.html#Shell-ref">Shell <span>3</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					<div class="comment">
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'mybloglife-perthcharles'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+					</div>
+				</div><!-- misc-content -->
+			</div><!-- bd -->
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/05/08/cut-and-grep" title="View linux命令学习(六)：cut grep && || sort wc uniq">&laquo; linux命令学习(六)：cut grep && || sort wc uniq</a></li>
+							
+							
+							<li class="pipe"> | </li>
+							
+							
+							<li class="next"><a class="internal" rel="next"  href="/Papers/2013/05/11/" title="View 交互式程序性能评测">交互式程序性能评测 &raquo;</a></li>
+							
+						</ul>
+					</nav>
+					<p class="gotop">
+						<a href="#page">Back to Top</a>
+					</p>
+				</div>
+			</footer>
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+	<footer class="the-footer">
+		<div class="unit-foot">
+			<div class="unit-inner unit-foot-inner">
+				<div class="misc vcard">
+					<h4>about</h4>
+					<ul>
+						<li class="contact"><address><span class="author fn n">Perth Charles</span> - <span class="fn email">zhongbincharles@gmail.com</span></address></li>
+						<li class="github"><a href="http://github.com/PerthCharles/" rel="me">github.com/PerthCharles</a></li>
+						<li class="rss"><a href="http://feeds.feedburner.com/">Subscribe to RSS Feed</a></li>
+					</ul>
+				</div><!-- misc -->
+				<p class="licence">
+					Theme: <a href="http://layouts-the.me">the_minimum</a> based on <a href="http://jekyllbootstrap.com/">Jekyll-bootstrap</a>.<br>
+					Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>.
+				</p>
+				<p> <iframe src="http://free.timeanddate.com/clock/i3n3olta/n33/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="211" height="58"></iframe> </p>
+			</div><!-- unit-foot-inner -->
+		</div><!-- unit-foot -->
+	</footer>
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/05/09/linuxgrep" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+  
+  
+</body>
+</html>
+
+
+<script type="text/javascript"
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
