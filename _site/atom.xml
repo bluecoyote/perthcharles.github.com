@@ -4,7 +4,7 @@
  <title>My blog</title>
  <link href="http://perthcharles.github.com/" rel="self"/>
  <link href="http://perthcharles.github.com"/>
- <updated>2013-05-31T10:18:06+08:00</updated>
+ <updated>2013-05-31T10:32:19+08:00</updated>
  <id>http://perthcharles.github.com</id>
  <author>
    <name>Perth Charles</name>
@@ -83,124 +83,124 @@ Hi user2! You've successfully authenticated, but GitHub does not provide shell a
    <link href="http://perthcharles.github.com/2013/05/17/javascript-quick-learning"/>
    <updated>2013-05-17T00:00:00+08:00</updated>
    <id>http://perthcharles.github.com/2013/05/17/javascript-quick-learning</id>
-   <content type="html">&lt;p&gt;字符串：&quot;perth charles&quot;&lt;br/&gt;
-求字符串长度：&quot;perth charles&quot;.length&lt;/p&gt;
+   <content type="html">&lt;pre&gt;&lt;code&gt;字符串：&quot;perth charles&quot;  
+求字符串长度：&quot;perth charles&quot;.length  
 
-&lt;p&gt;&quot;cake&quot;.length * 9&lt;br/&gt;
+
+&quot;cake&quot;.length * 9  
 confirm(&quot;you must be kidding me!\n&quot;);  弹出窗口让用户确认某些信息
 prompt(&quot;what is your name?&quot;)； 弹出窗口接受用户输入
-console.log(&quot;Hello&quot;);   相当与printf语句&lt;/p&gt;
+console.log(&quot;Hello&quot;);   相当与printf语句
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;注意这两个比较操作符
-=== Equal to
-!== Not equal to&lt;/p&gt;
+&lt;h2&gt;注意这两个比较操作符&lt;/h2&gt;
 
-&lt;p&gt;&quot;wonderful day&quot;.substring(3,7);     输出字符的第4位到第7位&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;=== Equal to
+!== Not equal to
 
-&lt;p&gt;声明三种变量
-a. var myName = &quot;Leng&quot;;
+&quot;wonderful day&quot;.substring(3,7);     输出字符的第4位到第7位
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;声明三种变量&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;a. var myName = &quot;Leng&quot;;
 b. var myAge = 30;
-c. var isOdd = true;&lt;/p&gt;
+c. var isOdd = true;
 
-&lt;p&gt;// This is what a function looks like:
-var divideByThree = function (number) {&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var val = number / 3;
-console.log(val);
+// This is what a function looks like:
+var divideByThree = function (number) {
+    var val = number / 3;
+    console.log(val);
+};  //注意这个地方也有分号
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;};  //注意这个地方也有分号&lt;/p&gt;
+&lt;h2&gt;生成一个0到1之间的随机数，如一次结果为：0.8760658339597285&lt;/h2&gt;
 
-&lt;p&gt;生成一个0到1之间的随机数，如一次结果为：0.8760658339597285
-var computerChoice = Math.random();&lt;/p&gt;
-
-&lt;p&gt;//检测x的类型
-typeof(x) ！== 'number'&lt;/p&gt;
-
-&lt;p&gt;// Example of a for loop:
-for (var counter = 1; counter &amp;lt; 6; counter++) {&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;console.log(counter);
+&lt;pre&gt;&lt;code&gt;var computerChoice = Math.random();
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;}&lt;/p&gt;
+&lt;h2&gt;检测x的类型&lt;/h2&gt;
 
-&lt;p&gt;数组/列表
-var arrayName = [data, data, data];
+&lt;pre&gt;&lt;code&gt;typeof(x) ！== 'number'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Example of a for loop:&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;for (var counter = 1; counter &amp;lt; 6; counter++) {
+    console.log(counter);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;数组/列表&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;var arrayName = [data, data, data];
 arrayName.length    //求数组/列表 长度
-arrayName.push();   //给列表添加元素&lt;/p&gt;
+arrayName.push();   //给列表添加元素
 
-&lt;p&gt;isNaN() //判断是否是一个数&lt;/p&gt;
+isNaN() //判断是否是一个数
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;逻辑运算符跟C一样&lt;/p&gt;
+&lt;h2&gt;逻辑运算符跟C一样&lt;/h2&gt;
 
-&lt;p&gt;//一个对象的例子
-var phonebookEntry = {};
+&lt;h2&gt;一个对象的例子&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;var phonebookEntry = {};
 phonebookEntry.name = 'Oxnard Montalvo';
 phonebookEntry.number = '(555) 555-5555';
 phonebookEntry.phone = function() {
   console.log('Calling ' + this.name + ' at ' + this.number + '...');
 };
-phonebookEntry.phone();&lt;/p&gt;
+phonebookEntry.phone();
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;//又一个典型的对象声明例子
-var friends = {};//相当与一个对象列表？
+&lt;h2&gt;又一个典型的对象声明例子&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;var friends = {};//相当与一个对象列表？
 friends.bill = {
   firstName: &quot;Bill&quot;,
   lastName: &quot;Gates&quot;,
   number: &quot;(206) 555-5555&quot;,
   address: ['One Microsoft Way','Redmond','WA','98052']
-};&lt;/p&gt;
+};
 
-&lt;p&gt;friends.steve = {
+friends.steve = {
   firstName: &quot;Steve&quot;,
   lastName: &quot;Jobs&quot;,
   number: &quot;(408) 555-5555&quot;,
   address: ['1 Infinite Loop','Cupertino','CA','95014']
-};&lt;/p&gt;
-
-&lt;p&gt;//一个更加复杂的例子
-/*
-var friends = {};
-friends.bill = {&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;firstName: &quot;Bill&quot;,
-lastName: &quot;gates&quot;,
-number: &quot;20&quot;,
-address: [&quot;beijing&quot;, &quot;china&quot;]
+};
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;};
-friends.steve = {&lt;/p&gt;
+&lt;h2&gt;一个更加复杂的例子&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;firstName: &quot;Steve&quot;,
-lastName: &quot;dddddd&quot;,
-number: &quot;22&quot;,
-address: [&quot;shanghai&quot;, &quot;china&quot;]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;};
-var list = function(){&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for(var example in friends){
-    console.log(example);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;};&lt;/p&gt;
-
-&lt;p&gt;var search = function(name){&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for(var entity in friends){
-    if(friends[entiry].firstName === name){
-        console.log(friends[entiry]);
-        return friends[entity];
+&lt;pre&gt;&lt;code&gt;var friends = {};
+friends.bill = {
+    firstName: &quot;Bill&quot;,
+    lastName: &quot;gates&quot;,
+    number: &quot;20&quot;,
+    address: [&quot;beijing&quot;, &quot;china&quot;]
+};
+friends.steve = {
+    firstName: &quot;Steve&quot;,
+    lastName: &quot;dddddd&quot;,
+    number: &quot;22&quot;,
+    address: [&quot;shanghai&quot;, &quot;china&quot;]
+};
+var list = function(){
+    for(var example in friends){
+        console.log(example);
     }
-}
-&lt;/code&gt;&lt;/pre&gt;
+};
 
-&lt;p&gt;};
-*/&lt;/p&gt;
+var search = function(name){
+    for(var entity in friends){
+        if(friends[entiry].firstName === name){
+            console.log(friends[entiry]);
+            return friends[entity];
+        }
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  

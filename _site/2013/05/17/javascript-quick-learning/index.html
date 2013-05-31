@@ -51,124 +51,124 @@
 
 			<div class="bd">
 				<div class="entry-content">
-					<p>字符串："perth charles"<br/>
-求字符串长度："perth charles".length</p>
+					<pre><code>字符串："perth charles"  
+求字符串长度："perth charles".length  
 
-<p>"cake".length * 9<br/>
+
+"cake".length * 9  
 confirm("you must be kidding me!\n");  弹出窗口让用户确认某些信息
 prompt("what is your name?")； 弹出窗口接受用户输入
-console.log("Hello");   相当与printf语句</p>
+console.log("Hello");   相当与printf语句
+</code></pre>
 
-<p>注意这两个比较操作符
-=== Equal to
-!== Not equal to</p>
+<h2>注意这两个比较操作符</h2>
 
-<p>"wonderful day".substring(3,7);     输出字符的第4位到第7位</p>
+<pre><code>=== Equal to
+!== Not equal to
 
-<p>声明三种变量
-a. var myName = "Leng";
+"wonderful day".substring(3,7);     输出字符的第4位到第7位
+</code></pre>
+
+<h2>声明三种变量</h2>
+
+<pre><code>a. var myName = "Leng";
 b. var myAge = 30;
-c. var isOdd = true;</p>
+c. var isOdd = true;
 
-<p>// This is what a function looks like:
-var divideByThree = function (number) {</p>
-
-<pre><code>var val = number / 3;
-console.log(val);
+// This is what a function looks like:
+var divideByThree = function (number) {
+    var val = number / 3;
+    console.log(val);
+};  //注意这个地方也有分号
 </code></pre>
 
-<p>};  //注意这个地方也有分号</p>
+<h2>生成一个0到1之间的随机数，如一次结果为：0.8760658339597285</h2>
 
-<p>生成一个0到1之间的随机数，如一次结果为：0.8760658339597285
-var computerChoice = Math.random();</p>
-
-<p>//检测x的类型
-typeof(x) ！== 'number'</p>
-
-<p>// Example of a for loop:
-for (var counter = 1; counter &lt; 6; counter++) {</p>
-
-<pre><code>console.log(counter);
+<pre><code>var computerChoice = Math.random();
 </code></pre>
 
-<p>}</p>
+<h2>检测x的类型</h2>
 
-<p>数组/列表
-var arrayName = [data, data, data];
+<pre><code>typeof(x) ！== 'number'
+</code></pre>
+
+<h2>Example of a for loop:</h2>
+
+<pre><code>for (var counter = 1; counter &lt; 6; counter++) {
+    console.log(counter);
+}
+</code></pre>
+
+<h2>数组/列表</h2>
+
+<pre><code>var arrayName = [data, data, data];
 arrayName.length    //求数组/列表 长度
-arrayName.push();   //给列表添加元素</p>
+arrayName.push();   //给列表添加元素
 
-<p>isNaN() //判断是否是一个数</p>
+isNaN() //判断是否是一个数
+</code></pre>
 
-<p>逻辑运算符跟C一样</p>
+<h2>逻辑运算符跟C一样</h2>
 
-<p>//一个对象的例子
-var phonebookEntry = {};
+<h2>一个对象的例子</h2>
+
+<pre><code>var phonebookEntry = {};
 phonebookEntry.name = 'Oxnard Montalvo';
 phonebookEntry.number = '(555) 555-5555';
 phonebookEntry.phone = function() {
   console.log('Calling ' + this.name + ' at ' + this.number + '...');
 };
-phonebookEntry.phone();</p>
+phonebookEntry.phone();
+</code></pre>
 
-<p>//又一个典型的对象声明例子
-var friends = {};//相当与一个对象列表？
+<h2>又一个典型的对象声明例子</h2>
+
+<pre><code>var friends = {};//相当与一个对象列表？
 friends.bill = {
   firstName: "Bill",
   lastName: "Gates",
   number: "(206) 555-5555",
   address: ['One Microsoft Way','Redmond','WA','98052']
-};</p>
+};
 
-<p>friends.steve = {
+friends.steve = {
   firstName: "Steve",
   lastName: "Jobs",
   number: "(408) 555-5555",
   address: ['1 Infinite Loop','Cupertino','CA','95014']
-};</p>
-
-<p>//一个更加复杂的例子
-/*
-var friends = {};
-friends.bill = {</p>
-
-<pre><code>firstName: "Bill",
-lastName: "gates",
-number: "20",
-address: ["beijing", "china"]
+};
 </code></pre>
 
-<p>};
-friends.steve = {</p>
+<h2>一个更加复杂的例子</h2>
 
-<pre><code>firstName: "Steve",
-lastName: "dddddd",
-number: "22",
-address: ["shanghai", "china"]
-</code></pre>
-
-<p>};
-var list = function(){</p>
-
-<pre><code>for(var example in friends){
-    console.log(example);
-}
-</code></pre>
-
-<p>};</p>
-
-<p>var search = function(name){</p>
-
-<pre><code>for(var entity in friends){
-    if(friends[entiry].firstName === name){
-        console.log(friends[entiry]);
-        return friends[entity];
+<pre><code>var friends = {};
+friends.bill = {
+    firstName: "Bill",
+    lastName: "gates",
+    number: "20",
+    address: ["beijing", "china"]
+};
+friends.steve = {
+    firstName: "Steve",
+    lastName: "dddddd",
+    number: "22",
+    address: ["shanghai", "china"]
+};
+var list = function(){
+    for(var example in friends){
+        console.log(example);
     }
-}
-</code></pre>
+};
 
-<p>};
-*/</p>
+var search = function(name){
+    for(var entity in friends){
+        if(friends[entiry].firstName === name){
+            console.log(friends[entiry]);
+            return friends[entity];
+        }
+    }
+};
+</code></pre>
 
 					<div class="meta">
 						<p class="date-publish">
