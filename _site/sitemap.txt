@@ -11,6 +11,7 @@ http://perthcharles.github.com/tags.html
 http://perthcharles.github.com/api_used.html
 http://perthcharles.github.com/good_blog.html
 
+http://perthcharles.github.com/2013/05/31/git-multi-user-error
 http://perthcharles.github.com/2013/05/22/inverse-number
 http://perthcharles.github.com/2013/05/17/javascript-quick-learning
 http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem
