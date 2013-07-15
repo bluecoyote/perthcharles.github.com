@@ -2,7 +2,7 @@
 layout: post
 title: "utorrent+mplayer使用"
 description: ""
-category: 软件使用  
+category: tools
 tags: 
 ---
 {% include JB/setup %}

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "test search"
+title: "test search:博客站内搜索beta"
 description: "多么痛的领悟"
 category: 
 tags: []

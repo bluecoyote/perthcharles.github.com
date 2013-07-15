@@ -3,7 +3,7 @@ layout: post
 title: "linux 反汇编初步"
 description: ""
 category: 
-tags: 反汇编
+tags: 汇编
 ---
 {% include JB/setup %}
 

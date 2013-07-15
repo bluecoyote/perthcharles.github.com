@@ -1,6 +1,6 @@
 ---
 layout: post
-title: linux系统信息
+title: linux系统信息+文件编码格式转换
 description: ""
 category: linux-learning
 tags: tricks

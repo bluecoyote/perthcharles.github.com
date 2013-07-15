@@ -5,10 +5,156 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-05-31T10:32:19+08:00</lastBuildDate>
-        <pubDate>2013-05-31T10:32:19+08:00</pubDate>
+        <lastBuildDate>2013-07-15T13:54:21+08:00</lastBuildDate>
+        <pubDate>2013-07-15T13:54:21+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>EXCEL宏学习 -- 读文本数据</title>
+                <description>&lt;h2&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;最近为了使用EXCEL处理一些数据和画一些图，需要将大量文本文件的数据输入到EXCEL文件中，所以查了下宏的使用。&lt;/p&gt;
+
+&lt;h2&gt;宏功能&lt;/h2&gt;
+
+&lt;p&gt;目的：从指定列表中的文件中读取所有的数据到一个新的EXCEL标签页中。&lt;br/&gt;
+快捷键：Ctrl+q&lt;br/&gt;
+使用方法：&lt;br/&gt;
+1.使用弹出框口功能，选定需要处理的单个文件&lt;br/&gt;
+2.在列表中指定需要处理的文件名，自动处理&lt;br/&gt;
+3.在列表中指定需要处理的文件名前缀，按照同一方法自动处理&lt;/p&gt;
+
+&lt;h3&gt;代码文件&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/PerthCharles/codeware/blob/master/%E8%AF%BB%E6%96%87%E6%9C%AC%E6%95%B0%E6%8D%AE-EXCEL%E5%AE%8F.txt&quot;&gt;读文本数据--EXCEL宏&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/07/15/a-macro-for-excel</link>
+                <guid>http://perthcharles.github.com/2013/07/15/a-macro-for-excel</guid>
+                <pubDate>2013-07-15T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>使用matlab从excel文件中读取指定数据，并画图</title>
+                <description>&lt;h3&gt;问题描述&lt;/h3&gt;
+
+&lt;p&gt;在matlab下，直接读取EXCEL文件中的数据，并根据指定的数据画图&lt;/p&gt;
+
+&lt;h3&gt;步骤&lt;/h3&gt;
+
+&lt;p&gt;1.读EXCEL数据&lt;br/&gt;
+主要用到xlsread函数，之所以要写下来是因为读取特定行的方法在帮助文件里面没有提到。&lt;br/&gt;
+  读取指定列，比如C列&lt;br/&gt;
+  A = xlsread('test.xls', 1, 'C:C');&lt;br/&gt;
+  这样就能够直接读取除第C列的数据，且自动去掉标题！&lt;br/&gt;
+  更多的普通用法可以查看help xlsread&lt;br/&gt;
+2.画图&lt;br/&gt;
+根据指定间隔，画出二维图或散点图&lt;/p&gt;
+
+&lt;h3&gt;代码文件&lt;/h3&gt;
+
+&lt;p&gt;该Matlab代码通过函数的形式实现，具有一定的移植性，并可以根据实际需要进一步调整。返回值分别是读取的数据总数和用于画图的数据总数。&lt;br/&gt;
+&lt;a href=&quot;https://github.com/PerthCharles/codeware/blob/master/plant_a_array.m&quot;&gt;Matlab 代码&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/2013/06/19/matlab-read-data-from-excel</link>
+                <guid>http://perthcharles.github.com/%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/2013/06/19/matlab-read-data-from-excel</guid>
+                <pubDate>2013-06-19T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>从文本中抽取出指定的行</title>
+                <description>&lt;h3&gt;问题描述&lt;/h3&gt;
+
+&lt;p&gt;给定文本a(上千行),按照文本b中指定的行号抽取出对应内容。&lt;br/&gt;
+需要保证文本b的行号是有序的。&lt;br/&gt;
+&lt;em&gt;需要学习awk命令&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat a
+adsf
+dgfegd
+f
+hh
+ee
+ee
+fhhh
+qqq
+uu
+#cat b
+1
+3
+4
+7
+#awk 'NR==FNR{a[FNR]=$0;next}($0 in a){print a[$0]}' a b &amp;gt;c
+#cat c
+adsf
+f
+hh
+fhhh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;可能遇到问题&lt;/h3&gt;
+
+&lt;p&gt;测试awk版本为3.1.7
+如果文本b不是顶格写的，则会无法得到正确的输出！&lt;em&gt;这点待解决&lt;/em&gt; &lt;br/&gt;
+如果碰到只会输出最后一行的数据，请试着检查文本格式，可以尝试&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#dos2unix a b
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;参考资料&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://bbs.chinaunix.net/thread-3605498-1-1.html&quot;&gt;怎么样对文本进行指定行的数据提取操作？&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/2013/06/19/choose-multi-line-from-text</link>
+                <guid>http://perthcharles.github.com/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/2013/06/19/choose-multi-line-from-text</guid>
+                <pubDate>2013-06-19T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>wget quick learning</title>
+                <description>&lt;h2&gt;基本用法&lt;/h2&gt;
+
+&lt;p&gt;下载一个指定网页的文件，默认存储为index.html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#wget http://www.example.com/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载ftp站点文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#wget ftp://ftp.gnu.org/pub/gnu/wget/wget-latest.tar.gz //下载wget latest source code
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载某个&lt;em&gt;网站&lt;/em&gt;目录下的所有gif文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#wget -e robots=off -r -l1 --no-parent -A.png http://static.fsf.org/dbd/
+//-e        执行‘.wgetrc’格式的命令，wgetrc格式参见/etc/wgetrc或~/.wgetrc
+//robots=off    不使用默认遵循robto exclusion standard的设置
+//-r -l1    r表示递归下载，l表示限制递归下载层数，尽量配套使用
+//--no-parent   递归时不要追溯到父目录
+//-A .png   匹配后缀名为png的文件
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载整个网站(慎用)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#wget -r -l 0 http://www.example.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更多高级用法请查看参考资料。&lt;/p&gt;
+
+&lt;p&gt;注：通配符只适用于ftp站点，如可以使用如下命令批量下载某ftp网站的gif文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#wget ftp://example/*.gif
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;参考资料&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.ha97.com/153.html&quot;&gt;wget参数用法详解&lt;/a&gt;&lt;br/&gt;
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Wget&quot;&gt;wiki: wget&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://perthcharles.github.com/2013/06/08/wget-quick-learning</link>
+                <guid>http://perthcharles.github.com/2013/06/08/wget-quick-learning</guid>
+                <pubDate>2013-06-08T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>git multi user error</title>
@@ -31,6 +177,68 @@ Hi user2! You've successfully authenticated, but GitHub does not provide shell a
 </description>
                 <link>http://perthcharles.github.com/2013/05/31/git-multi-user-error</link>
                 <guid>http://perthcharles.github.com/2013/05/31/git-multi-user-error</guid>
+                <pubDate>2013-05-31T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>[编程之美]求数组的连续子数组最大和</title>
+                <description>&lt;h3&gt;求连续子数组的最大和&lt;/h3&gt;
+
+&lt;p&gt;一个整型数组，数组里有正数也有负数。&lt;br/&gt;
+数组中连续的一个或多个整数组成一个子数组，每个子数组都有一个和，求所有子数组的和的最大值，要求时间复杂度为O(n)。&lt;br/&gt;
+例如输入的数组为1, -2, 3, 10, -4, 7, 2, -5，那么最大的子数组为3, 10, -4, 7, 2，因此输出为该子数组的和18，&lt;br/&gt;
+&lt;em&gt;说明&lt;/em&gt;:&lt;br/&gt;
+当全是负数的情况时，返回最大的那个负数&lt;/p&gt;
+
+&lt;h3&gt;C语言代码：&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+解题思路：
+    初始化变量：
+        max = a[0];     //记录最终的最大值
+        tmp_sum = 0;        //临时和
+    伪代码：
+        for i from 0 to n
+            tmp_sum += a[i]
+            if tmp_sum &amp;gt; max
+                max = tmp_sum
+            if tmp_sum &amp;lt; 0
+                tmp_sum = 0;
+        endif
+*/
+
+#include &amp;lt;stdio.h&amp;gt;
+
+#define MAX(a, b) ((a) &amp;gt;= (b) ? (a):(b))
+
+int Max_sum(int *a, int n)
+{
+    int i;
+    int max, tmp_sum = 0;
+    if(n == 0){
+        return 0;
+    }
+    max = a[0];
+    for(i = 0; i &amp;lt; n; i++){
+        tmp_sum += a[i];
+        max = MAX(max, tmp_sum);
+        if(tmp_sum &amp;lt; 0){
+            tmp_sum = 0;
+        }
+    }
+    return max;
+}
+
+int main()
+{
+    int a[8] = {1, -2, 3, 10, -4, 7, 2, -5};
+    printf(&quot;max_sum is:%d\n&quot;, Max_sum(a, 8));
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/31/biggest-sub-sumcontinuous</link>
+                <guid>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/31/biggest-sub-sumcontinuous</guid>
                 <pubDate>2013-05-31T00:00:00+08:00</pubDate>
         </item>
 
@@ -274,16 +482,7 @@ int main()
         </item>
 
         <item>
-                <title>交互式程序性能评测</title>
-                <description>
-</description>
-                <link>http://perthcharles.github.com/Papers/2013/05/11/</link>
-                <guid>http://perthcharles.github.com/Papers/2013/05/</guid>
-                <pubDate>2013-05-11T00:00:00+08:00</pubDate>
-        </item>
-
-        <item>
-                <title>linux命令学习(七)：grep高级用法与正则表达式初步</title>
+                <title>linux命令学习(七)：grep高级用法与正则表达式初步+sed+awk</title>
                 <description>&lt;h2&gt;grep 高级用法&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;#grep -An -Bm -n -v  [--color=auto] '搜索字符串' filename
@@ -364,6 +563,13 @@ alias grep='grep --color=auto'
 #ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed 's/^.*X.*$//g' |sed '/^$/d'     //将某些特定的行替换为空行，并删除
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h4&gt;将一行变多行&lt;/h4&gt;
+
+&lt;p&gt;首先通过将不要的字符替换成空格或直接删除，随后将分割符替换为换行符\n即可&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cat tmp | sed 's/^\[//g'|sed 's/\]$//g'|sed 's/,/\n/g'|sed 's/ //g'
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3&gt;awk命令&lt;/h3&gt;
 
 &lt;p&gt;awk对比sed：awk主要针对行内数据进行操作，sed主要是以行为单位进行操作&lt;br/&gt;
@@ -373,6 +579,11 @@ alias grep='grep --color=auto'
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;awk过于复杂，所以以后慢慢练习。&lt;/p&gt;
+
+&lt;h4&gt;awk 计算方差&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#awk '{a[++i]=$1;} END{for(i in a)sum += a[i];ave=sum/NR;for(i in a) delta += (a[i]-ave)*(a[i]-ave);print delta/NR}' tmp
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3&gt;其他好用命令：&lt;/h3&gt;
 
@@ -749,8 +960,8 @@ done
 &lt;p&gt;1.使用库函数请一定包含全部正确的头文件。&lt;br/&gt;
 2.忙闲时间控制体现在:busy[i] = (double)(base_line + base_line&lt;em&gt;sin(w&lt;/em&gt;i))；&lt;/p&gt;
 </description>
-                <link>http://perthcharles.github.com/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line</link>
-                <guid>http://perthcharles.github.com/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line</guid>
+                <link>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/25/os-profile-line</link>
+                <guid>http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/25/os-profile-line</guid>
                 <pubDate>2013-04-25T00:00:00+08:00</pubDate>
         </item>
 
@@ -1022,7 +1233,7 @@ portability,flexibility,expense,easy-of-use
         </item>
 
         <item>
-                <title>linux 命令学习（五）</title>
+                <title>linux 命令学习（五）：服务器登录消息 找含某字符串的所有文件</title>
                 <description>&lt;h2&gt;/etc/motd使用&lt;/h2&gt;
 
 &lt;p&gt;如果你正在使用一台服务器，并且想通知每一个新登录这台服务器的用户一个消息。&lt;br/&gt;
@@ -1629,13 +1840,13 @@ set fileencodings=gbk,big5,ucs-bom,latin1
 
 &lt;p&gt;目前笔记本的无线网络功能处于无效状态。同时目前还没有需求，所以就没有配置。&lt;/p&gt;
 </description>
-                <link>http://perthcharles.github.com/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer</link>
-                <guid>http://perthcharles.github.com/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer</guid>
+                <link>http://perthcharles.github.com/tools/2013/03/23/utorrentmplayer</link>
+                <guid>http://perthcharles.github.com/tools/2013/03/23/utorrentmplayer</guid>
                 <pubDate>2013-03-23T00:00:00+08:00</pubDate>
         </item>
 
         <item>
-                <title>Bench 安装记录</title>
+                <title>HP Bench 安装记录</title>
                 <description>&lt;h3&gt;操作系统信息&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;#uname -r  
@@ -1836,7 +2047,7 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
         </item>
 
         <item>
-                <title>test search</title>
+                <title>test search:博客站内搜索beta</title>
                 <description>
 
 &lt;!--Google站内搜索开始--&gt;
@@ -1861,7 +2072,7 @@ pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
         </item>
 
         <item>
-                <title>linux命令学习（四）</title>
+                <title>linux命令学习（四):输出文本文件  权限相关知识</title>
                 <description>&lt;h3&gt;常用命令简介&lt;/h3&gt;
 
 &lt;p&gt;cat:从第一行开始显示文件&lt;br/&gt;
@@ -1923,7 +2134,7 @@ tail:如果想检测一个持续被写入的文件，可以输入下面的命令
         </item>
 
         <item>
-                <title>linux命令学习（三）</title>
+                <title>linux命令学习（三）:pwd mkdir RANDOM</title>
                 <description>&lt;h3&gt;关于pwd&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;#cd /var/mail   
@@ -1970,7 +2181,7 @@ mkdir还有-m参数：手动配置文件属性，而不用默认值&lt;/p&gt;
         </item>
 
         <item>
-                <title>linux命令学习（二）</title>
+                <title>linux命令学习（二:关机 常见目录含义</title>
                 <description>&lt;h3&gt;本地帮助文件&lt;/h3&gt;
 
 &lt;p&gt;一般系统安装（yum、spt-get、手动）软件后，都会有一些帮助你使用或理解的文件，除了REAMME之外，还可以查看一个路径获得有更多信息。&lt;/p&gt;
@@ -2055,7 +2266,7 @@ date (1)             - print or set the system date and time
         </item>
 
         <item>
-                <title>linux命令学习(一)</title>
+                <title>linux命令学习(一):du xargs </title>
                 <description>&lt;h2&gt;查找软件安装位置方法&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;#whereis name-of-software  
@@ -2156,7 +2367,7 @@ date (1)             - print or set the system date and time
         </item>
 
         <item>
-                <title>linux系统信息</title>
+                <title>linux系统信息+文件编码格式转换</title>
                 <description>&lt;h1&gt;系统信息相关&lt;/h1&gt;
 
 &lt;h4&gt;查看系统发行版本号&lt;/h4&gt;
@@ -2238,7 +2449,17 @@ tags : jekyll
 
 &lt;ul class=&quot;posts&quot;&gt;
   
+    &lt;li&gt;&lt;span&gt;15 Jul 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/07/15/a-macro-for-excel&quot;&gt;EXCEL宏学习 -- 读文本数据&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;19 Jun 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/2013/06/19/matlab-read-data-from-excel&quot;&gt;使用matlab从excel文件中读取指定数据，并画图&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;19 Jun 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/2013/06/19/choose-multi-line-from-text&quot;&gt;从文本中抽取出指定的行&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;08 Jun 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/06/08/wget-quick-learning&quot;&gt;wget quick learning&lt;/a&gt;&lt;/li&gt;
+  
     &lt;li&gt;&lt;span&gt;31 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/31/git-multi-user-error&quot;&gt;git multi user error&lt;/a&gt;&lt;/li&gt;
+  
+    &lt;li&gt;&lt;span&gt;31 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/31/biggest-sub-sumcontinuous&quot;&gt;[编程之美]求数组的连续子数组最大和&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;22 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/22/inverse-number&quot;&gt;POJ上看到一种O(nm)求逆序数的方法&lt;/a&gt;&lt;/li&gt;
   
@@ -2246,9 +2467,7 @@ tags : jekyll
   
     &lt;li&gt;&lt;span&gt;14 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem&quot;&gt;中国剩余定理&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;11 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/Papers/2013/05/11/&quot;&gt;交互式程序性能评测&lt;/a&gt;&lt;/li&gt;
-  
-    &lt;li&gt;&lt;span&gt;09 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/09/linuxgrep&quot;&gt;linux命令学习(七)：grep高级用法与正则表达式初步&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;09 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/09/linuxgrep&quot;&gt;linux命令学习(七)：grep高级用法与正则表达式初步+sed+awk&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;08 May 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/05/08/cut-and-grep&quot;&gt;linux命令学习(六)：cut grep &amp;&amp; || sort wc uniq&lt;/a&gt;&lt;/li&gt;
   
@@ -2256,7 +2475,7 @@ tags : jekyll
   
     &lt;li&gt;&lt;span&gt;26 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window&quot;&gt;x window学习笔记&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;25 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line&quot;&gt;[编程之美]控制CPU使用率曲线&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;25 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/25/os-profile-line&quot;&gt;[编程之美]控制CPU使用率曲线&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;25 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/04/25/chrome-bugs&quot;&gt;chrome bugs&lt;/a&gt;&lt;/li&gt;
   
@@ -2268,7 +2487,7 @@ tags : jekyll
   
     &lt;li&gt;&lt;span&gt;13 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/papars/2013/04/13/trace-driven-survey&quot;&gt;Trace驱动的memory模拟：综述&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;12 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/04/12/linux-using&quot;&gt;linux 命令学习（五）&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;12 Apr 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/04/12/linux-using&quot;&gt;linux 命令学习（五）：服务器登录消息 找含某字符串的所有文件&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;28 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/28/x-window&quot;&gt;X window&lt;/a&gt;&lt;/li&gt;
   
@@ -2286,27 +2505,27 @@ tags : jekyll
   
     &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/23/vim-decode&quot;&gt;vim 编码相关问题&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer&quot;&gt;utorrent+mplayer使用&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/tools/2013/03/23/utorrentmplayer&quot;&gt;utorrent+mplayer使用&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/benchmarks/2013/03/23/hp-bench&quot;&gt;Bench 安装记录&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;23 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/benchmarks/2013/03/23/hp-bench&quot;&gt;HP Bench 安装记录&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;18 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/centos6.4/2013/03/18/yum-using&quot;&gt;yum使用指南&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;11 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/11/232-centos59-using-log&quot;&gt;centos5.9使用记录&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/test-search&quot;&gt;test search&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/test-search&quot;&gt;test search:博客站内搜索beta&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/linux-using-4&quot;&gt;linux命令学习（四）&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/linux-using-4&quot;&gt;linux命令学习（四):输出文本文件  权限相关知识&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/linux-using&quot;&gt;linux命令学习（三）&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;08 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/08/linux-using&quot;&gt;linux命令学习（三）:pwd mkdir RANDOM&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;05 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/05/linux-using&quot;&gt;linux命令学习（二）&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;05 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/05/linux-using&quot;&gt;linux命令学习（二:关机 常见目录含义&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/01/linux-using&quot;&gt;linux命令学习(一)&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/03/01/linux-using&quot;&gt;linux命令学习(一):du xargs &lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/01/linux-tools&quot;&gt;linux常用工具列表&lt;/a&gt;&lt;/li&gt;
   
-    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/01/linux-system-info&quot;&gt;linux系统信息&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;01 Mar 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/linux-learning/2013/03/01/linux-system-info&quot;&gt;linux系统信息+文件编码格式转换&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;25 Feb 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/tools/2013/02/25/First-view-of-Jekyll&quot;&gt;初识Jekyll&lt;/a&gt;&lt;/li&gt;
   

@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>linux命令学习(七)：grep高级用法与正则表达式初步</title>
+	<title>linux命令学习(七)：grep高级用法与正则表达式初步+sed+awk</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux命令学习(七)：grep高级用法与正则表达式初步" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="linux命令学习(七)：grep高级用法与正则表达式初步+sed+awk" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,7 +44,7 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">linux命令学习(七)：grep高级用法与正则表达式初步</h1>
+						<h1 class="h2 entry-title">linux命令学习(七)：grep高级用法与正则表达式初步+sed+awk</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
@@ -131,6 +131,13 @@ alias grep='grep --color=auto'
 #ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed 's/^.*X.*$//g' |sed '/^$/d'     //将某些特定的行替换为空行，并删除
 </code></pre>
 
+<h4>将一行变多行</h4>
+
+<p>首先通过将不要的字符替换成空格或直接删除，随后将分割符替换为换行符\n即可</p>
+
+<pre><code>#cat tmp | sed 's/^\[//g'|sed 's/\]$//g'|sed 's/,/\n/g'|sed 's/ //g'
+</code></pre>
+
 <h3>awk命令</h3>
 
 <p>awk对比sed：awk主要针对行内数据进行操作，sed主要是以行为单位进行操作<br/>
@@ -140,6 +147,11 @@ alias grep='grep --color=auto'
 </code></pre>
 
 <p>awk过于复杂，所以以后慢慢练习。</p>
+
+<h4>awk 计算方差</h4>
+
+<pre><code>#awk '{a[++i]=$1;} END{for(i in a)sum += a[i];ave=sum/NR;for(i in a) delta += (a[i]-ave)*(a[i]-ave);print delta/NR}' tmp
+</code></pre>
 
 <h3>其他好用命令：</h3>
 
@@ -187,7 +199,7 @@ alias grep='grep --color=auto'
 
   
      
-    	<li><a href="/tags.html#Shell-ref">Shell <span>3</span></a></li>
+    	<li><a href="/tags.html#shell-ref">shell <span>7</span></a></li>
     
   
 
@@ -239,7 +251,7 @@ alias grep='grep --color=auto'
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/Papers/2013/05/11/" title="View 交互式程序性能评测">交互式程序性能评测 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem" title="View 中国剩余定理">中国剩余定理 &raquo;</a></li>
 							
 						</ul>
 					</nav>

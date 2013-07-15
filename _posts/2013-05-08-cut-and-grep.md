@@ -3,7 +3,7 @@ layout: post
 title: "linux命令学习(六)：cut grep && || sort wc uniq"
 description: 
 category: 
-tags: Shell
+tags: shell
 ---
 {% include JB/setup %}
 

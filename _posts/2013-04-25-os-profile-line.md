@@ -2,7 +2,7 @@
 layout: post
 title: "[编程之美]控制CPU使用率曲线"
 description: ""
-category: 编程之美
+category: 面试题
 tags: 
 ---
 {% include JB/setup %}

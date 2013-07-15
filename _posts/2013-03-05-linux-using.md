@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "linux命令学习（二）"
+title: "linux命令学习（二:关机 常见目录含义"
 description: ""
 category: 
 tags: shell

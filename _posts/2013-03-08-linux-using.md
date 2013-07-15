@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "linux命令学习（三）"
+title: "linux命令学习（三）:pwd mkdir RANDOM"
 description: ""
 category: 
 tags: shell

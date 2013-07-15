@@ -2,6 +2,7 @@
 http://perthcharles.github.com/todo.html
 http://perthcharles.github.com/index.html
 http://perthcharles.github.com/pages.html
+http://perthcharles.github.com/Tech-Interview.html
 http://perthcharles.github.com/sitemap.txt
 http://perthcharles.github.com/archive.html
 http://perthcharles.github.com/rss.xml
@@ -11,16 +12,20 @@ http://perthcharles.github.com/tags.html
 http://perthcharles.github.com/api_used.html
 http://perthcharles.github.com/good_blog.html
 
+http://perthcharles.github.com/2013/07/15/a-macro-for-excel
+http://perthcharles.github.com/%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/2013/06/19/matlab-read-data-from-excel
+http://perthcharles.github.com/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/2013/06/19/choose-multi-line-from-text
+http://perthcharles.github.com/2013/06/08/wget-quick-learning
 http://perthcharles.github.com/2013/05/31/git-multi-user-error
+http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/31/biggest-sub-sumcontinuous
 http://perthcharles.github.com/2013/05/22/inverse-number
 http://perthcharles.github.com/2013/05/17/javascript-quick-learning
 http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem
-http://perthcharles.github.com/Papers/2013/05/11/
 http://perthcharles.github.com/2013/05/09/linuxgrep
 http://perthcharles.github.com/2013/05/08/cut-and-grep
 http://perthcharles.github.com/2013/04/27/kvm-qemu
 http://perthcharles.github.com/x%20window%20%E5%AD%A6%E4%B9%A0/2013/04/26/x-window
-http://perthcharles.github.com/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/2013/04/25/os-profile-line
+http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/25/os-profile-line
 http://perthcharles.github.com/2013/04/25/chrome-bugs
 http://perthcharles.github.com/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel
 http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one
@@ -35,7 +40,7 @@ http://perthcharles.github.com/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/03/24/negation-i
 http://perthcharles.github.com/2013/03/24/install-linux-from-disk
 http://perthcharles.github.com/centos6.4/2013/03/24/centos-mount-ntfs
 http://perthcharles.github.com/2013/03/23/vim-decode
-http://perthcharles.github.com/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/2013/03/23/utorrentmplayer
+http://perthcharles.github.com/tools/2013/03/23/utorrentmplayer
 http://perthcharles.github.com/benchmarks/2013/03/23/hp-bench
 http://perthcharles.github.com/centos6.4/2013/03/18/yum-using
 http://perthcharles.github.com/2013/03/11/232-centos59-using-log

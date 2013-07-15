@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>交互式程序性能评测</title>
+	<title>wget quick learning</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="交互式程序性能评测" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="wget quick learning" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,21 +44,58 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">交互式程序性能评测</h1>
+						<h1 class="h2 entry-title">wget quick learning</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					
+					<h2>基本用法</h2>
+
+<p>下载一个指定网页的文件，默认存储为index.html</p>
+
+<pre><code>#wget http://www.example.com/
+</code></pre>
+
+<p>下载ftp站点文件</p>
+
+<pre><code>#wget ftp://ftp.gnu.org/pub/gnu/wget/wget-latest.tar.gz //下载wget latest source code
+</code></pre>
+
+<p>下载某个<em>网站</em>目录下的所有gif文件</p>
+
+<pre><code>#wget -e robots=off -r -l1 --no-parent -A.png http://static.fsf.org/dbd/
+//-e        执行‘.wgetrc’格式的命令，wgetrc格式参见/etc/wgetrc或~/.wgetrc
+//robots=off    不使用默认遵循robto exclusion standard的设置
+//-r -l1    r表示递归下载，l表示限制递归下载层数，尽量配套使用
+//--no-parent   递归时不要追溯到父目录
+//-A .png   匹配后缀名为png的文件
+</code></pre>
+
+<p>下载整个网站(慎用)</p>
+
+<pre><code>#wget -r -l 0 http://www.example.com
+</code></pre>
+
+<p>更多高级用法请查看参考资料。</p>
+
+<p>注：通配符只适用于ftp站点，如可以使用如下命令批量下载某ftp网站的gif文件</p>
+
+<pre><code>#wget ftp://example/*.gif
+</code></pre>
+
+<h3>参考资料</h3>
+
+<p><a href="http://www.ha97.com/153.html">wget参数用法详解</a><br/>
+<a href="http://en.wikipedia.org/wiki/Wget">wiki: wget</a></p>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-05-11T00:00:00+08:00" datetime="2013-05-11T00:00:00+08:00" pubdate>
-							<span class="month"><abbr>May</abbr></span>
-							<span class="day">11</span>
+							<date class="date-pub" title="2013-06-08T00:00:00+08:00" datetime="2013-06-08T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>June</abbr></span>
+							<span class="day">08</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -69,10 +106,6 @@
 
 
   
-     
-    	<li><a href="/categories.html#Papers-ref">
-    		Papers <span>1</span>
-    	</a></li>
     
   
 
@@ -85,8 +118,6 @@
 
 
   
-     
-    	<li><a href="/tags.html#interactive-performance-ref">interactive-performance <span>1</span></a></li>
     
   
 
@@ -132,13 +163,13 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/05/09/linuxgrep" title="View linux命令学习(七)：grep高级用法与正则表达式初步">&laquo; linux命令学习(七)：grep高级用法与正则表达式初步</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/05/31/git-multi-user-error" title="View git multi user error">&laquo; git multi user error</a></li>
 							
 							
 							<li class="pipe"> | </li>
 							
 							
-							<li class="next"><a class="internal" rel="next"  href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/05/14/chinese_remainder_theorem" title="View 中国剩余定理">中国剩余定理 &raquo;</a></li>
+							<li class="next"><a class="internal" rel="next"  href="/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/2013/06/19/choose-multi-line-from-text" title="View 从文本中抽取出指定的行">从文本中抽取出指定的行 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -186,7 +217,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/Papers/2013/05/11/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/06/08/wget-quick-learning" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

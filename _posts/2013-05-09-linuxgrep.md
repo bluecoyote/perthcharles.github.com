@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "linux命令学习(七)：grep高级用法与正则表达式初步"
+title: "linux命令学习(七)：grep高级用法与正则表达式初步+sed+awk"
 description: ""
 category: 
-tags: Shell
+tags: shell
 ---
 {% include JB/setup %}
 
@@ -60,12 +60,16 @@ tags: Shell
 	#ifconfig eth0 |grep 'inet addr' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g'	//用两次替换，将电脑的IP地址从ifconfig中抽取出来
 	#ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed '/^.*X.*$/d'	//删除特定的行，显示IP地址
 	#ifconfig eth0 |grep '9' |sed 's/^.*addr://g' |sed 's/Bcast.*$//g' |sed 's/^.*X.*$//g' |sed '/^$/d'		//将某些特定的行替换为空行，并删除
-
+####将一行变多行  
+首先通过将不要的字符替换成空格或直接删除，随后将分割符替换为换行符\n即可  
+	#cat tmp | sed 's/^\[//g'|sed 's/\]$//g'|sed 's/,/\n/g'|sed 's/ //g'
 ###awk命令  
 awk对比sed：awk主要针对行内数据进行操作，sed主要是以行为单位进行操作  
 命令语法格式：  
 	#awk '条件类型1{动作1} 条件类型2{动作2} ...' filename
 awk过于复杂，所以以后慢慢练习。  
+####awk 计算方差  
+	#awk '{a[++i]=$1;} END{for(i in a)sum += a[i];ave=sum/NR;for(i in a) delta += (a[i]-ave)*(a[i]-ave);print delta/NR}' tmp
 ###其他好用命令：  
 diff+patch:  
 	diff用来比较两个文件的差别(虽然我基本都用vimdiff)，如果结合patch命令还能完成版本管理的一部分功能呢。命令如下：
