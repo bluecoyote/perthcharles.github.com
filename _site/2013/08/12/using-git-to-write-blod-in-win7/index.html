@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]</title>
+	<title>win7下搭建博客环境</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="win7下搭建博客环境" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,52 +44,58 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]</h1>
+						<h1 class="h2 entry-title">win7下搭建博客环境</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h2>问题描述</h2>
+					<h2>安装包下载地址</h2>
 
-<p>已知一个数组a[N]，构造一个数组b[N]，构造规则：b[i]=a[0]<em>a[1]</em>a[2]...a[N]/a[i];<br/>
-要求：1.不可以用除法<br/>
-      2.时间复杂度为O(n)，空间复杂度为S(1)<br/>
-      3.除遍历使用的变量外，不可以使用其它变量</p>
+<p><a href="https://code.google.com/p/msysgit/downloads/list">git for windows:msysgit</a><br/>
+<a href="http://rubyinstaller.org/downloads/">RubyInstallers</a></p>
 
-<h3>思路描述</h3>
+<h2>安装步骤</h2>
 
-<p>线性时间内，构造：<br/>
-b[i]=a[0]<em>a[2]...a[i]<br/>
-a[i]=a[i]</em>a[i+1]...a[N-1]<br/>
-最后b[i]=b[i-1]*a[i+1]  (i=1,2,3...,N-3,N-2)<br/>
-b[0]=a[1],b[N-1]=b[N-2].</p>
+<p>1.依次安装msysgit和RubyInstaller,RubyInstallers需要仔细看下网页上的说明，下载对应的标准包和Dev包<br/>
+如rubyinstall-2.0.0-p247-x64对应DevKit-mingw64-64-4.7.2-20130224-1432-sfx.<br/>
+msysgit安装后的设置，请参考<a href="http://perthcharles.github.io/2013/02/25/git-start">初识git</a></p>
 
-<h3>源代码</h3>
+<p>2.安装jekyll<br/>
+尝试一：在git bash中直接安装<br/>
+    问题一：gem:command not found<br/>
+    将ruby安装目录下的bin文件夹添加到系统路径中即可<br/>
+    #PATH=/c/Ruby200-x64/bin:$PATH<br/>
+    问题二：The fast-stemmer native gem requires installed build tools.<br/>
+    尝试一到此结束<br/>
+尝试二：双击Dev包解压后的msys.bat进行安装<br/>
+    解压路径必须是全英文的，否则脚本报错<br/>
+    执行命令：#gem install jekyll<br/>
+    时间可能会很长，但是能够执行成功。<br/>
+3.安装完成后，检测是否安装成功<br/>
+    #jekyll -version<br/>
+4.安装rdiscount<br/>
+    #gem install rdiscount --platform=ruby<br/>
+5.针对中文编码，修改ruby配置文件<br/>
+    Ruby 安装目录下的 lib\ruby\gems\1.9.1\gems\jekyll-0.11.2\lib\jekyll\convertible.rb 文件（找不到可以搜索，版本号可能会有不同），把<br/>
+    self.content = File.read(File.join(base, name))<br/>
+    替换成<br/>
+    self.content = File.read(File.join(base, name), :encoding => "utf-8")</p>
 
-<pre><code>void produce_b_by_a(int *a, int *b, int N)
-{
-    int i;
-    b[0]=a[0];
-    for(i = 1, i &lt; N; i++){
-        b[i] = b[i-1] * a[i];
-    }
-    for(i = N-2; i &gt;= 0; i--){
-        a[i] = a[i] * a[i+1];
-    }
-    for(i = 1; i &lt; N-1; i++){
-        b[i] = b[i-1] * a[i+1];
-    }
-}
-</code></pre>
+<h2>参考资料</h2>
+
+<p><a href="http://librajt.github.io/2012/09/08/using-jekyll/">WINDOWS下安装jekyll并在本地预览</a><br/>
+<a href="http://rubyer.me/blog/134/">windows下安装DevKit</a><br/>
+<a href="http://blog.csdn.net/shandong_chu/article/details/7052478"> ruby之——安装gem提示：Please update your PATH to include build tools or download the DevKit</a><br/>
+<a href="http://chxt6896.github.io/blog/2011/11/30/blog-jekyll-install.html">*这个博主写的博客不错*Jekyll 非你莫属</a></p>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-04-20T00:00:00+08:00" datetime="2013-04-20T00:00:00+08:00" pubdate>
-							<span class="month"><abbr>April</abbr></span>
-							<span class="day">20</span>
+							<date class="date-pub" title="2013-08-12T00:00:00+08:00" datetime="2013-08-12T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>August</abbr></span>
+							<span class="day">12</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -100,10 +106,6 @@ b[0]=a[1],b[N-1]=b[N-2].</p>
 
 
   
-     
-    	<li><a href="/categories.html#面试题-ref">
-    		面试题 <span>5</span>
-    	</a></li>
     
   
 
@@ -161,13 +163,9 @@ b[0]=a[1],b[N-1]=b[N-2].</p>
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/04/19/mapreduce-learning" title="View mapreduce 学习笔记">&laquo; mapreduce 学习笔记</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/07/15/a-macro-for-excel" title="View EXCEL宏学习 -- 读文本数据">&laquo; EXCEL宏学习 -- 读文本数据</a></li>
 							
 							
-							<li class="pipe"> | </li>
-							
-							
-							<li class="next"><a class="internal" rel="next"  href="/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel" title="View 并行最小生成树算法">并行最小生成树算法 &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -215,7 +213,7 @@ b[0]=a[1],b[N-1]=b[N-2].</p>
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/08/12/using-git-to-write-blod-in-win7" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

@@ -62,26 +62,18 @@ int main(void)
 }
 </code></pre>
 
-<p>保存文件：hello.c</p>
-
-<pre><code>#gcc hello.c -o hello
-#./hello
-Hello World!
-</code></pre>
-
-<p>产生等价的32位X86 汇编语言程序</p>
-
-<pre><code>#gcc -S -m64 hello.c  //将m32改位m64，因为我的机器是64的
-#ls hello*
-hello  hello.c  hello.s
-</code></pre>
-
-<p>可以看到产生来与hello.c等价的汇编语言程序hello.s,下面用gcc编译这个汇编程序</p>
-
-<pre><code>#gcc -m64 hello.s -o hello-asm
-#./hello-asm
-Hello World!
-</code></pre>
+<p>保存文件：hello.c<br/>
+    #gcc hello.c -o hello
+    #./hello
+    Hello World!
+产生等价的32位X86 汇编语言程序<br/>
+    #gcc -S -m64 hello.c  //将m32改位m64，因为我的机器是64的
+    #ls hello*
+    hello  hello.c  hello.s
+可以看到产生来与hello.c等价的汇编语言程序hello.s,下面用gcc编译这个汇编程序<br/>
+    #gcc -m64 hello.s -o hello-asm
+    #./hello-asm
+    Hello World!</p>
 
 					<div class="meta">
 						<p class="date-publish">

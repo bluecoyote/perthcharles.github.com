@@ -69,35 +69,22 @@
 
 <h2>xargs（好用）</h2>
 
-<p>xargs能够將上一个命令的执行结果当作参数传递给下一个命令。忘记细节了，请记得：</p>
-
-<pre><code>#man xargs  
-</code></pre>
-
-<p>举例：將find找到的文件，传递给du命令</p>
-
-<pre><code>#find /etc -name *id.conf |xargs du -h  
-</code></pre>
+<p>xargs能够將上一个命令的执行结果当作参数传递给下一个命令。忘记细节了，请记得：<br/>
+    #man xargs<br/>
+举例：將find找到的文件，传递给du命令<br/>
+    #find /etc -name *id.conf |xargs du -h</p>
 
 <h2>删除文件夹内全部文件</h2>
 
 <pre><code>#rm -f *  //-f意味着不一一提示是否删除  
 </code></pre>
 
-<p><strong>注</strong>：当文件夹没文件过多或文件名长度过长，会导致<em>argument list too long</em>的错误，我理解的原因就是正则式“*”展开导致命令行长度过长。这是UNIX以来就有的限制。查看限制可使用命令：</p>
-
-<pre><code>#getconf ARG_MAX  //我的电脑是2097152  
-</code></pre>
-
-<p>删除所有文件：执行ls得到文件夹所有文件的路径，xargs將ls的输出，每10个一组（以空格为分割符）作为rm -rf 的参数</p>
-
-<pre><code>#ls |xargs -n 10 rm -rf  
-</code></pre>
-
-<p>删除符合特定命名的文件,其实多少个一组是可选的:</p>
-
-<pre><code>#find -name XXX |xargs [-n 10] rm -rf  
-</code></pre>
+<p><strong>注</strong>：当文件夹没文件过多或文件名长度过长，会导致<em>argument list too long</em>的错误，我理解的原因就是正则式“*”展开导致命令行长度过长。这是UNIX以来就有的限制。查看限制可使用命令：<br/>
+    #getconf ARG_MAX  //我的电脑是2097152<br/>
+删除所有文件：执行ls得到文件夹所有文件的路径，xargs將ls的输出，每10个一组（以空格为分割符）作为rm -rf 的参数<br/>
+    #ls |xargs -n 10 rm -rf<br/>
+删除符合特定命名的文件,其实多少个一组是可选的:<br/>
+    #find -name XXX |xargs [-n 10] rm -rf</p>
 
 					<div class="meta">
 						<p class="date-publish">

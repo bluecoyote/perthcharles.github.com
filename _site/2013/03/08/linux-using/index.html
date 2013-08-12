@@ -72,24 +72,16 @@ mkdir: cannot create directory `test/test`: No such file or directory
 </code></pre>
 
 <p>参数<strong>-p</strong>將帮助你把不存在的上层目录建立起来<br/>
-mkdir还有-m参数：手动配置文件属性，而不用默认值</p>
-
-<pre><code>关于属性：r=4,w=2,x=1,故7=4+2+1表示具有可读可写可执行的权限  
-</code></pre>
+mkdir还有-m参数：手动配置文件属性，而不用默认值<br/>
+    关于属性：r=4,w=2,x=1,故7=4+2+1表示具有可读可写可执行的权限</p>
 
 <h3>简易随机数</h3>
 
-<p>如果想生成一个随机数，linux环境下可以简单的输出</p>
-
-<pre><code>#echo $RANDOM
-</code></pre>
-
-<p>但是这样的范围是在0～32767之间，如果想生成一个在某个范围之内的随机数呢？这里将用到命令bc完成任务</p>
-
-<pre><code>#echo $RANDOM*10/32767 | bc
-</code></pre>
-
-<p>首先通过echo命令完成计算表达式，然后用bc计算出来</p>
+<p>如果想生成一个随机数，linux环境下可以简单的输出<br/>
+    #echo $RANDOM
+但是这样的范围是在0～32767之间，如果想生成一个在某个范围之内的随机数呢？这里将用到命令bc完成任务<br/>
+    #echo $RANDOM*10/32767 | bc
+首先通过echo命令完成计算表达式，然后用bc计算出来</p>
 
 					<div class="meta">
 						<p class="date-publish">

@@ -53,22 +53,13 @@
 				<div class="entry-content">
 					<h3>yum安装软件</h3>
 
-<p>当你想安装软件的时候，可能你只知道一个大概的名字或者你想确认你系统的yum源中是否存在该软件包，那么你就可以用下面的命令来查找确认</p>
-
-<pre><code>    #yum list |grep softname  
-</code></pre>
-
-<p>如果想知道你现在已经安装来哪些包，可以使用</p>
-
-<pre><code>#rpm -qa | grep softname  
-</code></pre>
-
-<p>得到软件对应的正确软件包名称之后，就可以使用</p>
-
-<pre><code>#yum install softname  
-</code></pre>
-
-<p>来正确安装你需要的软件了</p>
+<p>当你想安装软件的时候，可能你只知道一个大概的名字或者你想确认你系统的yum源中是否存在该软件包，那么你就可以用下面的命令来查找确认<br/>
+        #yum list |grep softname<br/>
+如果想知道你现在已经安装来哪些包，可以使用<br/>
+    #rpm -qa | grep softname<br/>
+得到软件对应的正确软件包名称之后，就可以使用<br/>
+    #yum install softname<br/>
+来正确安装你需要的软件了</p>
 
 <h4>如果提示有依赖文件没找到（通常是库文件）,那么可以尝试使用</h4>
 
@@ -80,31 +71,22 @@
 <h3>添加源</h3>
 
 <p>如果你需要安装的软件在现有的源里没有，你就可以尝试添加一个新的源到你的系统里面。当然，你必须保证添加的源跟你的系统是一致的（比如都是64位，对应centos-6）<br/>
-//更改系统yum源配置,以添加google源为例</p>
+//更改系统yum源配置,以添加google源为例<br/>
+    #vim /etc/yum.repos.d/google.repo<br/>
+    [google]<br/>
+    name=Google - i386<br/>
+    baseurl=https://dl.google.com/linux/rpm/stable/i386<br/>
+    enabled=1<br/>
+    gpgchech=1<br/>
+    pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub<br/>
+    //之后你就可以在源里面找到之前你可能找不到的安装包，比如chrome<br/>
+需要说明的是，上面google的源是对应32位系统的，如果你是64位系统你需要将stable后面改为x86_64.并且上面google的链接直接用浏览器应该是打不开的，也就是说你没法从浏览器里面看到这个源里面都有哪些安装包</p>
 
-<pre><code>#vim /etc/yum.repos.d/google.repo  
-[google]  
-name=Google - i386  
-baseurl=https://dl.google.com/linux/rpm/stable/i386  
-enabled=1  
-gpgchech=1  
-pgpkey=https://dl-ssl.google.com/linux/linux_signing_key.pub  
-//之后你就可以在源里面找到之前你可能找不到的安装包，比如chrome  
-</code></pre>
-
-<p>需要说明的是，上面google的源是对应32位系统的，如果你是64位系统你需要将stable后面改为x86_64.并且上面google的链接直接用浏览器应该是打不开的，也就是说你没法从浏览器里面看到这个源里面都有哪些安装包</p>
-
-<p>如果碰到提示需要GPG-KEY的时候，可以先上网找到对应的KEY的链接，然后输入：</p>
-
-<pre><code>#rpm --import url-to-the-key-you-needed  
-</code></pre>
-
-<p>在添加完多个源后，可以再装一个yum的插件让它自动选择最开的源进行下载安装</p>
-
-<pre><code>#yum install yum-fastestmirror -y //-y 表示需要你确认的时候，默认选择yes 
-</code></pre>
-
-<p>对于国内的用户来说，<a href="http://mirrors.ustc.edu.cn">中科大的源</a>是不错的选择,<a href="lug.ustc.edu.cn/wiki/mirrors/help/debian">这里</a>是相关的使用帮助。</p>
+<p>如果碰到提示需要GPG-KEY的时候，可以先上网找到对应的KEY的链接，然后输入：<br/>
+    #rpm --import url-to-the-key-you-needed<br/>
+在添加完多个源后，可以再装一个yum的插件让它自动选择最开的源进行下载安装<br/>
+    #yum install yum-fastestmirror -y //-y 表示需要你确认的时候，默认选择yes
+对于国内的用户来说，<a href="http://mirrors.ustc.edu.cn">中科大的源</a>是不错的选择,<a href="lug.ustc.edu.cn/wiki/mirrors/help/debian">这里</a>是相关的使用帮助。</p>
 
 <h3>安装单独的软件包</h3>
 

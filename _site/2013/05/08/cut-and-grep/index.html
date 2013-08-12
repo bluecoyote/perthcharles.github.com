@@ -53,12 +53,11 @@
 				<div class="entry-content">
 					<h2>命令执行时的判断依据</h2>
 
-<p>在一行中执行多条命令可能用到的用法</p>
+<p>在一行中执行多条命令可能用到的用法<br/>
+    //不管cmd1是否执行成功，都会执行cmd2. 就是依次执行cmd1和cmd2
+    #cmd1;cmd2</p>
 
-<pre><code>//不管cmd1是否执行成功，都会执行cmd2. 就是依次执行cmd1和cmd2
-#cmd1;cmd2
-
-//若cmd1执行完成并正确执行，则开始执行cmd2；若执行出错则跳过cmd2
+<pre><code>//若cmd1执行完成并正确执行，则开始执行cmd2；若执行出错则跳过cmd2
 #cmd1 &amp;&amp; cmd2
 
 //若cmd1执行完成并正确执行，则跳过cmd2；若执行出错则执行cmd2
@@ -145,13 +144,12 @@
 
 <hr />
 
-<p>uniq 和wc</p>
+<p>uniq 和wc<br/>
+    #uniq [-ic]
+    -i 忽视大小写
+    -c 进行计数</p>
 
-<pre><code>#uniq [-ic]
--i 忽视大小写
--c 进行计数
-
-#wc [-lwm]
+<pre><code>#wc [-lwm]
 -l 以行为单位
 -w 以单词为单位
 -m 以字符为单位
@@ -159,12 +157,11 @@
 
 <hr />
 
-<p>更多文本处理命令tr col join paste expand split</p>
+<p>更多文本处理命令tr col join paste expand split <br/>
+    #last |tr '[a-z]' '[A-Z]'   //转换所有小写字母到大写
+    #cat /etc/passwd |tr -d ':' //删除输出信息中的':'</p>
 
-<pre><code>#last |tr '[a-z]' '[A-Z]'   //转换所有小写字母到大写
-#cat /etc/passwd |tr -d ':' //删除输出信息中的':'
-
-#col -x             //将tab扩展为空格
+<pre><code>#col -x             //将tab扩展为空格
 
 #man col |col -b &gt; /root/col.man    //将man文件转为文本文件方便查阅
 

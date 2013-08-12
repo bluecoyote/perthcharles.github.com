@@ -53,24 +53,19 @@
 				<div class="entry-content">
 					<h3>vim中文乱码问题--本机设置</h3>
 
-<p>首先应该选用utf8格式的编码比较靠谱，同时为了防止乱码现象，应该保障系统设置和vim的设置相一致</p>
-
-<pre><code>#echo $LANG //查看系统当前选用编码方式  
-#LANG=zh_CN.utf8  
-#vim /etc/vimrc  //将set fileencodings 设置如下  
-set fileencodings=utf8,gbk,big5,ucs-bom,latin1  
-</code></pre>
+<p>首先应该选用utf8格式的编码比较靠谱，同时为了防止乱码现象，应该保障系统设置和vim的设置相一致<br/>
+    #echo $LANG //查看系统当前选用编码方式<br/>
+    #LANG=zh_CN.utf8<br/>
+    #vim /etc/vimrc  //将set fileencodings 设置如下<br/>
+    set fileencodings=utf8,gbk,big5,ucs-bom,latin1</p>
 
 <h3>其他推荐的设置</h3>
 
-<p>中文环境GBK码</p>
-
-<pre><code>#LANG=zn_CN.gbk  
-#vim /etc/vimrc  
-set fileencodings=gbk,big5,ucs-bom,latin1  
-</code></pre>
-
-<p>中文环境UTF8参照之前的本机设置<br/>
+<p>中文环境GBK码<br/>
+    #LANG=zn_CN.gbk<br/>
+    #vim /etc/vimrc<br/>
+    set fileencodings=gbk,big5,ucs-bom,latin1<br/>
+中文环境UTF8参照之前的本机设置<br/>
 英文环境就直接用就好了，所以推荐装机的时候就选择英文系统，毕竟码代码还是英文用的多点</p>
 
 					<div class="meta">

@@ -57,31 +57,23 @@
 
 <h3>需要的软件</h3>
 
-<p><em>fuse</em></p>
-
-<pre><code>#rpm -qa |grep fuse //查看系统是否已经安装软件  
-#yum list |grep fuse  
-#yum install fuse  
-</code></pre>
-
-<p>如果你的源里面没有这个软件，那就去添加更好的源吧，不会添加源的可以参照我另一片博客：<a href="http://perthcharles.github.com/centos6.4/2013/03/18/yum-using">yum使用指南</a></p>
+<p><em>fuse</em><br/>
+    #rpm -qa |grep fuse //查看系统是否已经安装软件<br/>
+    #yum list |grep fuse<br/>
+    #yum install fuse<br/>
+如果你的源里面没有这个软件，那就去添加更好的源吧，不会添加源的可以参照我另一片博客：<a href="http://perthcharles.github.com/centos6.4/2013/03/18/yum-using">yum使用指南</a></p>
 
 <p><em>ntfs-3g</em><br/>
 这个软件我选择的从源码安装，当然你也可以选择从yum源安装<br/>
-<a href="http://www.tuxera.com/community/ntfs-3g-download/">ntfs-3g下载地址:www.tuxera.com/community/ntfs-3g-download/</a></p>
-
-<pre><code>#./configure &amp;&amp; make &amp;&amp; make install  
-</code></pre>
+<a href="http://www.tuxera.com/community/ntfs-3g-download/">ntfs-3g下载地址:www.tuxera.com/community/ntfs-3g-download/</a><br/>
+    #./configure &amp;&amp; make &amp;&amp; make install</p>
 
 <h3>挂在分区</h3>
 
-<p>在安装好上面这两个软件后，应该就可以挂在ntfs磁盘分区了</p>
-
-<pre><code>#fdisk -l //查看硬盘所有分区  
-#mount -t ntfs-3g /dev/xxx /mnt/xxx  
-</code></pre>
-
-<p>如果想开机就挂在上的话，我的方法是修改/etc/profile，再最后加上上面的mount命令</p>
+<p>在安装好上面这两个软件后，应该就可以挂在ntfs磁盘分区了<br/>
+    #fdisk -l //查看硬盘所有分区<br/>
+    #mount -t ntfs-3g /dev/xxx /mnt/xxx<br/>
+如果想开机就挂在上的话，我的方法是修改/etc/profile，再最后加上上面的mount命令</p>
 
 					<div class="meta">
 						<p class="date-publish">

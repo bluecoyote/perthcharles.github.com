@@ -54,31 +54,24 @@
 					<h3>闲聊</h3>
 
 <p>由于我的电脑被WIN7鄙视(跑WIN7显得比较慢)，同时如果按照原书中的代码需要掌握相当的WINDOWS API，对于这点目前我同样是做不到的。所以必须摸索一种LINUX下的方法完成类似的任务。<br/>
-程序的思路应该不难理解，CPU使用率曲线是<em>刷新间隔内CPU的平均使用率</em>。同时需要确认你的电脑CPU是几核的。比如我的电脑是双核的，则跑一个while(1)的话，CPU使用率只会达到50%。这点验证代码如下(shell)：</p>
-
-<pre><code>#cat 50-percent-cpu.sh
-#!/bin/bash
-while [ 1 ] 
-do
-:   
-done
-//注:shell空语句必须填上，在bash里冒号“:”表示空语句
-</code></pre>
+程序的思路应该不难理解，CPU使用率曲线是*刷新间隔内CPU的平均使用率*。同时需要确认你的电脑CPU是几核的。比如我的电脑是双核的，则跑一个while(1)的话，CPU使用率只会达到50%。这点验证代码如下(shell)：<br/>
+    #cat 50-percent-cpu.sh
+    #!/bin/bash
+    while [ 1 ]
+    do
+    : <br/>
+    done
+    //注:shell空语句必须填上，在bash里冒号“:”表示空语句</p>
 
 <h3>linux下实现</h3>
 
 <p>我机器System Monitor更新CPU History的频率大概是1s(通过观察下方CPU1和CPU2使用率刷新频率得出)<br/>
 如果将正弦曲线周期设置为40s，则至少需要制作40份不同的CPU使用频率出来。<br/>
 对于特定值的CPU使用率，比如30%，则需要让CPU在1s内睡眠700ms, 执行while(1)300ms。至此具体的实现方法应该逐渐清晰了。<br/>
-代码请见我github codeware仓库中的<a href="https://github.com/PerthCharles/codeware/blob/master/sine-cpu.c">sine-cpu.c</a>。简单说明在用gcc编译的时候，由于用到了sin函数，所以需要加入-lm选项。即:</p>
-
-<pre><code>#gcc -lm sine-cpu.c -o sine-cpu
-</code></pre>
-
-<p>跑的时候使用taskset将程序设置到一个CPU上跑</p>
-
-<pre><code>#taskset -c 0 ./sine-cpu
-</code></pre>
+代码请见我github codeware仓库中的<a href="https://github.com/PerthCharles/codeware/blob/master/sine-cpu.c">sine-cpu.c</a>。简单说明在用gcc编译的时候，由于用到了sin函数，所以需要加入-lm选项。即:<br/>
+    #gcc -lm sine-cpu.c -o sine-cpu
+跑的时候使用taskset将程序设置到一个CPU上跑<br/>
+    #taskset -c 0 ./sine-cpu</p>
 
 <h3>遇到问题</h3>
 

@@ -53,120 +53,88 @@
 				<div class="entry-content">
 					<h3>主要用到软件</h3>
 
-<p>vnc</p>
-
-<pre><code>#yum install vnc
-</code></pre>
-
-<p>kvm</p>
-
-<pre><code>//检查CPU是否支持kvm，输出为空表示不支持
-#egrep '(vmx|svm)' /proc/cpuinfo
-//安装kvm
-#yum install kvm kmod-kvm qemu kvm-qemu-img virt-viewer virt-manager
-or
-#yum groupinstall KVM  //我选用这种命令 :)
-//检查模块是否加载
-#lsmod |grep kvm
-//应该有以下输出
-kvm_intel             xxxxxx  0 
-kvm                   xxxxxx  1 kvm_intel
-//如果没有上面两个模块，尝试
-#modprobe kvm
-#modprobe kvm-intel
-//还是检查kvm是否安装成功,祈祷不要得到erroe信息吧:)
-#virsh -c qume:///system list
-//如果遇到error:unable connect ...libvirtd...,尝试一般是因为没有启用libvirtd服务，使用命令
-#service libvirtd restart
-</code></pre>
-
-<p>qume</p>
-
-<pre><code>#yum install qemu
-//note:我服务器没能正确执行这条命令，用下面命令发现, so...
-#yum list |grep qemu
-kvm-qemu-img.x86_64 ... installed
-</code></pre>
+<p>vnc<br/>
+    #yum install vnc
+kvm<br/>
+    //检查CPU是否支持kvm，输出为空表示不支持
+    #egrep '(vmx|svm)' /proc/cpuinfo
+    //安装kvm
+    #yum install kvm kmod-kvm qemu kvm-qemu-img virt-viewer virt-manager
+    or
+    #yum groupinstall KVM  //我选用这种命令 :)
+    //检查模块是否加载
+    #lsmod |grep kvm
+    //应该有以下输出
+    kvm_intel             xxxxxx  0
+    kvm                   xxxxxx  1 kvm_intel
+    //如果没有上面两个模块，尝试
+    #modprobe kvm
+    #modprobe kvm-intel
+    //还是检查kvm是否安装成功,祈祷不要得到erroe信息吧:)
+    #virsh -c qume:///system list
+    //如果遇到error:unable connect ...libvirtd...,尝试一般是因为没有启用libvirtd服务，使用命令
+    #service libvirtd restart
+qume<br/>
+    #yum install qemu
+    //note:我服务器没能正确执行这条命令，用下面命令发现, so...
+    #yum list |grep qemu
+    kvm-qemu-img.x86_64 ... installed</p>
 
 <h3>创建一台虚拟机器</h3>
 
 <p>如果不明白下面命令的含义，请查看man :) <br/>
-1.创建一块虚拟硬盘</p>
-
-<pre><code>#qemu-img create -f qcow2 disk.img 20G
-or
-#dd if=/dev/zero of=disk.img bs=1G count=5
-</code></pre>
-
-<p>2.在虚拟硬盘中安装操作系统</p>
-
-<pre><code>#qemu-kvm -enable-kvm -m 2024 -hda disk.img -cdrom win7XXXX.iso -boot d  //内存设置为2G
-</code></pre>
+1.创建一块虚拟硬盘<br/>
+    #qemu-img create -f qcow2 disk.img 20G
+    or
+    #dd if=/dev/zero of=disk.img bs=1G count=5
+2.在虚拟硬盘中安装操作系统<br/>
+    #qemu-kvm -enable-kvm -m 2024 -hda disk.img -cdrom win7XXXX.iso -boot d  //内存设置为2G</p>
 
 <hr />
 
 <h4>可能遇到问题</h4>
 
 <p>a.如果你遇到qemu-kvm命令不存在的情况，可能是因为：<br/>
-从 6 系列开始 RedHat 推荐使用 virt-install/virsh 系列工具操作 kvm，而不是直接使用 qemu-kvm，所以 qemu-kvm 被移到一个不起眼的地方 /usr/libexec/，这点可以通过命令确认一下：</p>
-
-<pre><code>#yum provides */qemu-kvm
-//在filename位置会发现：/usr/libexec/qemu-kvm
-</code></pre>
-
-<p>针对这个问题，可以建立一个链接</p>
-
-<pre><code>ln -sf /usr/libexec/qemu-kvm /usr/bin/qemu-kvm
-</code></pre>
-
-<p>b.qemu-kvm could not initialize sdl - exiting</p>
-
-<pre><code>//尝试方法一：
-加入-no-quit选项，忽略SDL窗口的退出(无效)
-//最后发现是我的xshell中没有对这台服务器选用x window功能 :(
-</code></pre>
-
-<p>c.vncviewer连接问题</p>
-
-<pre><code>据说是vnc的bug，在连接的时候加上AutoSelect=0就好了。
-</code></pre>
+从 6 系列开始 RedHat 推荐使用 virt-install/virsh 系列工具操作 kvm，而不是直接使用 qemu-kvm，所以 qemu-kvm 被移到一个不起眼的地方 /usr/libexec/，这点可以通过命令确认一下：<br/>
+    #yum provides */qemu-kvm
+    //在filename位置会发现：/usr/libexec/qemu-kvm
+针对这个问题，可以建立一个链接<br/>
+    ln -sf /usr/libexec/qemu-kvm /usr/bin/qemu-kvm
+b.qemu-kvm could not initialize sdl - exiting<br/>
+    //尝试方法一：
+    加入-no-quit选项，忽略SDL窗口的退出(无效)
+    //最后发现是我的xshell中没有对这台服务器选用x window功能 :(
+c.vncviewer连接问题<br/>
+    据说是vnc的bug，在连接的时候加上AutoSelect=0就好了。</p>
 
 <hr />
 
-<p>3.运行一个虚拟机</p>
-
-<pre><code>//后台启动虚拟机
-#qemu-kvm -m 2048 -hda win7.img -k en-us -vnc 127.0.0.1:29 -daemonize -redir tcp:3389::3389
-//connect via vnc
-#vncviewer localhost:29 AutoSelect=0
-//connect via rdesktop, 必须首先通过设置开启远程链接服务
-#rdesktop localhost
-</code></pre>
+<p>3.运行一个虚拟机<br/>
+    //后台启动虚拟机
+    #qemu-kvm -m 2048 -hda win7.img -k en-us -vnc 127.0.0.1:29 -daemonize -redir tcp:3389::3389
+    //connect via vnc
+    #vncviewer localhost:29 AutoSelect=0
+    //connect via rdesktop, 必须首先通过设置开启远程链接服务
+    #rdesktop localhost</p>
 
 <h3>运行多个虚拟机</h3>
 
 <p>从网上找了不少资料，但是配置bridge和tap总是出现问题，最后改用virtual manager来管理，就挺顺利的</p>
 
-<p>1.确保系统中安装了libvirt</p>
-
-<pre><code>#yum list |grep libvirt
-</code></pre>
-
-<p>2.使用脚本安装系统</p>
-
-<pre><code>#cat win7.sh
-virt-install \
---name win7 \
---ram 2048 \
---vcpus=1 \
---disk path=win7.img,size=20 \
---accelerate \
---cdrom win7.iso \
---vnc \
---keymap=en-us
-</code></pre>
-
-<p>具体参数可能会略有不同，详情请查看man virt-install<br/>
+<p>1.确保系统中安装了libvirt<br/>
+    #yum list |grep libvirt
+2.使用脚本安装系统<br/>
+    #cat win7.sh
+    virt-install \
+    --name win7 \
+    --ram 2048 \
+    --vcpus=1 \
+    --disk path=win7.img,size=20 \
+    --accelerate \
+    --cdrom win7.iso \
+    --vnc \
+    --keymap=en-us
+具体参数可能会略有不同，详情请查看man virt-install<br/>
 3.在虚拟机中开启远程桌面连接功能<br/>
 4.查看虚拟机ip地址<br/>
 5.用rdesktop连接到虚拟机</p>

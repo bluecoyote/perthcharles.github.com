@@ -65,16 +65,11 @@ Input focus events             | FocusIn, FocusOut
 
 <p>如果仅仅是调整x window的位置，是不是没有数据发送出去？！  ----添加DEBUG，只是调整位置，看是否有数据包发送</p>
 
-<p>怎么给X window发送event?？？？</p>
-
-<pre><code>关键点：xwin_process_events函数调用XNextEvent来从g_display中获取event事件，所以问题变为如何在g_display中加入我们想要的事件？？？
-    这种方式现在还没思路，改用直接调用rdp_send_input()函数来处理
-</code></pre>
-
-<p>现在需要保证前后发送的两个数据包依赖性要保证好，比如第一个操作是打开word，那么第二个操作必须等服务器那边发送回响应后才发送过去</p>
-
-<pre><code>关键问题：怎么设置响应时间？
-</code></pre>
+<p>怎么给X window发送event?？？？<br/>
+    关键点：xwin_process_events函数调用XNextEvent来从g_display中获取event事件，所以问题变为如何在g_display中加入我们想要的事件？？？
+        这种方式现在还没思路，改用直接调用rdp_send_input()函数来处理
+现在需要保证前后发送的两个数据包依赖性要保证好，比如第一个操作是打开word，那么第二个操作必须等服务器那边发送回响应后才发送过去
+    关键问题：怎么设置响应时间？</p>
 
 <p>如果单纯的从rdp_send_input发送数据（比如移动鼠标），那么返回数据后，客户端是否能显示正常？这点要验证！</p>
 
@@ -89,12 +84,9 @@ Input focus events             | FocusIn, FocusOut
 <p>xwin.c:2283: warning: format ‘%u’ expects type ‘unsigned int’, but argument 2 has type ‘time_t’
 xwin.c: In function ‘xwin_process_events’:
 xwin.c:2379: warning: format ‘%x’ expects type ‘unsigned int’, but argument 2 has type ‘KeySym’
-xwin.c:2382: warning: format ‘%x’ expects type ‘unsigned int’, but argument 2 has type ‘KeySym’</p>
-
-<pre><code>%x,  (unsigned int) keysym
-</code></pre>
-
-<p>xwin.c:2432: warning: format ‘%u’ expects type ‘unsigned int’, but argument 2 has type ‘time_t’</p>
+xwin.c:2382: warning: format ‘%x’ expects type ‘unsigned int’, but argument 2 has type ‘KeySym’
+    %x,  (unsigned int) keysym
+xwin.c:2432: warning: format ‘%u’ expects type ‘unsigned int’, but argument 2 has type ‘time_t’</p>
 
 <h3>注意事项</h3>
 

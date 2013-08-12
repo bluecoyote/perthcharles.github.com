@@ -60,32 +60,22 @@ objdump:</p>
 
 <h3>hexedit使用</h3>
 
-<p>暂时只用hexedit来读二进制文件</p>
-
-<pre><code>#hexedit filename  //查看文件  
-</code></pre>
-
-<p>常用操作键</p>
-
-<pre><code>   Ctrl-X: save and exit  
-   Ctrl-C: exit without saving  
-   tab: 在hex和ascii窗口之间切换  
-   Ctrl-U: undo all  
-   Ctrl-S: search forward  
-</code></pre>
+<p>暂时只用hexedit来读二进制文件<br/>
+    #hexedit filename  //查看文件<br/>
+常用操作键<br/>
+       Ctrl-X: save and exit<br/>
+       Ctrl-C: exit without saving<br/>
+       tab: 在hex和ascii窗口之间切换<br/>
+       Ctrl-U: undo all<br/>
+       Ctrl-S: search forward</p>
 
 <h3>objdump使用</h3>
 
-<p>编译程序的时候，gcc添加-g选项，增加调试信息</p>
-
-<pre><code>#gcc test.c -g -o test
-</code></pre>
-
-<p>常用参数</p>
-
-<pre><code>-S(source):表示读取哪个文件
--j:选择读出哪个section，可以通过objdump -h来查看所有的section
-</code></pre>
+<p>编译程序的时候，gcc添加-g选项，增加调试信息<br/>
+    #gcc test.c -g -o test
+常用参数<br/>
+    -S(source):表示读取哪个文件
+    -j:选择读出哪个section，可以通过objdump -h来查看所有的section</p>
 
 <hr />
 
@@ -119,15 +109,10 @@ others: s=short(16-bit integer) or single(32-bit floating point)
 
 <h4>C语言内嵌汇编</h4>
 
-<p>格式：</p>
-
-<pre><code>_asm_("asm statement":outputs:inputs:registers-modified)
-</code></pre>
-
-<p>tips:</p>
-
-<pre><code>1.在嵌入汇编中，寄存器前面要加两个%，因为gcc在编译时，会去掉一个%再输出成汇编格式
-</code></pre>
+<p>格式：<br/>
+    <em>asm</em>("asm statement":outputs:inputs:registers-modified)
+tips:
+    1.在嵌入汇编中，寄存器前面要加两个%，因为gcc在编译时，会去掉一个%再输出成汇编格式</p>
 
 <h4>主要寄存器及其作用</h4>
 
@@ -140,70 +125,56 @@ others: s=short(16-bit integer) or single(32-bit floating point)
 
 <hr />
 
-<p><em>通用寄存器</em>又可以分成2类：数据寄存器和指针寄存器及变址寄存器，各4个</p>
+<p>*通用寄存器*又可以分成2类：数据寄存器和指针寄存器及变址寄存器，各4个<br/>
+    ax:常用于计算。另外所有的I/O指令都使用这一寄存器与外界设备传送数据
+    bx:基址寄存器<br/>
+    cx:计数寄存器<br/>
+    dx:数据寄存器</p>
 
-<pre><code>ax:常用于计算。另外所有的I/O指令都使用这一寄存器与外界设备传送数据
-bx:基址寄存器  
-cx:计数寄存器  
-dx:数据寄存器  
-
-SP:堆栈指针，与SS配合使用，可指向目前的堆栈位置  
+<pre><code>SP:堆栈指针，与SS配合使用，可指向目前的堆栈位置  
 BP:基址寄存器，可作为SS的相对基址位置  
 SI:source index,源变址寄存器------暂不理解  
 DI：destination index,目的变址寄存器  
 上面四个寄存器只能按16位进行操作，主要用来形成操作数的地址  
 </code></pre>
 
-<p><em>指令指针IP</em></p>
-
-<pre><code>IP:16位专用寄存器，用来指向当前执行指令的下一条指令的地址。注意，IP指向的是指令地址的段内地址偏移量  
-</code></pre>
-
-<p><em>标志寄存器FR</em><br/>
+<p>*指令指针IP<em><br/>
+    IP:16位专用寄存器，用来指向当前执行指令的下一条指令的地址。注意，IP指向的是指令地址的段内地址偏移量<br/>
+*标志寄存器FR</em><br/>
 16位的寄存器，有意义的有9位，6位是状态位，3位是控制位<br/>
-分布图：</p>
-
-<pre><code>#################################################
-#  #  #  #  #OF#DF#IF#TF#SF#ZF#  #AF#  #PF#  #CF#
-#################################################
-#15#14#13#12#11#10# 9# 8# 7# 6# 5# 4# 3# 2# 1# 0#
-#################################################
-各个标志的含义：  
-OF:overflow  
-DF:direction
-IF:中断允许标志，标志是否响应CPU‘外部可屏蔽‘中断，1表示响应
-TF:跟踪标志
-SF:符号标志，与运算结果的最高位相同
-ZF:零标志，反映运算结果是否为0
-AF:辅助进位标志
-PF:奇偶标志反映运算结果中’1‘的个数，PF=1表示偶数个’1‘
-CF:进位标志反映运算结果是否产生进位或借位
-</code></pre>
-
-<p><em>段寄存器</em></p>
-
-<pre><code>CS:code segment
-DS:data segment
-SS:stack segment
-ES:extra segment
-</code></pre>
+分布图：<br/>
+    #################################################
+    #  #  #  #  #OF#DF#IF#TF#SF#ZF#  #AF#  #PF#  #CF#
+    #################################################
+    #15#14#13#12#11#10# 9# 8# 7# 6# 5# 4# 3# 2# 1# 0#
+    #################################################
+    各个标志的含义：<br/>
+    OF:overflow<br/>
+    DF:direction
+    IF:中断允许标志，标志是否响应CPU‘外部可屏蔽‘中断，1表示响应
+    TF:跟踪标志
+    SF:符号标志，与运算结果的最高位相同
+    ZF:零标志，反映运算结果是否为0
+    AF:辅助进位标志
+    PF:奇偶标志反映运算结果中’1‘的个数，PF=1表示偶数个’1‘
+    CF:进位标志反映运算结果是否产生进位或借位
+*段寄存器*<br/>
+    CS:code segment
+    DS:data segment
+    SS:stack segment
+    ES:extra segment</p>
 
 <hr />
 
 <h4>80386寄存器</h4>
 
 <p>寄存器都是32位宽<br/>
-<em>通用寄存器</em></p>
-
-<pre><code>EAX，EBX，ECX，EDX
-</code></pre>
-
-<p><em>特殊寄存器</em></p>
-
-<pre><code>ESI：通常在内存操作中作为“源地址指针”使用，DS是默认段寄存器
-EDI：通常在内存操作中作为“目标地址指针”，DS是默认段寄存器
-EBP：通常被高级语言编译器用以建造‘堆栈帧’来保存函数或过程的局部变量，SS是默认段寄存器
-</code></pre>
+*通用寄存器*<br/>
+    EAX，EBX，ECX，EDX
+*特殊寄存器*<br/>
+    ESI：通常在内存操作中作为“源地址指针”使用，DS是默认段寄存器
+    EDI：通常在内存操作中作为“目标地址指针”，DS是默认段寄存器
+    EBP：通常被高级语言编译器用以建造‘堆栈帧’来保存函数或过程的局部变量，SS是默认段寄存器</p>
 
 <hr />
 

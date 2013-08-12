@@ -54,11 +54,10 @@
 					<h3>题目</h3>
 
 <p>请写出下面程序在32/64位机器上的输出结果<br/>
-编译器：GCC</p>
+编译器：GCC<br/>
+    #include&lt;sdtio.h></p>
 
-<pre><code>#include&lt;sdtio.h&gt;  
-
-int main(void)
+<pre><code>int main(void)
 {
     unsigned char a = 0xa5;
     printf("%d\n",~a);
@@ -87,15 +86,14 @@ int main(void)
 
 <h3>更进一步</h3>
 
-<p>将下面代码反汇编，查看取反操作是否是上面的说法：按照32位取反</p>
+<p>将下面代码反汇编，查看取反操作是否是上面的说法：按照32位取反<br/>
+    #include&lt;stdio.h>
+    int main(void)
+    {
+        unsigned char a = 0xa5;
+        printf("%d\n",~a);</p>
 
-<pre><code>#include&lt;stdio.h&gt;
-int main(void)
-{
-    unsigned char a = 0xa5;
-    printf("%d\n",~a);
-
-    return 0;
+<pre><code>    return 0;
 }
 
 #gcc test.c -o -g test 
@@ -128,25 +126,24 @@ int main(void)
 </code></pre>
 
 <p>可以看到指令"not %edx"是直接按照32位进行取反的<br/>
-如果对程序进行-O2优化编译的话，就看得更直观</p>
+如果对程序进行-O2优化编译的话，就看得更直观<br/>
+    #gcc -O2 test.c -g -o test-O2
+    #objdump -S test-O2 >test-O2.debug
+    #cat test-O2.debug
+    ...
+    00000000004004d0 <main>:
+    #include&lt;stdio.h>
+    int main(void)
+    {
+      4004d0:       48 83 ec 08             sub    $0x8,%rsp
+         unsigned char a = 0xa5;
+         printf("%d\n",~a);
+      4004d4:       be 5a ff ff ff          mov    $0xffffff5a,%esi
+      4004d9:       bf e8 05 40 00          mov    $0x4005e8,%edi
+      4004de:       31 c0                   xor    %eax,%eax
+      4004e0:       e8 d3 fe ff ff          callq  4003b8 &lt;printf@plt></p>
 
-<pre><code>#gcc -O2 test.c -g -o test-O2
-#objdump -S test-O2 &gt;test-O2.debug
-#cat test-O2.debug
-...
-00000000004004d0 &lt;main&gt;:
-#include&lt;stdio.h&gt;
-int main(void)
-{
-  4004d0:       48 83 ec 08             sub    $0x8,%rsp
-     unsigned char a = 0xa5;
-     printf("%d\n",~a);
-  4004d4:       be 5a ff ff ff          mov    $0xffffff5a,%esi
-  4004d9:       bf e8 05 40 00          mov    $0x4005e8,%edi
-  4004de:       31 c0                   xor    %eax,%eax
-  4004e0:       e8 d3 fe ff ff          callq  4003b8 &lt;printf@plt&gt;
-
-     return 0;
+<pre><code>     return 0;
 }
 ...
 </code></pre>

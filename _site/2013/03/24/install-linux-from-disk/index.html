@@ -64,34 +64,26 @@ Acronis Disk Director Suite:帮助你在WIN7下无损分区，目前用户体�
 
 <h3>安装步骤</h3>
 
-<p>话不多说，这就开工</p>
-
-<pre><code>打开EasyBCD-&gt;  
-Add New Entry-&gt;  //这一步就是给你liunx镜像文件制作启动项，或许在linux下更准确的说法是修改grub？  
-选择NeoGrub标签页-&gt;  
-点击Install,点击Configure,进行配置，其实我感觉这个是标准的grub的写法。最重要的是各个操作系统的配置文件对应镜像需要解压出来的文件有区别，这点很重要。很多人的博客并没有明显的区分或是主要针对Ubuntu这个系统进行讲解的    
-</code></pre>
-
-<p>最重要的就是配置了，这个地方网上有不少人进行了解释，但是我觉得我觉得最简单最实用的还是百度空间的<a href="http://hi.baidu.com/sf_chipan">小治的空间</a>,在此感谢作者！</p>
+<p>话不多说，这就开工<br/>
+    打开EasyBCD-><br/>
+    Add New Entry->  //这一步就是给你liunx镜像文件制作启动项，或许在linux下更准确的说法是修改grub？<br/>
+    选择NeoGrub标签页-><br/>
+    点击Install,点击Configure,进行配置，其实我感觉这个是标准的grub的写法。最重要的是各个操作系统的配置文件对应镜像需要解压出来的文件有区别，这点很重要。很多人的博客并没有明显的区分或是主要针对Ubuntu这个系统进行讲解的  <br/>
+最重要的就是配置了，这个地方网上有不少人进行了解释，但是我觉得我觉得最简单最实用的还是百度空间的<a href="http://hi.baidu.com/sf_chipan">小治的空间</a>,在此感谢作者！</p>
 
 <h3>各个系统的配置文件写法和镜像需要解压缩的文件</h3>
 
 <h4>CentOS系列</h4>
 
-<p>文件目录</p>
-
-<pre><code>CentOS-xx-i386/x86_64-bin-DVD1/2.iso  
-initrd.img  //initrd.img和vmlinuz这两个文件在ioslinux文件夹下  
-vmlinuz  
-images/  
-</code></pre>
-
-<p>配置文件</p>
-
-<pre><code>title install centos XXX  
-kernel (hd0,6)/vmlinuz  //hd0 表示你的镜像文件放在你电脑对应的那块硬盘；6表示镜像存放分区的编号。  
-initrd (hd0,6)/initrd.img  
-</code></pre>
+<p>文件目录
+    CentOS-xx-i386/x86_64-bin-DVD1/2.iso<br/>
+    initrd.img  //initrd.img和vmlinuz这两个文件在ioslinux文件夹下<br/>
+    vmlinuz<br/>
+    images/<br/>
+配置文件
+    title install centos XXX<br/>
+    kernel (hd0,6)/vmlinuz  //hd0 表示你的镜像文件放在你电脑对应的那块硬盘；6表示镜像存放分区的编号。<br/>
+    initrd (hd0,6)/initrd.img</p>
 
 <h4>其他系列</h4>
 
