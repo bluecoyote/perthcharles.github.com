@@ -5,8 +5,8 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-08-12T19:43:55+08:00</lastBuildDate>
-        <pubDate>2013-08-12T19:43:55+08:00</pubDate>
+        <lastBuildDate>2013-08-12T19:45:12+08:00</lastBuildDate>
+        <pubDate>2013-08-12T19:45:12+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -53,15 +53,6 @@ msysgit安装后的设置，请参考&lt;a href=&quot;http://perthcharles.github
 </description>
                 <link>http://perthcharles.github.com/2013/08/12/using-git-to-write-blod-in-win7</link>
                 <guid>http://perthcharles.github.com/2013/08/12/using-git-to-write-blod-in-win7</guid>
-                <pubDate>2013-08-12T00:00:00+08:00</pubDate>
-        </item>
-
-        <item>
-                <title>tttttttt</title>
-                <description>
-</description>
-                <link>http://perthcharles.github.com/2013/08/12/tttttttt</link>
-                <guid>http://perthcharles.github.com/2013/08/12/tttttttt</guid>
                 <pubDate>2013-08-12T00:00:00+08:00</pubDate>
         </item>
 
@@ -2280,8 +2271,6 @@ tags : jekyll
 &lt;ul class=&quot;posts&quot;&gt;
   
     &lt;li&gt;&lt;span&gt;12 Aug 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/08/12/using-git-to-write-blod-in-win7&quot;&gt;win7下搭建博客环境&lt;/a&gt;&lt;/li&gt;
-  
-    &lt;li&gt;&lt;span&gt;12 Aug 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/08/12/tttttttt&quot;&gt;tttttttt&lt;/a&gt;&lt;/li&gt;
   
     &lt;li&gt;&lt;span&gt;15 Jul 2013&lt;/span&gt; &amp;raquo; &lt;a href=&quot;/2013/07/15/a-macro-for-excel&quot;&gt;EXCEL宏学习 -- 读文本数据&lt;/a&gt;&lt;/li&gt;
   
