@@ -5,8 +5,8 @@
         <description>My blog - Perth Charles</description>
         <link>http://perthcharles.github.com</link>
         <link>http://perthcharles.github.com</link>
-        <lastBuildDate>2013-08-12T19:45:12+08:00</lastBuildDate>
-        <pubDate>2013-08-12T19:45:12+08:00</pubDate>
+        <lastBuildDate>2013-08-12T19:46:20+08:00</lastBuildDate>
+        <pubDate>2013-08-12T19:46:20+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -2220,7 +2220,8 @@ git config --global -l //查看全局配置信息
 &lt;h2&gt;将本地更新后的仓库提交到github&lt;/h2&gt;
 
 &lt;p&gt;首先需要生成一个rsa key，然后在github的账号中添加好，之后才能提交更新。&lt;br/&gt;
-    ssh-keygen -C &#39;zhongbincharles@gmail.com&#39; -t rsa  //一直ENTER即可&lt;/p&gt;
+    ssh-keygen -C &#39;zhongbincharles@gmail.com&#39; -t rsa  //一直ENTER即可&lt;br/&gt;
+    git push origin master&lt;/p&gt;
 
 &lt;p&gt;其他常用命令可以参考&lt;a href=&quot;http://gitref.org/basic/&quot;&gt;git基本命令参考&lt;/a&gt;&lt;/p&gt;
 </description>
