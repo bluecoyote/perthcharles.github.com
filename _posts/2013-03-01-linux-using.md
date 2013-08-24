@@ -2,8 +2,8 @@
 layout: post
 title: "linux命令学习(一):du xargs "
 description: ""
-category:
-tags: shell
+category: shell
+tags: 
 ---
 {% include JB/setup %}
 

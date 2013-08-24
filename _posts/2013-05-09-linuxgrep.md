@@ -2,7 +2,7 @@
 layout: post
 title: "linux命令学习(七)：grep高级用法与正则表达式初步+sed+awk"
 description: ""
-category:shell 
+category: shell 
 tags: 
 ---
 {% include JB/setup %}
