@@ -7,10 +7,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>并行最小生成树算法</title>
+	<title>BFS和DFS算法温习</title>
 	<meta name="author" content="Perth Charles">
 	<link href='/assets/themes/the-program/css/style.css' rel="stylesheet" media="all">
-	<link href="http://feeds.feedburner.com/" rel="alternate" title="并行最小生成树算法" type="application/atom+xml">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="BFS和DFS算法温习" type="application/atom+xml">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 </head>
 <body>
@@ -44,79 +44,74 @@
 			<header>
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
-						<h1 class="h2 entry-title">并行最小生成树算法</h1>
+						<h1 class="h2 entry-title">BFS和DFS算法温习</h1>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
 
 			<div class="bd">
 				<div class="entry-content">
-					<h2>论文</h2>
+					<h2>广度优先搜索BFS</h2>
 
-<p>A distributed algorithm for minimum-weight spanning tree By:PG Gallager</p>
+<p>给定无向图G和源点s，遍历图。<br/>
+    BFS(G,s)
+    for each vertex u in G
+        u.color = white  //所有点置为未扫描
+    endif
+    s.color = black  //设置源点s为当前扫描点
+    Q = new queue   //新建空队列
+    Q.add(s)      //加入源点s
+    while(Q)
+        u = Q.dequeue  //取队列首节点
+        for each vertex v connect with u
+            if(v.color == white)
+                Q.add(v)
+                v.color = black
+        endif
+    endwhile
+<a href="http://sjjg.js.zwu.edu.cn/SFXX/sf1/gdyxbl.html">广度优先遍历演示地址</a></p>
 
-<h2>重要定理</h2>
+<h2>深度优先搜索DFS</h2>
 
-<p>最小生成树重要定理：<br/>
-    一个点的最小边一定是在最小生成树中的。
-利用反正法能很快证明。</p>
+<p>给定无向图G和源点s，遍历图。<br/>
+方法一：非递归实现，直接用到栈。<br/>
+    DFS(G,s)
+        for each vertex u in G  //置所有点为未访问
+            u.color = white
+        endif
+        s.color = black   //置源点为已访问
+        T = new stack
+        T.add(s)
+        while(T)  //只要堆栈不空，就一直找下去
+            u = T.top
+            if exit v connect with u and v.color is white
+                T.push(v)
+                v.color = black
+            else  //没有未被访问过的链接点后，则当前点u可以出栈了。
+                T.pop
+            endif
+        endwhile
+方法二：递归函数实现。其实与方法一无本质区别<br/>
+    Main    //主函数
+        init(G,s)   //负责初始化G和源点s
+        DFS(G,s)</p>
 
-<h2>算法步骤</h2>
-
-<p>1.找到每个点对应的权值最小的边。<br/>
-2.完成步骤1后，原图会被分割成若干个部分。每个部分用一个点代替，各个部分之间可能会存在多条边，仅保留权值最小的那条来表示相应两个部分的距离。<br/>
-3.完成步骤2后，得到一个缩减后的图。重复前两个步骤直到缩减后的图只有一个节点。</p>
-
-<h3>图示</h3>
-
-<p><img src="/assets/images/222.png" alt="算法图示" /></p>
-
-<h2>MapReduce模型并行算法</h2>
-
-<p>要说明的一点是各个节点是否属于同一个部分，利用并查集实现。初始化时，每个节点对应一个集合，随着迭代次数的增加，集合的数量会快速减少。</p>
-
-<hr />
-
-<pre><code>Mapper
-输入：(src, dest:weight)
-输出：所有(src_setno, dest_setno:weight),其中src_setno != dest_setno
-注解：src_setno表示src节点所在集合。对于输入进来的src_setno == dest_setno的边直接删除，因为这些边很显然是多余的。从而提高效率
+<pre><code>DFS(G,s)
+    s.color = black //标注为已访问
+    while(exit v connect with s and v.color is white)
+        DFS(G,s)
 </code></pre>
 
-<hr />
+<p>方法三：非递归实现</p>
 
-<pre><code>Reducer
-输入：(src_setno, dest_setno:weight)
-输出：1.对于src_setno相同的输入，保留weight最小的那条边到最终的解集合中
-      2.将保留边相应两个顶点所在集合进行合并
-</code></pre>
-
-<hr />
-
-<h3>缺点</h3>
-
-<p>需要在每个节点维持并查集，而且reduce过程要对并查集进行写操作，这里可能成为性能瓶颈。</p>
-
-<hr />
-
-<h3>进一步改进</h3>
-
-<p>在mapper与reducer之间添加combiner<br/>
-因为两个集合之间可能有多条边，这样Mapper可能产生很多src_setno，dest_setno都相同的输出。通过combiner将这类型的输出进行合并，只保留weight最小的输入。减少Reducer需要处理的数据量</p>
-
-<hr />
-
-<p>转载请注明出处<br/>
-版权所有，侵犯必究</p>
-
-<hr />
+<p><a href="http://sjjg.js.zwu.edu.cn/SFXX/sf1/sdyxbl.html">深度优先遍历演示地址</a></p>
 
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
-							<date class="date-pub" title="2013-04-21T00:00:00+08:00" datetime="2013-04-21T00:00:00+08:00" pubdate>
-							<span class="month"><abbr>April</abbr></span>
-							<span class="day">21</span>
+							<date class="date-pub" title="2013-08-16T00:00:00+08:00" datetime="2013-08-16T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>August</abbr></span>
+							<span class="day">16</span>
 							<span class="year">2013</span>
 							</date>
 						</p>
@@ -143,8 +138,6 @@
 
 
   
-     
-    	<li><a href="/tags.html#MST-ref">MST <span>1</span></a></li>
     
   
 
@@ -190,13 +183,9 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/%E9%9D%A2%E8%AF%95%E9%A2%98/2013/04/20/problem-one" title="View 已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]">&laquo; 已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/08/12/using-git-to-write-blod-in-win7" title="View win7下搭建博客环境">&laquo; win7下搭建博客环境</a></li>
 							
 							
-							<li class="pipe"> | </li>
-							
-							
-							<li class="next"><a class="internal" rel="next"  href="/2013/04/25/chrome-bugs" title="View chrome bugs">chrome bugs &raquo;</a></li>
 							
 						</ul>
 					</nav>
@@ -244,7 +233,7 @@
 		};
 	load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
-	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E5%9B%BE%E8%AE%BA/2013/04/21/mst_parallel" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/%E5%9B%BE%E8%AE%BA/2013/08/16/bfs-and-dfs-pseudo-code" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));
 </script>
 <script>

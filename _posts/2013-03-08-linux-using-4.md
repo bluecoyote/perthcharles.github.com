@@ -2,8 +2,8 @@
 layout: post
 title: "linux命令学习（四):输出文本文件  权限相关知识"
 description: "读文件操作命令：cat tac + more/less 权限与命令之间关系"
-category: 
-tags: shell
+category: shell
+tags: 
 ---
 {% include JB/setup %}
 

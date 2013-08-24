@@ -2,8 +2,8 @@
 layout: post
 title: "linux命令学习（二:关机 常见目录含义"
 description: ""
-category: 
-tags: shell
+category: shell
+tags: 
 ---
 {% include JB/setup %}
 

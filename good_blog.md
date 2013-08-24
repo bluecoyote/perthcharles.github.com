@@ -11,6 +11,8 @@ tagline: Supporting tagline
 [n个骰子得到点数和的概率分布](http://www.cnblogs.com/jffifa/archive/2011/12/17/2291072.html)  
 [段间跳转指令jmpi和实模式寻址](http://blog.csdn.net/zhl1224/article/details/5735747)  
 [如何自己写一个网络爬虫](http://coolshell.cn/articles/27.html)  
+[U盘装系统工具](http://www.upanok.com/)  
+[U盘装系统教程](http://www.upanok.com/help.html)  
 
 ##种子资源列表  
 [六维上office 2010 下载地址](http://bt.neu6.edu.cn/534277)  
@@ -31,5 +33,7 @@ tagline: Supporting tagline
 [Web crawler](http://en.wikipedia.org/wiki/Web_crawler)  
 [Wget](http://en.wikipedia.org/wiki/Wget)  
 
-
+##优秀博主  
+[matrix67](http://www.matrix67.com/blog/)  
+[July:结构之法 算法之道](http://blog.csdn.net/v_JULY_v)  
 

@@ -2,8 +2,8 @@
 layout: post
 title: "linux 命令学习（五）：服务器登录消息 找含某字符串的所有文件"
 description: ""
-category: 
-tags: shell
+category: shell
+tags: 
 ---
 {% include JB/setup %}
 
