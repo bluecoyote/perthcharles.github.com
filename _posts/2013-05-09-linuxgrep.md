@@ -21,6 +21,9 @@ tags:
 	//使更改后的文件生效
 	#source ~/.bashrc
 
+	//匹配多种模式
+	#grep -E '(pattern1|pattern2)' 
+
 ***  
 ##关于正则表达式需要注意的点  
 1.处理单元是行  

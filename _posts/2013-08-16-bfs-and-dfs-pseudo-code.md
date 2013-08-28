@@ -55,7 +55,6 @@ tags: []
 		while(exit v connect with s and v.color is white)
 			DFS(G,s)
 
-方法三：非递归实现  
 
 [深度优先遍历演示地址](http://sjjg.js.zwu.edu.cn/SFXX/sf1/sdyxbl.html)  
 

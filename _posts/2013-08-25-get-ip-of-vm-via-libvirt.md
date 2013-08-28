@@ -49,3 +49,4 @@ tags: []
 [Tip: Find the IP address of a virtual machine](http://rwmj.wordpress.com/2010/10/26/tip-find-the-ip-address-of-a-virtual-machine/)  
 [libvirt vnc console without virt-manager](http://blog.rot13.org/2012/12/libvirt-vnc-console-without-virt-manager.html)  
 [Get list of DHCP clients with KVM+libvirt](http://serverfault.com/questions/101982/get-list-of-dhcp-clients-with-kvmlibvirt)  
+[KVM/Networking](https://help.ubuntu.com/community/KVM/Networking#DNS%20and%20DHCP%20Guests)  
