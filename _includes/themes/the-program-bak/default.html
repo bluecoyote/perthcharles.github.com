@@ -44,40 +44,6 @@
 	<footer class="the-footer">
 		<div class="unit-foot">
 			<div class="unit-inner unit-foot-inner">
-
-				<div class="misc vcard">
-					<!--Google站内搜索开始-->
-					<form method=get action="http://www.google.com/search" target="_blank">
-					<input type=text name=q>
-					<input type=submit name=btnG value="搜索">
-					<input type=hidden name=ie value=utf-8>
-					<input type=hidden name=oe value=utf-8>
-					<input type=hidden name=hl value=zh-CN>
-					<input type=hidden name=domains value="perthcharles.github.io">
-					<input type=hidden name=sitesearch value="perthcharles.github.io">
-					</form>
-					<!--Google站内搜索结束-->
-				</div><!-- misc vcard -->
-
-
-				<!-- add categories in the index by zhongbin @2013-8-31-->
-				<div class="misc vcard">
-			  	<h4>Categories</h4>
-  				<ul class="tab_box">
-  				{% assign categories_list = site.categories %}
-  				{% include JB/categories_list %}
-				</ul>
-  				</div><!-- misc vcard -->
-
-				<div class="misc vcard">
-  				<h4>Recent posts</h4>
-  				<ul>
-  				{% for post in site.posts limit:10 %}
-  				<li class="post_title"><a href="{{post.url}}">{{post.title}}</a></li>
-  				{% endfor %}
-  				</ul>
-  				</div><!-- misc vcard -->
-
 				<div class="misc vcard">
 					<h4>about</h4>
 					<ul>
@@ -86,19 +52,11 @@
 						<li class="rss"><a href="http://feeds.feedburner.com/{{ site.author.feedname }}">Subscribe to RSS Feed</a></li>
 					</ul>
 				</div><!-- misc -->
-
-  				<div class="misc vcard">
-  				{% include 3rd/VisitStat %}
-				</div><!-- misc -->
-
-				<div class="misc vcard">
-				<p> <iframe src="http://free.timeanddate.com/clock/i3n3olta/n33/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="211" height="58"></iframe> </p>
-				</div><!-- misc -->
-
 				<p class="licence">
 					Theme: <a href="http://layouts-the.me">the_minimum</a> based on <a href="http://jekyllbootstrap.com/">Jekyll-bootstrap</a>.<br>
 					Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>.
 				</p>
+				<p> <iframe src="http://free.timeanddate.com/clock/i3n3olta/n33/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="211" height="58"></iframe> </p>
 			</div><!-- unit-foot-inner -->
 		</div><!-- unit-foot -->
 	</footer>

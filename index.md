@@ -22,7 +22,7 @@ tagline: Supporting tagline
 
 ##Post List  
 <ul class="posts">
-  {% for post in site.posts %}
+  {% for post in site.posts limit:5 %}
     <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
   {% endfor %}
 </ul>
@@ -30,4 +30,5 @@ tagline: Supporting tagline
 ###友情链接  
 [潘海洋的博客](http://pocean.blog.163.com/blog/#m=0)  
 [黎明灰烬的博客](http://www.jackwish.net/)  
+[东大学子](http://blog.sina.com.cn/jiaoyou11)  
 

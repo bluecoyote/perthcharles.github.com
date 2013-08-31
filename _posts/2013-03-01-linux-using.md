@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "linux命令学习(一):du xargs "
+title: "linux命令学习（一）:du xargs "
 description: ""
 category: shell
 tags: 

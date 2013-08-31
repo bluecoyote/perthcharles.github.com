@@ -19,6 +19,9 @@ Pages支持较多文件类型，我主要用MARKDOWN和HTML这两种文件类型
 这样产生的文件会在文件夹：_posts下，且后缀名为：**md**  
 注意：后缀名不能为MARKUP，否则jekyll不能正确解析post文件
 
+##新建page  
+	#rake page name="name of page"
+
 
 ##Categories和Tags  
 这两个功能只能针对post生效，对page没有作用。具体的用法是在post文件的最开始定义好这些内容。如这篇post对应的定义内容如下：  
@@ -53,5 +56,6 @@ Pages支持较多文件类型，我主要用MARKDOWN和HTML这两种文件类型
 [使用Liquid模板语言](http://www.mceiba.com/develop/liquid-learn.html)  
 [Zero to Hosted Jekyll Blog in 3 Minetes](http://jekyllbootstrap.com/)  
 [像黑客一样写博客--Jekyll入门](http://www.soimort.org/posts/101/)  
-[快速入门指南](brionas.github.io/2013/03/01/test/)  
+[Markdown语法说明中文版](https://github.com/heiniuhaha/markdown-syntax-zhtw)  
+
 

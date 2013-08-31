@@ -43,6 +43,9 @@ tags: []
 使用virt-install新建的虚拟机的IP地址和MAC地址对应关系在下面的文件中：  
 	/var/lib/misc/dnsmasq.leases
 直接读取这个文件即可！  
+*updates:*  
+如果磁盘空间不足，则会出现dnsmasq.leases中没有任何记录。给磁盘空出一些空间出来就能正常使用了。  
+具体原因我暂时不明白，具体的讨论请参见[Dnsmasq-discuss: no entries in dnsmasq.leases](http://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2006q1/000611.html)  
 
 	
 ##参考资料  
