@@ -2,7 +2,7 @@
 layout: post
 title: "从文本中抽取出指定的行"
 description: ""
-category: 文本处理
+category: shell
 tags: []
 ---
 {% include JB/setup %}

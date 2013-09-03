@@ -2,8 +2,8 @@
 layout: post
 title: "POJ上看到一种O(nm)求逆序数的方法"
 description: ""
-category: 
-tags: []
+category: 面试题
+tags: C/C++
 ---
 {% include JB/setup %}
 

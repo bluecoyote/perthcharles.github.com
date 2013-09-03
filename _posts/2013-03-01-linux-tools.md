@@ -2,8 +2,8 @@
 layout: post
 title: "linux常用工具列表"
 description: ""
-category: linux-learning
-tags: tools
+category: linux
+tags: 
 ---
 {% include JB/setup %}
 

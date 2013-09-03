@@ -2,8 +2,8 @@
 layout: post
 title: "ssh免密码登录"
 description: ""
-category: 
-tags: ssh
+category: linux
+tags: 
 ---
 {% include JB/setup %}
 

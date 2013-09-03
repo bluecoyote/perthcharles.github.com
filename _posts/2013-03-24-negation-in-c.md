@@ -3,7 +3,7 @@ layout: post
 title: "一道C语言二进制反码题"
 description: ""
 category: 面试题
-tags: C
+tags: C/C++
 ---
 {% include JB/setup %}
 ###题目  

@@ -3,7 +3,7 @@ layout: post
 title: "centos5.9使用记录"
 description: ""
 category: 
-tags: CentOS-5.9 服务器232
+tags: 
 ---
 {% include JB/setup %}
 

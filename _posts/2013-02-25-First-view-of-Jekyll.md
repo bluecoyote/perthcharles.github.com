@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 初识Jekyll
-category : tools
-tags : jekyll
+category : 
+tags : git
 ---  
 {% include JB/setup %}  
 

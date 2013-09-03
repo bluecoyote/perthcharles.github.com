@@ -2,7 +2,7 @@
 layout: post
 title: "使用matlab从excel文件中读取指定数据，并画图"
 description: ""
-category: 实际问题
+category: coding
 tags: matlab 
 ---
 {% include JB/setup %}

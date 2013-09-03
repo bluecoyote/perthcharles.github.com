@@ -3,7 +3,7 @@ layout: post
 title: "中国剩余定理"
 description: ""
 category: 面试题 
-tags: 数论
+tags: 
 ---
 {% include JB/setup %}
 

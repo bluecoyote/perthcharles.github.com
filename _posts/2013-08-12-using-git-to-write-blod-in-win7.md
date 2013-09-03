@@ -3,7 +3,7 @@ layout: post
 title: "win7下搭建博客环境"
 description: ""
 category: 
-tags: []
+tags: git
 ---
 {% include JB/setup %}
 

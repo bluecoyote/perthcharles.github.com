@@ -2,8 +2,8 @@
 layout: post
 title: "在centos系统下，挂在ntfs格式的磁盘分区"
 description: ""
-category: centos6.4
-tags: centos mount
+category: linux
+tags: 
 ---
 {% include JB/setup %}
 

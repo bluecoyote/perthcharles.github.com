@@ -19,3 +19,6 @@ tags: []
 <input type=hidden name=sitesearch value="perthcharles.github.io">
 </form>
 <!--Google站内搜索结束-->
+
+###参考资料  
+[给github pages添加自定义搜索](http://yysfire.github.com/webdesign/how-to-add-google-custom-search-to-github-pages.html)  

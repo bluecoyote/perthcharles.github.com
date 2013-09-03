@@ -2,7 +2,7 @@
 layout: post
 title: linux系统信息+文件编码格式转换
 description: ""
-category: linux-learning
+category: linux
 tags: 
 ---
 {% include JB/setup %}

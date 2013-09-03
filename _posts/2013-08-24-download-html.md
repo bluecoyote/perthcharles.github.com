@@ -3,7 +3,7 @@ layout: post
 title: "wget 下载单个网页后，解析出包含的链接后，再下载"
 description: ""
 category: 
-tags: wget
+tags: 
 ---
 {% include JB/setup %}
 

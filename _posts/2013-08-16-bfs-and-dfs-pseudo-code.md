@@ -2,7 +2,7 @@
 layout: post
 title: "BFS和DFS算法温习"
 description: ""
-category: 图论
+category: Algorithm
 tags: []
 ---
 {% include JB/setup %}

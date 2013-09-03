@@ -3,7 +3,7 @@ layout: post
 title: "已知a[N],求b[i]=a[0]*a[1]..a[N]/a[i]"
 description: ""
 category: 面试题
-tags: 
+tags: C/C++
 ---
 {% include JB/setup %}
 

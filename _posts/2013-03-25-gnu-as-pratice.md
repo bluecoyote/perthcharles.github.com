@@ -2,8 +2,8 @@
 layout: post
 title: "Gnu AS 汇编实践"
 description: ""
-category: 
-tags: 汇编
+category: coding
+tags: assembly
 ---
 {% include JB/setup %}
 

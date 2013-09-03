@@ -2,8 +2,8 @@
 layout: post
 title: "mapreduce 学习笔记"
 description: ""
-category: 
-tags: mapreduce
+category: Cloud
+tags: 
 ---
 {% include JB/setup %}
 

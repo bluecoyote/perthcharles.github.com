@@ -2,7 +2,7 @@
 layout: post
 title: "vim 编码相关问题"
 description: ""
-category: 
+category: linux
 tags: vim
 ---
 {% include JB/setup %}

@@ -2,7 +2,7 @@
 layout: post
 title: "linux 安装软件问题：XXX share library can not found"
 description: ""
-category: 
+category: linux
 tags: []
 ---
 {% include JB/setup %}

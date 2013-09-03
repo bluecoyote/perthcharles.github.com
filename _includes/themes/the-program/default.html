@@ -56,6 +56,7 @@
 					</form>
 					<!--Google站内搜索结束-->
 				</div><!-- misc vcard -->
+				<\br>
 
 
 				<!-- add categories in the index by zhongbin @2013-8-31-->
@@ -68,9 +69,16 @@
   				</div><!-- misc vcard -->
 
 				<div class="misc vcard">
+			  	<h4>Tags</h4>
+  				<ul class="tab_box">
+  				{% assign tags_list = site.tags %}
+  				{% include JB/tags_list %}
+				</ul>
+  				</div><!-- misc vcard -->
+				<div class="misc vcard">
   				<h4>Recent posts</h4>
   				<ul>
-  				{% for post in site.posts limit:10 %}
+  				{% for post in site.posts limit:20 %}
   				<li class="post_title"><a href="{{post.url}}">{{post.title}}</a></li>
   				{% endfor %}
   				</ul>

@@ -3,7 +3,7 @@ layout: post
 title: "Trace驱动的memory模拟：综述"
 description: ""
 category: papars
-tags: trace
+tags: 
 ---
 {% include JB/setup %}
 

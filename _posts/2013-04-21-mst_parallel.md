@@ -2,8 +2,8 @@
 layout: post
 title: "并行最小生成树算法"
 description: ""
-category: 图论 
-tags: MST
+category: Algorithm 
+tags: Graph-Theory
 ---
 {% include JB/setup %}
 
