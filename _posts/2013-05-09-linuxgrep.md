@@ -70,6 +70,7 @@ tags:
 	//sed实际使用举例
 	#cat tmp.sh |sed 's/a/b/g'  //替换功能：用b替换a
 	#cat tmp.sh |sed -n '2,4p'	//输出2到4行的内容
+	#cat tmp.sh |sed 's/ \+/ /g'	//替换多个空格为一个，+表示多次同时需要转义
 
 ###其他好用命令：  
 diff+patch:  

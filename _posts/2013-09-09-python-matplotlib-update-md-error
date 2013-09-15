@@ -1,0 +1,47 @@
+---
+layout: post
+title: "matplotlib版本更新"
+description: ""
+category: 
+tags: []
+---
+{% include JB/setup %}
+
+###matplotlib更新  
+本来想用matplotlib模块对数据进行PCA分析，但是matplotlib.mlab模块中只有prepca，没有pca  
+估计是matplotlib模块的版本有点旧，所以对matplotlib进行更新  
+	#git clone git://github.com/matplotlib/matplotlib.git
+	#cd matplotlib
+	#python setup.py install
+
+如果不能顺利的更新好，那就更新python吧。  
+直接升到3.2  
+yum安装默认版本实在太旧了  
+
+1.上网站上下载3.2版本：[python 3.2](http://www.python.org/ftp/python/3.2/)  
+	#wget http://www.python.org/ftp/python/3.2/Python-3.2.tar.bz2
+2.安装步骤  
+	#cd Python-3.2
+	#./configure
+	#make all
+	#make install
+3.安装好后，做个软连接就行了  
+	#/usr/local/bin/python3 -V
+	#mv /usr/bin/python /usr/bin/python-bak
+	#ln -s /usr/local/bin/python3 /usr/bin/python
+4.更改yum的配置  
+	#vim /usr/bin/yum
+	改成#!/usr/bin/python2.4.3
+
+5.下载easy_install  
+[easy_install 1.1.4](https://pypi.python.org/pypi/setuptools)  
+不知道怎么安装好easy_install  
+但是直接使用easy_install.py脚本就足够了  
+	#python easy_install.py numpy
+	#python easy_install.py matplotlib
+	
+
+###参考资料  
+[Centos 5.5升级Python到2.7版本](http://hi.baidu.com/h0yg7l1hup/item/85aa4b0c94f401ea3599022d)  
+[python - easy_install的安装和使用](http://www.cnblogs.com/huangjacky/archive/2012/03/28/2421866.html)  
+

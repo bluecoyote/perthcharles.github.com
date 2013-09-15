@@ -36,4 +36,5 @@ tagline: Supporting tagline
 ##优秀博主  
 [matrix67](http://www.matrix67.com/blog/)  
 [July:结构之法 算法之道](http://blog.csdn.net/v_JULY_v)  
+[少帅的天空](http://blog.chinaunix.net/uid-20940095-id-373614.html)  
 

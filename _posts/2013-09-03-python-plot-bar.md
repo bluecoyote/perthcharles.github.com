@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "[python]使用matplotlib库画宽度可变的条形图"
+title: "[python实践]使用matplotlib库画宽度可变的条形图"
 description: ""
-category: coding
-tags: python
+category: python
+tags: 
 ---
 {% include JB/setup %}
 
